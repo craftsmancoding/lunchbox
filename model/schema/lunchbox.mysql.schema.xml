@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model package="lunchbox" version="1.0" baseClass="xPDOObject" platform="mysql" defaultEngine="MyISAM">
+
+    <!-- ! Lunchbox: a paginated container -->
+    <object class="Lunchbox" extends="modResource" />
+
+</model>

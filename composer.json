@@ -1,0 +1,38 @@
+{
+    "name": "craftsmancoding/lunchbox",
+    "description": "Turn a MODX folder into a paginated container to cut on manager load times.",
+    "type": "library",
+    "keywords": ["modx","pagination"],
+    "homepage": "https://github.com/craftsmancoding/lunchbox",
+    "license": "GPL-2.0+",
+    "authors": [
+        {
+            "name": "Everett Griffiths",
+            "email": "everett@craftsmancoding.com",
+            "homepage" : "http://craftsmancoding.com/"
+        }        
+    ],
+    "support": {
+        "email": "donotreply@craftsmancoding.org",
+        "issues": "https://github.com/craftsmancoding/lunchbox/issues",
+        "forum": "http://forums.modx.com/",
+        "wiki": "https://github.com/craftsmancoding/lunchbox/wiki",
+        "source": "https://github.com/craftsmancoding/lunchbox"
+    },    
+    "require": {
+        "php": ">=5.3"
+    },
+    "autoload": {
+        "classmap":["model/lunchbox/"]
+    },
+    "extra": {
+        "package_name": "Lunchbox",
+        "namespace": "lunchbox",
+        "version": "0.8.0",
+        "release": "dev",
+        "category":"Lunchbox",
+        "core_path": "",
+        "assets_path" : "assets/",
+        "docs_path" : "docs/"
+    }
+}
