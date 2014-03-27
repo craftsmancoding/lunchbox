@@ -1,3 +1,15 @@
+/**
+ * Drill down into a folder
+ *
+ */
+function drillDown(id) {
+    var store = getResourcesStore();
+    store.load({
+        params:{parent: id}
+    });
+    // update the breadcrumbs
+}
+
 function getQueryParams(qs) {
 	qs = qs.split("+").join(" ");
 	var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
@@ -35,12 +47,12 @@ function renderLunchbox(isCreate, config){
 				border: false,
 				msgTarget: 'under',
 				width: 400,
-				height:880 // Should react to default_per_page approx. 44 pixel per result
+				height:880 // Should react to default_per_page approx. ~44 pixel per result
 			},
 			items: getChildrenTabContent(config)
 		};
 
-		tabPanel.insert(0, childrenTab);
+		tabPanel.insert(0, childrenTab); // Add tab at the front
 		tabPanel.setActiveTab(0);
 		tabPanel.doLayout();
 	}
@@ -65,6 +77,7 @@ function getResourcesStore(){
 			totalProperty: 'total',
 			fields: [
 				{name: 'id'},
+				{name: 'isfolder'},
 				{name: 'pagetitle'},
 				{name: 'description'},
 				{name: 'uri'},
@@ -82,10 +95,30 @@ function getResourcesStore(){
 function getChildrenTabContent(config){
 	var store = getResourcesStore();
 
-	var cm = new Ext.grid.ColumnModel([{
+	var cm = new Ext.grid.ColumnModel([
+	      {
+			header:'',
+			resizable: false,
+			width: 40,
+			dataIndex: 'isfolder',
+			sortable: true,
+			renderer : function(value, metaData, record, rowIndex, colIndex, store) {
+                if (value) {
+                    return '<div class="lunchbox_folder" onclick="javascript:drillDown('+record.id+');">&nbsp;</div>';
+                }
+                else {
+                    return '<div class="lunchbox_page">&nbsp;</div>';
+                }
+			}
+		},{
 			header:'Pagetitle',
 			resizable: false,
 			dataIndex: 'pagetitle',
+			sortable: true
+		},{
+			header:'ID',
+			resizable: false,
+			dataIndex: 'id',
 			sortable: true
 		},{
 			header: 'Description',
@@ -111,6 +144,7 @@ function getChildrenTabContent(config){
 		layout:'fit',
 		region:'center',
 		border: true,
+		tbar: breadcrumbs,
 		viewConfig: {
 			autoFill: true,
 			forceFit: true,
@@ -125,11 +159,21 @@ function getChildrenTabContent(config){
 					fieldName = grid.getColumnModel().getDataIndex(columnIndex);
 				if(fieldName === 'id'){
 					if(e.target.innerHTML === 'Edit'){
-						//MODx.loadPage(MODx.action['lunchbox:index'], 'f=product_update&product_id='+record.data.product_id);
 				        MODx.loadPage(MODx.action['resource/update'], 'id='+id);
+					} else if(e.target.innerHTML === 'View'){
+//						window.open(site_url + record.data.uri, '_blank');
+                        alert(id);
+                        store.load({
+                            params:{parent: id}
+                        });
+
+                    }
+/*
 					} else if(e.target.innerHTML === 'View'){
 						window.open(site_url + record.data.uri, '_blank');
 					}
+*/
+					
 				}
 			}
 		},
@@ -144,7 +188,7 @@ function getChildrenTabContent(config){
 	return [{
 		layout:'card',
 		activeItem:0,
-		id: 'modx-resource-products-columns',
+		id: 'modx-resource-children-columns',
 		defaults: {
 			labelSeparator: '',
 			labelAlign: 'top',
@@ -153,7 +197,7 @@ function getChildrenTabContent(config){
 		},
 		items:[{
 			layout:'border',
-			id: 'modx-resource-productsList-columns',
+			id: 'modx-resource-childrenlist-columns',
 			defaults: {
 				labelSeparator: '',
 				labelAlign: 'top',
@@ -168,20 +212,17 @@ function getChildrenTabContent(config){
 				xtype:'panel',
 				items:[{
 					xtype: 'button',
-					text:'Add Product',
-					tooltip : 'Add a Product inside this Store',
+					text:'Add Page',
+					tooltip : 'Add a Page Here',
 					listeners: {
 						'click': {fn: function(){
-							MODx.loadPage(MODx.action['lunchbox:index'], 'f=product_create&store_id='+pid);
+                            MODx.loadPage(MODx.action['resource/create'], 'class_key=modDocument&context_key=web&id='+pid+'&parent='+pid);
 						}, scope: this}
 					}
-				},{
-					xtype: 'button',
-					text:'Manage Inventory',
-					handler : function(){
-						MODx.loadPage(MODx.action['lunchbox:index'], 'f=product_inventory&store_id='+pid);
-					}
-				},{
+				}
+/*
+				,
+				{
 					xtype: 'button',
 					padding : 0,
 					cls : 'divided-btn',
@@ -190,134 +231,11 @@ function getChildrenTabContent(config){
 					handler : function(){
 						MODx.loadPage(MODx.action['lunchbox:index'], 'f=product_sort_order&store_id='+pid);
 					}
-				},{
-					border:false,
-					xtype: 'displayfield',
-					value:'&nbsp;',
-					columnWidth:.20
-				},{
-					xtype: 'textfield',
-					emptyText:'Search..',
-					name:'search'
-				},{
-					xtype: 'button',
-					text:'Filter'
-				},{
-					xtype: 'button',
-					text:'Show All'
-				}]
+				}
+*/
+                ]
 			},
 			this.resourcesGrid_panel]
-		},{
-			layout:'form',
-			anchor: '100%',
-			id: 'modx-resource-Addproducts-columns',
-			defaults: {
-				labelSeparator: '',
-				labelAlign: 'top',
-				border: false,
-				msgTarget: 'under'
-			},
-			items:[{
-				layout:'column',
-				columns:4,
-				height:50,
-				xtype:'panel',
-				items:[{
-					xtype: 'label',
-					text: 'Name'
-				},{
-					xtype: 'textfield',
-					flex:1,
-					fieldLabel:'Name'
-				},{
-					xtype:'spacer',anchor:'100%',width:'100%'},{
-					xtype: 'label',
-					text: 'Active?'
-				},new Ext.form.ComboBox({fieldLabel: 'Active?',editable: true,flex:1,width:60})]
-			},{
-				region:'north',
-				layout:'column',
-				columns:4,
-				height:50,
-				xtype:'panel',
-				items:[{
-					xtype: 'label',
-					text: 'SKU'
-				},{
-					xtype: 'textfield',
-					flex:1,
-					fieldLabel:'SKU'
-				},{
-					xtype: 'label',
-					text: 'Vendor SKU'
-				},{
-					xtype: 'textfield',
-					flex:1,
-					fieldLabel:'Vendor SKU'
-				}]
-			},{
-				xtype: 'textarea',
-				anchor: '100%',
-				fieldLabel:'Description'
-			},{
-				xtype: 'textfield',
-				fieldLabel:'Price'
-			},{
-				 xtype: 'textfield',
-				fieldLabel:'Strike Through Price'
-			},{
-				xtype : 'combo',
-				fieldLabel: 'Category',
-				editable: true,
-				width:60},
-			{
-				region:'north',
-				layout:'column',
-				columns:4,
-				height:50,
-				xtype:'panel',
-				items:[{
-					xtype: 'label',
-					text: 'Inventory'
-				},{
-					xtype: 'textfield',
-					fieldLabel:'Inventory'
-				},{
-					xtype: 'label',
-					text: 'Qty Min.'
-				},{
-					xtype: 'textfield',
-					fieldLabel:'Qty Min.'
-				}]
-			},{
-				region:'north',
-				layout:'column',
-				columns:4,
-				height:50,
-				xtype:'panel',
-				items:[{
-					xtype: 'label',
-					text: 'Alert Qty'
-				},{
-					xtype: 'textfield',
-					fieldLabel:'Alert Qty'
-				},{
-					xtype: 'label',
-					text: 'Qty Max.'
-				},{
-					xtype: 'textfield',
-					fieldLabel:'Qty Max.'
-				}]
-			},{
-				xtype: 'textarea',
-				name: 'textProduct',
-				id: 'textProduct',
-				hideLabel: true,
-				anchor: '100%',
-				height: 400,
-				grow: false
-			}]
 		}]
 	}];
 }

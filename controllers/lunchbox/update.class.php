@@ -19,6 +19,14 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
 			<script type="text/javascript">
                 var connector_url = "'.$lunchbox_connector_url.'";
                 var site_url = "'.MODX_SITE_URL.'";
+                    var breadcrumbs = {
+                        items: [
+                            {
+                                xtype: "box",
+                                autoEl: {cn: "<span onclick=\'javascript:alert(123);\'>Breadcrumb</span> >> Here >> Now"}
+                            }
+                        ]
+                    };
 				isProductContainerCreate = false;
 				Ext.onReady(function(){
 					renderLunchbox(isProductContainerCreate, MODx.config);
