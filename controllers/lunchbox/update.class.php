@@ -11,6 +11,8 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         
         $mgr_url = $this->modx->getOption('manager_url',null,MODX_MANAGER_URL.'components/lunchbox/');
         $assets_url = $this->modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
+
+        $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
         
 		//Add below for customization
         $this->addJavascript($assets_url . 'js/lunchbox.js');
@@ -40,22 +42,5 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
     public function getLanguageTopics() {
         return array('resource','lunchbox:default');
     }
-    /**
-     * Return the pagetitle
-     *
-     * @return string
-     */
-/*
-    public function getPageTitle() {
-        return $this->modx->lexicon('container_update');
-    }
-*/
-    /**
-     * Used to set values on the resource record sent to the template for derivative classes (wtf?)
-     * We're doing this in the store model instead...
-     * @return void
-     */
-    public function prepareResource() {
 
-    }    
 }

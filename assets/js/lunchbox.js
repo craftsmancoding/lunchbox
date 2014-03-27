@@ -10,6 +10,10 @@ function drillDown(id) {
     // update the breadcrumbs
 }
 
+function getBreadcrumbs() {
+
+}
+
 function getQueryParams(qs) {
 	qs = qs.split("+").join(" ");
 	var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
