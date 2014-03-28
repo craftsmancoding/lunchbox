@@ -8,10 +8,23 @@ function drillDown(id) {
         params:{parent: id}
     });
     // update the breadcrumbs
+    setBreadcrumbs(id);
 }
 
-function getBreadcrumbs() {
+/**
+ * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
+ * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
+ */
+function setBreadcrumbs(page_id) {
 
+    Ext.Ajax.request({
+        url: connector_url+'&action=hierarchy&page_id='+page_id,
+        params: {},
+        async:false,
+        success: function(response){
+            Ext.fly('lunchbox_breadcrumbs').update(response.responseText);
+        }
+    });
 }
 
 function getQueryParams(qs) {
@@ -32,7 +45,7 @@ var query = getQueryParams(document.location.search),
 
 
 
-function renderLunchbox(isCreate, config){
+function renderLunchbox(config){
 	var tabPanel = Ext.getCmp("modx-resource-tabs");
 
 	if(tabPanel!=null){
@@ -88,10 +101,11 @@ function getResourcesStore(){
 				{name: 'published'}
 			]
 		}),
+
 		proxy : new Ext.data.HttpProxy({
 			method: 'GET',
 			prettyUrls: false,
-			url: connector_url+'parent='+pid
+			url: connector_url+'&action=children&parent='+pid
 		})
 	});
 }
@@ -148,7 +162,14 @@ function getChildrenTabContent(config){
 		layout:'fit',
 		region:'center',
 		border: true,
-		tbar: breadcrumbs,
+		tbar: {
+            items: [
+                {
+                    xtype: "box",
+                    autoEl: {cn: '<div id="lunchbox_breadcrumbs">Breadcrumbs</div>'}
+                }
+            ]
+        },
 		viewConfig: {
 			autoFill: true,
 			forceFit: true,
@@ -166,7 +187,6 @@ function getChildrenTabContent(config){
 				        MODx.loadPage(MODx.action['resource/update'], 'id='+id);
 					} else if(e.target.innerHTML === 'View'){
 //						window.open(site_url + record.data.uri, '_blank');
-                        alert(id);
                         store.load({
                             params:{parent: id}
                         });

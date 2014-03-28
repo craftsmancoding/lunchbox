@@ -49,93 +49,36 @@ class Lunchbox extends modResource {
     } 
 
     /**
+     * Get rid of that little triangle that lets a user open a container.
+     *
      * @param array $node
      * @return array
      */
     public function prepareTreeNode(array $node = array()) {
-/*
-        $this->xpdo->lexicon->load('articles:default');
-        $menu = array();
-        $idNote = $this->xpdo->hasPermission('tree_show_resource_ids') ? ' <span dir="ltr">('.$this->id.')</span>' : '';
-        $menu[] = array(
-            'text' => '<b>'.$this->get('pagetitle').'</b>'.$idNote,
-            'handler' => 'Ext.emptyFn',
-        );
-        $menu[] = '-';
-        $menu[] = array(
-            'text' => $this->xpdo->lexicon('articles.articles_manage'),
-            'handler' => 'this.editResource',
-        );
-        $menu[] = array(
-            'text' => $this->xpdo->lexicon('articles.articles_write_new'),
-            'handler' => 'function(itm,e) { itm.classKey = "Article"; this.createResourceHere(itm,e); }',
-        );
-        $menu[] = array(
-            'text' => $this->xpdo->lexicon('articles.container_duplicate'),
-            'handler' => 'function(itm,e) { itm.classKey = "ArticlesContainer"; this.duplicateResource(itm,e); }',
-        );
-        $menu[] = '-';
-        if ($this->get('published')) {
-            $menu[] = array(
-                'text' => $this->xpdo->lexicon('articles.container_unpublish'),
-                'handler' => 'this.unpublishDocument',
-            );
-        } else {
-            $menu[] = array(
-                'text' => $this->xpdo->lexicon('articles.container_publish'),
-                'handler' => 'this.publishDocument',
-            );
-        }
-        if ($this->get('deleted')) {
-            $menu[] = array(
-                'text' => $this->xpdo->lexicon('articles.container_undelete'),
-                'handler' => 'this.undeleteDocument',
-            );
-        } else {
-            $menu[] = array(
-                'text' => $this->xpdo->lexicon('articles.container_delete'),
-                'handler' => 'this.deleteDocument',
-            );
-        }
-        $menu[] = '-';
-        $menu[] = array(
-            'text' => $this->xpdo->lexicon('articles.articles_view'),
-            'handler' => 'this.preview',
-        );
-
-        $node['menu'] = array('items' => $menu);
         $node['hasChildren'] = true;
-        return $node;
-*/
-//        print '<pre>'.print_r($node, true).'</pre>'; exit;
-//        $node['hasChildren'] = false;
-        $node['hasChildren'] = true;
-//        $node['allowDrop'] = false;
-        $node = parent::prepareTreeNode($node);
-
-        $node['hasChildren'] = true;
-//        $node['allowDrop'] = false;
-//        error_log(print_r($node,true));
-        return $node;
+        return parent::prepareTreeNode($node);
     }
-
+    
     /**
-     * Given a page id, return an array of all the parents from that page
-     * all the way up to the root of the site.  To be used for breadcrumbs.
+     * Gotta look up the URL of our CMP and its actions
      * 
-     * @param integer $page_id
-     * @return array
+     * @param array any optional arguments, e.g. array('action'=>'children','parent'=>123)
+     * @return string
      */
-    public function lookupHierarchy($page_id) {
-        $out = array();
-        while ($page = $this->modx->getObject('modResource', $page_id)) {
-            $out[] = array(
-                'id' => $page->get('id'),
-                'pagetitle' => $page->get('pagetitle')
-            );
-            $page_id = $page->get('parent');
+    public function getControllerUrl($args=array()) {
+        // future: pass as args:
+        $namespace='lunchbox';
+        $controller='index'; 
+        $url = MODX_MANAGER_URL;
+        if ($Action = $this->xpdo->getObject('modAction', array('namespace'=>$namespace,'controller'=>$controller))) {
+            $url .= '?a='.$Action->get('id');
+            if ($args) {
+                foreach ($args as $k=>$v) {
+                    $url.='&'.$k.'='.$v;
+                }
+            }
         }
-        return $out;
+        return $url;
     }
 
 }

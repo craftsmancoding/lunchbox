@@ -10,6 +10,17 @@
     height:24px;
     width:24px;
 }
+.lunchbox_breadcrumb {
+    font-weight: bold;    
+}
+.lunchbox_breadcrumb:hover {
+    color: blue;
+    cursor: pointer;
+}
+#lunchbox_breadcrumbs {
+    height: 20px;
+}
+
 /* Custom Icon for our class_key */
 .icon-lunchbox .x-tree-node-icon {
     background-image: url(../images/lunchbox-icon.png) !important;

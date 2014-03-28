@@ -24,7 +24,7 @@ class LunchboxChildrenManagerController extends LunchboxManagerController {
         $start = (int) $this->modx->getOption('start',$scriptProperties,0);
         $sort = $this->modx->getOption('sort',$scriptProperties,'menuindex');
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
-        $parent = (int) $this->modx->getOption('parent',0);
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         
         
         $criteria = $this->modx->newQuery('modResource');
