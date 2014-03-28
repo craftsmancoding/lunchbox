@@ -111,6 +111,7 @@ function getResourcesStore(){
 }
 
 function getChildrenTabContent(config){
+    console.log('Getting Children Content...');
 	var store = getResourcesStore();
 
 	var cm = new Ext.grid.ColumnModel([
@@ -186,18 +187,8 @@ function getChildrenTabContent(config){
 					if(e.target.innerHTML === 'Edit'){
 				        MODx.loadPage(MODx.action['resource/update'], 'id='+id);
 					} else if(e.target.innerHTML === 'View'){
-//						window.open(site_url + record.data.uri, '_blank');
-                        store.load({
-                            params:{parent: id}
-                        });
-
-                    }
-/*
-					} else if(e.target.innerHTML === 'View'){
 						window.open(site_url + record.data.uri, '_blank');
-					}
-*/
-					
+                    }
 				}
 			}
 		},
@@ -243,21 +234,7 @@ function getChildrenTabContent(config){
                             MODx.loadPage(MODx.action['resource/create'], 'class_key=modDocument&context_key=web&id='+pid+'&parent='+pid);
 						}, scope: this}
 					}
-				}
-/*
-				,
-				{
-					xtype: 'button',
-					padding : 0,
-					cls : 'divided-btn',
-					width : 55,
-					text:'Sort',
-					handler : function(){
-						MODx.loadPage(MODx.action['lunchbox:index'], 'f=product_sort_order&store_id='+pid);
-					}
-				}
-*/
-                ]
+				}]
 			},
 			this.resourcesGrid_panel]
 		}]
