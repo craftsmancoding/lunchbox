@@ -1,6 +1,6 @@
 # Lunchbox
 
-Turn a MODX folder into a paginated container to cut on manager load times. 
+Turn a MODX folder into a paginated container to help organize your site and reduce page load times in the manager. 
 
 
 

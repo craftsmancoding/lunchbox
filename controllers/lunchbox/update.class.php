@@ -15,6 +15,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
         
 		//Add below for customization
+		//See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel
         $this->addJavascript($assets_url . 'js/lunchbox.js');
     	$lunchbox_connector_url = $assets_url.'connector.php?';
     	$this->addHtml('
@@ -25,7 +26,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
                         items: [
                             {
                                 xtype: "box",
-                                autoEl: {cn: "<span onclick=\'javascript:alert(123);\'>Breadcrumb</span> >> Here >> Now"}
+                                autoEl: {cn: "<span onclick=\'javascript:alert(123);\'>Breadcrumb</span> >> Here >> Now</span>"}
                             }
                         ]
                     };

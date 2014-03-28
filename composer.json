@@ -33,6 +33,7 @@
         "category":"Lunchbox",
         "core_path": "",
         "assets_path" : "assets/",
+        "seeds_path": ["model/seeds/"],
         "docs_path" : "docs/"
     }
 }

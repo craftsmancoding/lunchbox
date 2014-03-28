@@ -10,3 +10,8 @@
     height:24px;
     width:24px;
 }
+/* Custom Icon for our class_key */
+.icon-lunchbox .x-tree-node-icon {
+    background-image: url(../images/lunchbox-icon.png) !important;
+}
+
