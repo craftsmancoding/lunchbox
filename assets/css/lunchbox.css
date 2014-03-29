@@ -14,7 +14,7 @@
     font-weight: bold;    
 }
 .lunchbox_breadcrumb:hover {
-    color: blue;
+    color: #6d9524;
     cursor: pointer;
 }
 #lunchbox_breadcrumbs {
@@ -24,5 +24,10 @@
 /* Custom Icon for our class_key */
 .icon-lunchbox .x-tree-node-icon {
     background-image: url(../images/lunchbox-icon.png) !important;
+}
+
+#lunchbox_breadcrumbs {
+    padding: 2px 0 0 5px;
+    color: #9e9e9e;
 }
 
