@@ -30,4 +30,13 @@
     padding: 2px 0 0 5px;
     color: #9e9e9e;
 }
+.lunchbox-grid-bc table {
+    border: none !important;
+}
+.lunchbox-grid table {
+    border: 1px solid red;
+}
 
+.x-grid3-row-table td {
+    vertical-align: middle;
+}
