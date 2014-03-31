@@ -126,7 +126,7 @@ function getChildrenTabContent(config){
                     return '<div class="lunchbox_folder" onclick="javascript:drillDown('+record.id+');">&nbsp;</div>';
                 }
                 else {
-                    return '<div class="lunchbox_page">&nbsp;</div>';
+                    return '<div class="lunchbox_page"></div>';
                 }
 			}
 		},{

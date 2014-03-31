@@ -1,8 +1,12 @@
 .lunchbox_folder{
     background-image:url('../images/folder.png');
     background-repeat:no-repeat;
-    height:24px;
-    width:24px;
+    height:17px;
+    width:28px;
+}
+
+.lunchbox_folder:hover {
+     background-image:url('../images/folder-open.png');
 }
 .lunchbox_page {
     background-image:url('../images/page.png');
