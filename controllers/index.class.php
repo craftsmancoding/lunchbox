@@ -1,80 +1,64 @@
 <?php
-require_once dirname(dirname(__FILE__)) .'/model/lunchbox/lunchbox.class.php';
-require_once dirname(__FILE__) .'/abstract/lunchboxmanagercontroller.class.php';
 /**
  * The name of the controller is based on the action (home) and the
  * namespace. This home controller is loaded by default because of
  * our IndexManagerController.
  */
-class LunchboxIndexManagerController extends LunchboxManagerController {
-    /** @var bool Set to false to prevent loading of the header HTML. */
-    public $loadHeader = true;
-    /** @var bool Set to false to prevent loading of the footer HTML. */
-    public $loadFooter = true;
-    /** @var bool Set to false to prevent loading of the base MODExt JS classes. */
-    public $loadBaseJavascript = true;
-    
-    public $props = array();
-    
-    /**
-     * Any specific processing we want to do here. Return a string of html.
-     * @param array $scriptProperties
+require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
+class IndexManagerController extends \Lunchbox\BaseController {
+
+     /**
+     * This acts as a class loader.  Beware the difficulties with testing with the "new" keyword!!!
+     * See composer.json's autoload section: Controller classes should be found in the controllers/ directory
+     * We ignore the incoming $className here and instead fallback to our own mapping which follows the 
+     * pattern : \lunchbox\{$Controller_Class_Slug}Controller
+     * We can't override the Base controller constructor because this loops back onto it.
+     *
+     * @param object \modX instance
+     * @param string $className (ignored, instead we look to $_REQUEST['class'])
+     * @param array array config
+     * @return instance of a controller object
      */
-    public function process(array $scriptProperties = array()) {
-        return '<div id="lunchbox_cmp"></div>';
-    }
-    
-    /**
-     * The pagetitle to put in the <title> attribute.
-     * @return null|string
-     */
-    public function getPageTitle() {
-        return 'Lunchbox : Paginated Site Browser';
-    }
-    
-    /**
-     * Register needed assets. Using this method, it will automagically
-     * combine and compress them if that is enabled in system settings.
-     */
-    public function loadCustomCssJs() {
+    public static function getInstanceDeprecated(\modX &$modx, $className, array $config = array()) {
+
+        $config['method'] = (isset($_REQUEST['method'])) ? $_REQUEST['method'] : 'index';
+        $class = (isset($_REQUEST['class'])) ? $_REQUEST['class'] : 'Page'; // Default Controller
         
-        $assets_url = $this->modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
+        if (!is_scalar($class)) {
+            throw new \Exception('Invalid data type for class');
+        }
 
-        $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
+        $config['controller_url'] = self::url();
+        $config['core_path'] = $modx->getOption('lunchbox.core_path', null, MODX_CORE_PATH.'components/lunchbox/');
+        $config['assets_url'] = $modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
+        
+        // If you don't do this, the $_POST array will seem to be populated even during normal GET requests.
+        unset($_POST['HTTP_MODAUTH']);
+        // Function names are not case sensitive
+        if ($_FILES || !empty($_POST)) {
+            unset($_POST['_lunchbox']);
+            $config['method'] = 'post'.ucfirst($config['method']);
+        }
+        else {
+            $config['method'] = 'get'.ucfirst($config['method']);
+        }
+        // Classnames are not case-sensitive, but since it triggers the autoloader,
+        // we need to manipulate it because some environments are case-sensitive.
+        $class = '\\Lunchbox\\'.ucfirst(strtolower($class)).'Controller';
 
-        $Lunchbox = new Lunchbox($this->modx);
-        $this->addJavascript($assets_url . 'js/lunchbox.js');
-    	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
-    	$this->addHtml('
-			<script type="text/javascript">
-                var hierarchy = [];
-                var connector_url = '.json_encode($lunchbox_connector_url).';
-                var site_url = "'.MODX_SITE_URL.'";
-				Ext.onReady(function(){
-                    var myPanel = new Ext.Panel({
-                        renderTo : "lunchbox_cmp",
-                        height   : 600,
-                        width    : 800,
-                        title    : "Lunchbox : Paginated Site Browser",
-                        items: getChildrenTabContent(MODx.config),
-                        frame    : true
-                    });
-					//setBreadcrumbs('.$page_id.');
-					//renderLunchbox(MODx.config);
-				});
-			</script>');
-			
+        // Override on error
+        if (!class_exists($class)) {
+            $modx->log(\modX::LOG_LEVEL_ERROR,'[lunchbox] class not found: '.$class,'',__FUNCTION__,__FILE__,__LINE__);            
+            $class = '\\Lunchbox\\ErrorController';
+            $config['method'] = 'get404';
+        }
 
-/*
-        $this->addCss('url/to/some/css_file.css');
-        $this->addJavascript('url/to/some/javascript.js');
-        $this->addLastJavascript('url/to/some/javascript_load_last.js');
-        $this->addHtml('<script type="text/javascript">
-        Ext.onReady(function() {
-            // We could run some javascript here
-        });
-        </script>');
-*/
+        $modx->log(\modX::LOG_LEVEL_INFO,'[lunchbox] Instantiating '.$class.' with config '.print_r($config,true),'',__FUNCTION__,__FILE__,__LINE__);
+        
+        // See Base::render() for how requests get handled.  
+        return new $class($modx,$config);
+
     }
+
 }
 /*EOF*/

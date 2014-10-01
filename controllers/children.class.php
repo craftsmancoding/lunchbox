@@ -1,10 +1,12 @@
 <?php
-require_once dirname(__FILE__) .'/abstract/lunchboxmanagercontroller.class.php';
+
 /**
  * The name of the controller is based on the action (named "children") and the
  * namespace. 
  */
-class LunchboxChildrenManagerController extends LunchboxManagerController {
+
+namespace Lunchbox;
+class LunchboxChildrenManagerController extends BaseController {
     /** @var bool Set to false to prevent loading of the header HTML. */
     public $loadHeader = false;
     /** @var bool Set to false to prevent loading of the footer HTML. */

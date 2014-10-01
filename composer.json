@@ -22,9 +22,16 @@
     "require": {
         "php": ">=5.3"
     },
+
     "autoload": {
-        "classmap":["model/lunchbox/"]
-    },
+        "classmap":[
+            "model/"
+        ],
+        "psr-4": {
+            "Lunchbox\\": ["model/","controllers/"]
+        }
+    }, 
+
     "extra": {
         "package_name": "Lunchbox",
         "namespace": "lunchbox",

@@ -15,11 +15,26 @@
  * A PARTICULAR PURPOSE. See the GNU General Public License for more details.
  *
  * You should have received a copy of the GNU General Public License along with
- * lunchbox; if not, write to the Free Software Foundation, Inc., 59 Temple
+ * moxycart; if not, write to the Free Software Foundation, Inc., 59 Temple
  * Place, Suite 330, Boston, MA 02111-1307 USA
  *
  * @package lunchbox
  */
 
-$_lang['lunchbox'] = 'Lunchbox'; 
-$_lang['lunchbox_desc'] = 'Paginated Site Navigation';
+$_lang['lunchbox'] = 'Lunchbox Manager'; 
+$_lang['lunchbox_desc'] = 'MODx Paginated Container';
+$_lang['assets_tab'] = 'Lunchbox'; 
+
+
+//---------------------------------------
+// CM Pages Menu
+//---------------------------------------
+$_lang['lunchbox.menu.manage'] = 'Manage';
+$_lang['lunchbox.menu.library'] = 'Library';
+$_lang['lunchbox.menu.settings'] = 'Settings';
+$_lang['lunchbox.menu.groups'] = 'Groups';
+$_lang['lunchbox.menu.verify'] = 'Verify';
+$_lang['lunchbox.menu.donation'] = 'Make a Donation';
+$_lang['lunchbox.menu.bug'] = 'Report a Bug';
+$_lang['lunchbox.menu.wiki'] = 'Wiki';
+$_lang['lunchbox.menu.support'] = 'Get Paid Support';

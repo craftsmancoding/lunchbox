@@ -1,9 +1,10 @@
 <?php
-require_once dirname(__FILE__) .'/abstract/lunchboxmanagercontroller.class.php';
+
 /**
  * Gets the hierarchy for a given page. (Ajax)
  */
-class LunchboxHierarchyManagerController extends LunchboxManagerController {
+namespace Lunchbox;
+class LunchboxHierarchyManagerController extends BaseController {
     /** @var bool Set to false to prevent loading of the header HTML. */
     public $loadHeader = false;
     /** @var bool Set to false to prevent loading of the footer HTML. */
