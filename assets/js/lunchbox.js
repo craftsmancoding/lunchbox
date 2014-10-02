@@ -64,7 +64,7 @@ function renderLunchbox(config){
 				border: false,
 				msgTarget: 'under',
 				width: 400,
-				height:880 // Should react to default_per_page approx. ~44 pixel per result
+				height:740 // Should react to default_per_page approx. ~44 pixel per result
 			},
 			items: getChildrenTabContent(config)
 		};
@@ -188,7 +188,7 @@ function getChildrenTabContent(config){
 					fieldName = grid.getColumnModel().getDataIndex(columnIndex);
 				if(fieldName === 'id'){
 					if(e.target.innerHTML === 'Edit'){
-				        MODx.loadPage(MODx.action['resource/update'], 'id='+id);
+				        MODx.loadPage(MODx.action['resource/update'], 'id='+record.data.id);
 					} else if(e.target.innerHTML === 'View'){
 						window.open(site_url + record.data.uri, '_blank');
                     }
@@ -198,7 +198,7 @@ function getChildrenTabContent(config){
 		bbar: new Ext.PagingToolbar({
 			store: store,
 			displayInfo: true,
-			pageSize: 30,
+			pageSize: 10,
 			prependButtons: true
 		})
 	});

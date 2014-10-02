@@ -15,10 +15,10 @@
 namespace Lunchbox;
 class PageController extends BaseController {
 
-    public $loadHeader = false;
-    public $loadFooter = false;
+    public $loadHeader = true;
+    public $loadFooter = true;
     // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-    public $loadBaseJavascript = false; 
+    public $loadBaseJavascript = true; 
     // Stuff needed for interfacing with Assman API (mapi)
     public $client_config = array();
     
@@ -48,14 +48,53 @@ class PageController extends BaseController {
     }
 
 
+    /**
+     * getBreadcrumbs
+     * @param array $scriptProperties
+     * @return html markup
+     */
     public function getBreadcrumbs(array $scriptProperties = array()) {
-       /* $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
-        return $this->fetchTemplate('main/children.php');*/
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+
+       $page_id = $this->modx->getOption('page_id',$scriptProperties);
+        $items = array();
+        while ($page = $this->modx->getObject('modResource', $page_id)) {
+            array_unshift($items, array(
+                    'id' => $page->get('id'),
+                    'pagetitle' => $page->get('pagetitle')
+                )
+            );
+            $page_id = $page->get('parent');
+        }
+
+        $last = array_pop($items);
+        
+        $out = '<div id="lunchbox_breadcrumbs">';
+        foreach ($items as $i) {
+            $out .= '<span onclick="javascript:drillDown('.$i['id'].');" class="lunchbox_breadcrumb">'.$i['pagetitle'].'</span> &raquo; ';
+        }
+        $out .= '<span>'.$last['pagetitle'].'</span>';
+        $out .= '</div>';
+
+        return  $out;
     }
 
+     /**
+     * getChildren
+     * @param array $scriptProperties
+     * @return json
+     */
     public function getChildren(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
-        $limit = (int) $this->modx->getOption('default_per_page');
+        $limit = 10;
+        //$limit = (int) $this->modx->getOption('default_per_page');
         $start = (int) $this->modx->getOption('start',$scriptProperties,0);
         $sort = $this->modx->getOption('sort',$scriptProperties,'menuindex');
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
@@ -92,8 +131,7 @@ class PageController extends BaseController {
             $data['results'][] = $r->toArray('',false,true);
         }
         
-        print json_encode($data);
-        exit;
+        return json_encode($data);
 
     }
         
