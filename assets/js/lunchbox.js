@@ -16,9 +16,9 @@ function drillDown(id) {
  * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
  */
 function setBreadcrumbs(page_id) {
-
+	
     Ext.Ajax.request({
-        url: connector_url+'&action=hierarchy&page_id='+page_id,
+        url: connector_url+'&class=page&method=children&page_id='+page_id,
         params: {},
         async:false,
         success: function(response){

@@ -46,6 +46,12 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         return $this->fetchTemplate('main/index.php');
     }
+
+
+    public function getChildren(array $scriptProperties = array()) {
+       /* $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+        return $this->fetchTemplate('main/children.php');*/
+    }
         
 }
 /*EOF*/

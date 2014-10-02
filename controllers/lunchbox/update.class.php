@@ -15,6 +15,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $Lunchbox = new Lunchbox($this->modx);
         $this->addJavascript($assets_url . 'js/lunchbox.js');
     	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
+        
     	$this->addHtml('
 			<script type="text/javascript">
                 var hierarchy = [];

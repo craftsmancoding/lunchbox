@@ -21,9 +21,8 @@
  * @package lunchbox
  */
 
-$_lang['lunchbox'] = 'Lunchbox Manager'; 
+$_lang['lunchbox'] = 'Lunchbox'; 
 $_lang['lunchbox_desc'] = 'MODx Paginated Container';
-$_lang['assets_tab'] = 'Lunchbox'; 
 
 
 //---------------------------------------
