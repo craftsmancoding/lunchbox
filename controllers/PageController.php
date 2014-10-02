@@ -92,7 +92,7 @@ class PageController extends BaseController {
             $data['results'][] = $r->toArray('',false,true);
         }
         
-        return json_encode($data);
+        print json_encode($data);
 
     }
         

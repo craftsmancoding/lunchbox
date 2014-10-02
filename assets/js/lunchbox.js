@@ -106,7 +106,8 @@ function getResourcesStore(){
 		proxy : new Ext.data.HttpProxy({
 			method: 'GET',
 			prettyUrls: false,
-			url: connector_url+'&class=page&method=children&parent='+pid
+			//url: connector_url+'&class=page&method=children&parent='+pid
+			url: '/store.php'
 		})
 	});
 }
@@ -165,13 +166,13 @@ function getChildrenTabContent(config){
 		layout:'fit',
 		region:'center',
 		border: true,
-		tbar: {/*
+		tbar: {
             items: [
                 {
                     xtype: "box",
                     autoEl: {cn: '<div id="lunchbox_breadcrumbs">Breadcrumbs</div>'}
                 }
-            ]*/
+            ]
         },
 		viewConfig: {
 			autoFill: true,
@@ -242,3 +243,16 @@ function getChildrenTabContent(config){
 		}]
 	}];
 }
+
+
+
+/*var triggerDirtyField = function(fld) {
+	Ext.getCmp('modx-panel-resource').fieldChangeEvent(fld);
+};
+MODx.triggerRTEOnChange = function() {
+	triggerDirtyField(Ext.getCmp('textProduct'));
+};
+MODx.fireResourceFormChange = function(f,nv,ov) {
+	Ext.getCmp('modx-panel-resource').fireEvent('fieldChange');
+};
+*/
