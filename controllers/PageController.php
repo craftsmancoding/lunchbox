@@ -48,9 +48,52 @@ class PageController extends BaseController {
     }
 
 
-    public function getChildren(array $scriptProperties = array()) {
+    public function getBreadcrumbs(array $scriptProperties = array()) {
        /* $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         return $this->fetchTemplate('main/children.php');*/
+    }
+
+    public function getChildren(array $scriptProperties = array()) {
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+        $limit = (int) $this->modx->getOption('default_per_page');
+        $start = (int) $this->modx->getOption('start',$scriptProperties,0);
+        $sort = $this->modx->getOption('sort',$scriptProperties,'menuindex');
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        
+        
+        $criteria = $this->modx->newQuery('modResource');
+        if ($parent) {
+            $criteria->where(array('parent'=>$parent));
+        }
+        
+        $total_pages = $this->modx->getCount('modResource',$criteria);
+        
+        $criteria->limit($limit, $start); 
+        $criteria->sortby($sort,$dir);
+        // Both array and string input seem to work
+        $criteria->select(array('id','pagetitle','longtitle','isfolder','description','published',
+            'introtext','template','deleted','hidemenu','uri'));
+        $rows = $this->modx->getCollection('modResource',$criteria);
+        
+        // Init our array
+        $data = array(
+            'results'=>array(),
+            'total' => $total_pages,
+        );
+        
+        if ($rows===false) {
+            header('HTTP/1.0 401 Unauthorized');
+            print 'Operation not allowed.';
+            exit;
+        }
+        
+        foreach ($rows as $r) {
+            $data['results'][] = $r->toArray('',false,true);
+        }
+        
+        return json_encode($data);
+
     }
         
 }
