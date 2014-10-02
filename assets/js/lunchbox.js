@@ -107,7 +107,7 @@ function getResourcesStore(){
 			method: 'GET',
 			prettyUrls: false,
 			//url: connector_url+'&class=page&method=children&parent='+pid
-			url: '/store.php'
+			url: connector_url+'&class=page&method=children&parent='+pid
 		})
 	});
 }

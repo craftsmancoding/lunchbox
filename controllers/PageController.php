@@ -93,6 +93,7 @@ class PageController extends BaseController {
         }
         
         print json_encode($data);
+        exit;
 
     }
         
