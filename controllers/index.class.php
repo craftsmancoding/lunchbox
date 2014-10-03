@@ -4,7 +4,8 @@
  * namespace. This home controller is loaded by default because of
  * our IndexManagerController.
  */
-require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
+
+require_once dirname(dirname(__FILE__)) .DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'autoload.php';
 class IndexManagerController extends \Lunchbox\BaseController {
 
      /**
