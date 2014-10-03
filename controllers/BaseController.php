@@ -286,7 +286,7 @@ class BaseController extends \modExtraManagerController {
     public function sendError($msg='Error') {
         $this->modx->log(\modX::LOG_LEVEL_ERROR,'[lunchbox] Invalid function name '.$name);
         //$this->addStandardLayout(); // For some reason we have to do this here (?)
-        $class = '\\lunchbox\\ErrorController';
+        $class = '\\Lunchbox\\ErrorController';
         $Error = new $class($this->modx,$config);
         $this->setPlaceholder('msg',$msg);
         $this->scriptProperties['_nolayout'] = true;
