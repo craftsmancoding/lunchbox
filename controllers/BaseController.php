@@ -83,9 +83,7 @@ class BaseController extends \modExtraManagerController {
         header('HTTP/1.0 404 Not Found');
         return $Error->get404($args);
     }
-  
 
-    
     /**
      * Add the standard MODX manager layout to a response.
      * We have to manually re-run this after setting loadBaseJavascript to true.

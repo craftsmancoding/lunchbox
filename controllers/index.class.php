@@ -5,7 +5,7 @@
  * our IndexManagerController.
  */
 require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
-class IndexManagerController extends Lunchbox\BaseController {
+class IndexManagerController extends \Lunchbox\BaseController {
 
      /**
      * This acts as a class loader.  Beware the difficulties with testing with the "new" keyword!!!
@@ -45,7 +45,7 @@ class IndexManagerController extends Lunchbox\BaseController {
         // Classnames are not case-sensitive, but since it triggers the autoloader,
         // we need to manipulate it because some environments are case-sensitive.
         $class = '\\Lunchbox\\'.ucfirst(strtolower($class)).'Controller';
-
+      
         // Override on error
         if (!class_exists($class)) {
             $modx->log(\modX::LOG_LEVEL_ERROR,'[lunchbox] class not found: '.$class,'',__FUNCTION__,__FILE__,__LINE__);            
