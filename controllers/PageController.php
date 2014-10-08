@@ -36,6 +36,19 @@ class PageController extends BaseController {
 
     }
 
+    /**
+     * _setChildrenColumns
+     *
+     */
+    private function _setChildrenColumns() {
+        if ($cols = $this->modx->getOption('lunchbox.children_columns')) {
+            $cols = json_decode($cols,true);
+        }
+        if (empty($cols) || !is_array($cols)) {
+            $cols = array('pagetitle'=>'Pagetitle','id'=>'ID','published'=>'Published');
+        }
+        $this->setPlaceholder('columns', $cols);    
+    }
     
     //------------------------------------------------------------------------------
     //! Index
@@ -92,13 +105,14 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
-        $limit = 10;
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+
         //$limit = (int) $this->modx->getOption('default_per_page');
         $sort = $this->modx->getOption('sort',$scriptProperties,'pagetitle');
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
-                
+        $this->_setChildrenColumns();       
         $criteria = $this->modx->newQuery('modResource');
         if ($parent) {
             $criteria->where(array('parent'=>$parent));
@@ -109,8 +123,6 @@ class PageController extends BaseController {
         $criteria->limit($limit, $offset); 
         $criteria->sortby($sort,$dir);
         // Both array and string input seem to work
-        $criteria->select(array('id','pagetitle','longtitle','isfolder','description','published',
-            'introtext','template','deleted','hidemenu','uri'));
         $rows = $this->modx->getCollection('modResource',$criteria);
         
         // Init our array

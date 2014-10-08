@@ -17,9 +17,11 @@
                <!--  <th><?php //print $v; ?></th> -->
             <?php //endforeach; ?>
             <th>&nbsp;</th>
-            <th>Pagetitle</th>
-            <th>ID</th>
-            <th>Published</th>
+            <?php 
+                // Configurable columns
+                foreach($data['columns'] as $k => $v): ?>
+                <th><?php print $v; ?></th>
+            <?php endforeach; ?>
             <th>Action</th>
         </tr>
     </thead>
@@ -38,9 +40,11 @@
 			<div class="lunchbox_page"></div>
 		<?php endif; ?>
 		</td>
-		<td><?php print $r['pagetitle']; ?></td>
-		<td><?php print $r['id']; ?></td>
-		<td><?php print $r['published']; ?></td>
+		<?php 
+        // Configurable columns
+        foreach($data['columns'] as $k => $v): ?>
+            <td><?php print $r[$k]; ?></td>
+        <?php endforeach; ?>
         <td>
              <a href="/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
              <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
@@ -57,8 +61,7 @@
 <?php endif; ?>
 
 <?php 
-
-$results_per_page = (int) $this->modx->getOption('default_per_page');
+$results_per_page = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
 print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_page)
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
