@@ -12,6 +12,13 @@ return array(
 		'namespace' => 'lunchbox',
 		'area' => 'lunchbox:default'
     ),
+    array(
+        'key'  =>     'lunchbox.sort_col',
+		'value'=>     'pagetitle',
+		'xtype'=>     'textfield',
+		'namespace' => 'lunchbox',
+		'area' => 'lunchbox:default'
+    ),
     // For quick edit
     array(
         'key'  =>     'lunchbox.children_columns',

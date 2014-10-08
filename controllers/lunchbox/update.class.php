@@ -18,12 +18,13 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $this->addCss($assets_url . 'css/mgr.css'); 
         $this->addCss($assets_url . 'css/lunchbox.css'); 
     	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
-        
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
 
 $this->addHtml('
             <script type="text/javascript">
                var hierarchy = [];
                 var connector_url = '.json_encode($lunchbox_connector_url).';
+                var sort_col = "'.$sort.'";
                 var site_url = "'.MODX_SITE_URL.'";
                 Ext.onReady(function(){
                     Ext.getCmp("modx-resource-tabs").insert(0, {

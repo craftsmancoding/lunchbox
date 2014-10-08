@@ -33,9 +33,10 @@ function setBreadcrumbs(page_id) {
  * @param string dir ASC|DESC 
  */
 function get_children(parent,offset,sort,dir) {
+    console.log(sort_col);
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
-    sort = typeof sort !== "undefined" ? sort : "pagetitle";
+    sort = typeof sort !== "undefined" ? sort : sort_col;
     dir = typeof dir !== "undefined" ? dir : "ASC";
     var url = connector_url+"&class=page&method=children&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
 
