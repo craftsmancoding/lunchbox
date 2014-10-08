@@ -23,6 +23,12 @@
         "php": ">=5.3",
         "craftsmancoding/pagination": "dev-master"
     },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "git@github.com:craftsmancoding/pagination.git"
+        }
+    ],
 
     "autoload": {
         "classmap":[

@@ -93,10 +93,10 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $limit = 10;
         //$limit = (int) $this->modx->getOption('default_per_page');
-        $start = (int) $this->modx->getOption('start',$scriptProperties,0);
         $sort = $this->modx->getOption('sort',$scriptProperties,'menuindex');
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         
         
         $criteria = $this->modx->newQuery('modResource');
@@ -106,7 +106,7 @@ class PageController extends BaseController {
         
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
-        $criteria->limit($limit, $start); 
+        $criteria->limit($limit, $offset); 
         $criteria->sortby($sort,$dir);
         // Both array and string input seem to work
         $criteria->select(array('id','pagetitle','longtitle','isfolder','description','published',
@@ -128,10 +128,12 @@ class PageController extends BaseController {
         foreach ($rows as $r) {
             $data['results'][] = $r->toArray('',false,true);
         }
-        $this->setPlaceholder('results', $data['results']);
-        return $this->fetchTemplate('main/children.php');
-        //return json_encode($data);
 
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
+        return $this->fetchTemplate('main/children.php');
     }
         
 }
