@@ -1,12 +1,12 @@
 <?php
 
 return array(
- 'first' => '<span onclick="javascript:get_children([+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span onclick="javascript:get_children([+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">Next &rsaquo;</span>',
+ 'first' => '<span onclick="javascript:get_children([+parent+],[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_children([+parent+],[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_children([+parent+],[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_children([+parent+],[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span onclick="javascript:get_children([+parent+],[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }

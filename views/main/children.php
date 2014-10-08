@@ -1,12 +1,12 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 
 <div class="lunchbox_canvas_inner">
-	<h2 class="lunchbox_cmp_heading" id="lunchbox_pagetitle">Welcome to Lunchbox</h2>
+	<h2 class="lunchbox_cmp_heading" id="lunchbox_pagetitle">Welcome to Lunchbox</h2><br>
 </div>
 
 <div class="children-wrapper">
 <?php if ($data['results']): ?>
-<table class="classy products-tbl">
+<table class="classy">
     <thead>
         <tr>
             <?php 
@@ -52,11 +52,31 @@
 <?php endif; ?>
 
 <?php 
-// Pagination : see the get_data function in the controllers/store/upudate.class.php
-$tpls = include 'pagination_tpls.php';
+
 $results_per_page = (int) $this->modx->getOption('default_per_page');
-print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_page, $data['baseurl'])->setTpls($tpls);
+print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_page)
+    ->setBaseUrl($data['baseurl'])
+    ->setTpls(
+        array(
+            'first' => '<span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'current' => ' <span>[+page_number+]</span> ',
+            'page' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'outer' => '
+                <style>
+                    span.linklike { cursor: pointer; }
+                    span.linklike:hover { color:blue; text-decoration:underline; }
+                </style>
+                <div id="pagination">[+content+]<br/>
+    				<div class="page-count">Page [+current_page+] of [+page_count+]</div>
+    				<div class="displaying-page">Displaying records [+first_record+] thru [+last_record+] of [+record_count+]</div>
+    			</div>',
+    	)
+    );
 ?>
+
 
 </div>
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>

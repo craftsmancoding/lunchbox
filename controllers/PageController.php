@@ -135,6 +135,7 @@ class PageController extends BaseController {
         $this->setPlaceholder('results', $data['results']);
         $this->setPlaceholder('count', $data['total']);
         $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
 
 

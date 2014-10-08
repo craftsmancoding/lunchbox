@@ -14,6 +14,8 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
 
         $Lunchbox = new Lunchbox($this->modx);
         $this->addJavascript($assets_url . 'js/lunchbox.js');
+        $this->addCss($assets_url . 'css/mgr.css'); 
+        $this->addCss($assets_url . 'css/lunchbox.css'); 
     	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
         
 
@@ -27,9 +29,9 @@ $this->addHtml('
                         title: "Children",
                         id: "children-tab",
                         width: "95%",
-                        html: "<div id=\"child_pages\" style=\"padding:20px;\"></div>"
+                        html: "<div id=\"child_pages\"></div>"
                     });
-                    show_all_child();
+                    show_all_child('.$page_id.');
                     Ext.getCmp("modx-resource-tabs").setActiveTab("children-tab");
                 });
             </script>');
