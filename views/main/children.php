@@ -1,7 +1,8 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 
-<div class="lunchbox_canvas_inner">
-	<h2 class="lunchbox_cmp_heading" id="lunchbox_pagetitle">Welcome to Lunchbox</h2><br>
+<div class="lunchbox_canvas_inner clearfix">
+	<h2 class="lunchbox_cmp_heading pull-left" id="lunchbox_pagetitle">Welcome to Lunchbox</h2>
+	<a class="btn btn-primary pull-right" href="/manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
 </div>
 
 <div class="children-wrapper">
@@ -36,9 +37,8 @@
 		<td><?php print $r['description']; ?></td>
 		<td><?php print $r['published']; ?></td>
         <td>
-            <!--span class="button btn" onclick="javascript:paint('productedit',{product_id:<?php print $r['product_id']; ?>});">Edit</span-->
-             <a href="<?php //print static::page('productedit',array('product_id'=>$r['product_id'])); ?>" class="button btn btn-mini btn-info">Edit</a>
-             <a href="<?php //print static::page('productpreview',array('product_id'=>$r['product_id'])); ?>" class="btn btn-mini" target="_blank">Preview</a>
+             <a href="/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
+             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
          </td>
     </tr>
 <?php endforeach; ?>

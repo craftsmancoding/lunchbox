@@ -100,8 +100,7 @@ class PageController extends BaseController {
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
-        
-        
+                
         $criteria = $this->modx->newQuery('modResource');
         if ($parent) {
             $criteria->where(array('parent'=>$parent));
@@ -136,6 +135,7 @@ class PageController extends BaseController {
         $this->setPlaceholder('count', $data['total']);
         $this->setPlaceholder('offset', $offset);
         $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
 
 
