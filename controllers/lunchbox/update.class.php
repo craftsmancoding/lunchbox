@@ -13,6 +13,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
         $Lunchbox = new Lunchbox($this->modx);
+        $this->addJavascript($assets_url . 'js/jquery.min.js');
         $this->addJavascript($assets_url . 'js/lunchbox.js');
         $this->addCss($assets_url . 'css/mgr.css'); 
         $this->addCss($assets_url . 'css/lunchbox.css'); 
@@ -33,6 +34,7 @@ $this->addHtml('
                     });
                     show_all_child('.$page_id.');
                     Ext.getCmp("modx-resource-tabs").setActiveTab("children-tab");
+                    setBreadcrumbs('.$page_id.');
                 });
             </script>');
 

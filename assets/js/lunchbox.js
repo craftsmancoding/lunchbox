@@ -3,15 +3,14 @@
  * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
  */
 function setBreadcrumbs(page_id) {
-
-   /* Ext.Ajax.request({
-        url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
-        params: {},
-        async:false,
-        success: function(response){
-            Ext.fly('lunchbox_breadcrumbs').update(response.responseText);
-        }
-    });*/
+    jQuery.ajax({ 
+            type: "GET", 
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
+            success: function(response) { 
+                $('#child_pages').append('<div id="lunchbox_breadcrumbs">Testing</div>');
+                $('#lunchbox_breadcrumbs').html(response);
+            }   
+        }); 
 }
 
 
@@ -28,18 +27,15 @@ function get_children(parent,offset,sort,dir) {
     var url = connector_url+"&class=page&method=children&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
 
     console.log("[Lunchbox get_children()] requesting URL",url);
-	Ext.Ajax.request({
+
+    jQuery.ajax({ 
+        type: "GET", 
         url: url,
-        params: {},
-        async:false,
-        success: function(response){
-            console.log("Success: Data received from "+url);
-            Ext.fly("child_pages").update(response.responseText);
-        },
-        failure: function(response){
-            console.error("The request to "+url+" failed.", response);
-        }
-    });                
+        success: function(response) {
+            $("#child_pages").append(response);
+        }   
+    }); 
+
 }
 
 function show_all_child(parent){

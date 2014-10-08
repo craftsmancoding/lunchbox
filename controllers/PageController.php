@@ -72,13 +72,11 @@ class PageController extends BaseController {
         }
 
         $last = array_pop($items);
-        
-        $out = '<div id="lunchbox_breadcrumbs">';
+
         foreach ($items as $i) {
             $out .= '<span onclick="javascript:drillDown('.$i['id'].');" class="lunchbox_breadcrumb">'.$i['pagetitle'].'</span> &raquo; ';
         }
         $out .= '<span>'.$last['pagetitle'].'</span>';
-        $out .= '</div>';
 
         return  $out;
     }
