@@ -6,6 +6,7 @@
 }
 
 .lunchbox_folder:hover {
+    cursor: pointer;
      background-image:url('../images/folder-open.png');
 }
 .lunchbox_page {

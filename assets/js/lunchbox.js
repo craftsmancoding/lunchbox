@@ -1,4 +1,14 @@
 /**
+ * Drill down into a folder
+ *
+ */
+function drillDown(id) {
+    get_children(id,0);
+    // update the breadcrumbs
+    setBreadcrumbs(id);
+}
+
+/**
  * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
  * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
  */
@@ -32,7 +42,7 @@ function get_children(parent,offset,sort,dir) {
         type: "GET", 
         url: url,
         success: function(response) {
-            $("#child_pages").append(response);
+            $("#child_pages").html(response);
         }   
     }); 
 
