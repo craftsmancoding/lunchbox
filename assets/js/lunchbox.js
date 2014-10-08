@@ -16,8 +16,11 @@ function setBreadcrumbs(page_id) {
     jQuery.ajax({ 
             type: "GET", 
             url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
-            success: function(response) { 
-                $('#child_pages').append('<div id="lunchbox_breadcrumbs">Testing</div>');
+            success: function(response) {
+                if($('#lunchbox_breadcrumbs').length == 0) {
+                    $('#child_pages').after('<div id="lunchbox_breadcrumbs">Testing</div>');
+                }
+                
                 $('#lunchbox_breadcrumbs').html(response);
             }   
         }); 

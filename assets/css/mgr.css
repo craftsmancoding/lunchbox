@@ -22,10 +22,11 @@ color: #3697cd;
 -webkit-box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
 -moz-box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
 box-shadow: 0px 0px 3px -1px rgba(181,179,181,1);
+position: relative;
 }
 
 .lunchbox_canvas_inner {
-    padding: 20px 20px 0 0px;
+    padding: 20px 0px 0 0px;
 }
 
 h2.lunchbox_cmp_heading {
@@ -366,7 +367,7 @@ tr:nth-child(odd) {background: #fff}
 }
 
 .children-wrapper {
-  margin-top: 10px;
+  margin-top: 35px;
 }
 /* The Magnificent Clearfix: Updated to prevent margin-collapsing on child elements.
    j.mp/bestclearfix */
