@@ -32,6 +32,7 @@ class PageController extends BaseController {
                 
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/mgr.css'); 
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/lunchbox.css'); 
+        $this->modx->regClientStartupScript($this->config['assets_url'].'js/lunchbox.js');
 
     }
 
@@ -88,6 +89,8 @@ class PageController extends BaseController {
      * @return json
      */
     public function getChildren(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
@@ -133,6 +136,8 @@ class PageController extends BaseController {
         $this->setPlaceholder('count', $data['total']);
         $this->setPlaceholder('offset', $offset);
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
+
+
         return $this->fetchTemplate('main/children.php');
     }
         

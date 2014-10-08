@@ -1,11 +1,19 @@
 <?php
 
 return array(
-            'first' => '<a href="[+base_url+]&offset=[+offset+]" [+extra+]>&laquo; First</a>  ',
-            'last' => ' <a href="[+base_url+]&offset=[+offset+]" [+extra+]>Last &raquo;</a>',
-            'prev' => '<a href="[+base_url+]&offset=[+offset+]" [+extra+]>&lsaquo; Prev.</a> ',
-            'next' => ' <a href="[+base_url+]&offset=[+offset+]" [+extra+]>Next &rsaquo;</a>',
+ 'first' => '<span onclick="javascript:get_children([+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_children([+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <a href="[+base_url+]&offset=[+offset+]" [+extra+]>[+page_number+]</a> ',
-            'outer'=>'<div id="pagination">[+content+]<div class="page-count">Page [+current_page+] of [+page_count+]</div><div class="displaying-page">Displaying records [+first_record+] thru [+last_record+] of [+record_count+]</div>'
+            'page' => ' <span onclick="javascript:get_children([+offset+]);" class="linklike">[+page_number+]</span> ',
+            'outer' => '
+                <style>
+                    span.linklike { cursor: pointer; }
+                    span.linklike:hover { color:blue; text-decoration:underline; }
+                </style>
+                <div id="pagination">[+content+]<br/>
+    				<div class="page-count">Page [+current_page+] of [+page_count+]</div>
+    				<div class="displaying-page">Displaying records [+first_record+] thru [+last_record+] of [+record_count+]</div>
+    			</div>',
 );
