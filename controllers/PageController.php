@@ -94,7 +94,7 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $limit = 10;
         //$limit = (int) $this->modx->getOption('default_per_page');
-        $sort = $this->modx->getOption('sort',$scriptProperties,'menuindex');
+        $sort = $this->modx->getOption('sort',$scriptProperties,'pagetitle');
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);

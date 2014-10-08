@@ -19,7 +19,6 @@
             <th>&nbsp;</th>
             <th>Pagetitle</th>
             <th>ID</th>
-            <th>Description</th>
             <th>Published</th>
             <th>Action</th>
         </tr>
@@ -41,7 +40,6 @@
 		</td>
 		<td><?php print $r['pagetitle']; ?></td>
 		<td><?php print $r['id']; ?></td>
-		<td><?php print $r['description']; ?></td>
 		<td><?php print $r['published']; ?></td>
         <td>
              <a href="/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
