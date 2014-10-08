@@ -88,8 +88,6 @@ class PageController extends BaseController {
      * @return json
      */
     public function getChildren(array $scriptProperties = array()) {
-        $this->loadHeader = false;
-        $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
@@ -130,8 +128,9 @@ class PageController extends BaseController {
         foreach ($rows as $r) {
             $data['results'][] = $r->toArray('',false,true);
         }
-        
-        return json_encode($data);
+        $this->setPlaceholder('results', $data['results']);
+        return $this->fetchTemplate('main/children.php');
+        //return json_encode($data);
 
     }
         

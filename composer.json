@@ -20,7 +20,8 @@
         "source": "https://github.com/craftsmancoding/lunchbox"
     },    
     "require": {
-        "php": ">=5.3"
+        "php": ">=5.3",
+        "craftsmancoding/pagination": "dev-master"
     },
 
     "autoload": {
