@@ -117,7 +117,7 @@ class PageController extends BaseController {
         if ($pos === false) {
              $criteria->sortby($sort,$dir);
         } else {
-             $this->_sortbyTV( 'firstname', $criteria, $dir,'datetime');
+             $this->_sortbyTV( 'firstname', $criteria, $dir);
         }
 
         $rows = $this->modx->getCollection('modResource',$criteria);
