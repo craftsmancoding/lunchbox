@@ -1,7 +1,6 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
-	<h2 class="lunchbox_cmp_heading pull-left" id="lunchbox_pagetitle">Welcome to Lunchbox</h2>
 	<a class="btn btn-primary pull-right" href="/manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
 </div>
 

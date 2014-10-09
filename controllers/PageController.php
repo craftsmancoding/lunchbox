@@ -100,9 +100,7 @@ class PageController extends BaseController {
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
-
-        
-
+    
         $criteria = $this->modx->newQuery('modResource');
         if ($parent) {
             $criteria->where(array('parent'=>$parent));
