@@ -14,6 +14,7 @@ return array(
     ),
     array(
         'key'  =>     'lunchbox.sort_col',
+        'description' => 'If you want to use TV as sort column. Use this syntax <strong>tv.tvname</strong>',
 		'value'=>     'pagetitle',
 		'xtype'=>     'textfield',
 		'namespace' => 'lunchbox',

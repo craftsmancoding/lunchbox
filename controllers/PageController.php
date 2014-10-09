@@ -47,7 +47,31 @@ class PageController extends BaseController {
         if (empty($cols) || !is_array($cols)) {
             $cols = array('pagetitle'=>'Pagetitle','id'=>'ID','published'=>'Published');
         }
-        $this->setPlaceholder('columns', $cols);    
+        return $cols; 
+    }
+
+    /**
+     * _get_tvs : find tvs on the specified cols setting
+     * @param array $cols
+     * @return array
+     */
+    private function _get_tvs($cols) {
+        $where_clause = '';
+        foreach ($cols as $c => $v) {
+            $where_clause .= " name ='{$c}' OR";
+        }
+        $where_clause = substr($where_clause, 0, -3);
+
+        $sql = "SELECT id,name FROM modx_site_tmplvars where 1=1 AND {$where_clause};";
+        
+        $result = $this->modx->query($sql);
+        $tvs = $result->fetchAll(\PDO::FETCH_ASSOC);
+        if(count($tvs) == 0) {
+            return array();
+        }
+
+        return $tvs;
+
     }
     
     //------------------------------------------------------------------------------
@@ -109,21 +133,25 @@ class PageController extends BaseController {
 
         
         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
-
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
-        $this->_setChildrenColumns();       
+        $cols = $this->_setChildrenColumns(); 
+
+        
+
         $criteria = $this->modx->newQuery('modResource');
         if ($parent) {
             $criteria->where(array('parent'=>$parent));
         }
-        
+    
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
         $criteria->sortby($sort,$dir);
+        //$this->_sortbyTV( 'firstname', $criteria, 'ASC');
         // Both array and string input seem to work
+
         $rows = $this->modx->getCollection('modResource',$criteria);
         
         // Init our array
@@ -137,9 +165,16 @@ class PageController extends BaseController {
             print 'Operation not allowed.';
             exit;
         }
-        
+
+        $tvs = $this->_get_tvs($cols);
         foreach ($rows as $r) {
-            $data['results'][] = $r->toArray('',false,true);
+            $tv_vals = array();
+            $page = $r->toArray('',false,true);
+            if(!empty($tvs)) {
+               $tv_vals = $this->_addtvValues($tvs,$page['id']);
+            }
+            $page = array_merge($page,$tv_vals);
+            $data['results'][] =$page;
         }
 
         $this->setPlaceholder('results', $data['results']);
@@ -148,9 +183,85 @@ class PageController extends BaseController {
         $this->setPlaceholder('parent', $parent);
         $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
+        $this->setPlaceholder('columns', $cols);
 
 
         return $this->fetchTemplate('main/children.php');
+    }
+
+
+    private function _addtvValues($tvs,$id) {
+        $tv_vals = array();
+       foreach ($tvs as $tv) {
+            $sql = "SELECT {$tv['name']}.value {$tv['name']}
+                FROM modx_site_content doc
+                LEFT JOIN modx_site_tmplvar_contentvalues {$tv['name']} ON doc.id = {$tv['name']}.contentid
+                WHERE doc.id ={$id}
+                AND {$tv['name']}.tmplvarid ={$tv['id']};";
+    
+            $result = $this->modx->query($sql);
+            $vals = $result->fetchAll(\PDO::FETCH_ASSOC);
+            if(count($vals) != 0) {
+                 $tv_vals[key($vals[0])] = $vals[0][$tv['name']];
+            }
+           
+       }
+       return $tv_vals;
+    }
+
+    /**
+    * Excerpt from GetResources to sort documents by Tvs
+    * use as sortbyTV( 'myTVName', $c, 'ASC');
+    */
+    private function _sortbyTV( $sortbyTV, $criteria, $sortdirTV='ASC', $sortbyTVType='string')
+    {         
+        $columns = $this->modx->getSelectColumns('modResource', 'modResource');
+        $criteria->select($columns);
+         
+        if (!empty($sortbyTV)) {
+            $criteria->leftJoin('modTemplateVar', 'tvDefault', array(
+                "tvDefault.name" => $sortbyTV
+            ));
+            $criteria->leftJoin('modTemplateVarResource', 'tvSort', array(
+                "tvSort.contentid = modResource.id",
+                "tvSort.tmplvarid = tvDefault.id"
+            ));
+            if (empty($sortbyTVType)) $sortbyTVType = 'string';
+            if ($this->modx->getOption('dbtype') === 'mysql') {
+                switch ($sortbyTVType) {
+                    case 'integer':
+                        $criteria->select("CAST(IFNULL(tvSort.value, tvDefault.default_text) AS SIGNED INTEGER) AS sortTV");
+                        break;
+                    case 'decimal':
+                        $criteria->select("CAST(IFNULL(tvSort.value, tvDefault.default_text) AS DECIMAL) AS sortTV");
+                        break;
+                    case 'datetime':
+                        $criteria->select("CAST(IFNULL(tvSort.value, tvDefault.default_text) AS DATETIME) AS sortTV");
+                        break;
+                    case 'string':
+                    default:
+                        $criteria->select("IFNULL(tvSort.value, tvDefault.default_text) AS sortTV");
+                        break;
+                }
+            } elseif ($this->modx->getOption('dbtype') === 'sqlsrv') {
+                switch ($sortbyTVType) {
+                    case 'integer':
+                        $criteria->select("CAST(ISNULL(tvSort.value, tvDefault.default_text) AS BIGINT) AS sortTV");
+                        break;
+                    case 'decimal':
+                        $criteria->select("CAST(ISNULL(tvSort.value, tvDefault.default_text) AS DECIMAL) AS sortTV");
+                        break;
+                    case 'datetime':
+                        $criteria->select("CAST(ISNULL(tvSort.value, tvDefault.default_text) AS DATETIME) AS sortTV");
+                        break;
+                    case 'string':
+                    default:
+                        $criteria->select("ISNULL(tvSort.value, tvDefault.default_text) AS sortTV");
+                        break;
+                }
+            }
+            $criteria->sortby("sortTV", $sortdirTV);
+        }
     }
         
 }
