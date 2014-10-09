@@ -148,9 +148,14 @@ class PageController extends BaseController {
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
-        $criteria->sortby($sort,$dir);
-        //$this->_sortbyTV( 'firstname', $criteria, 'ASC');
-        // Both array and string input seem to work
+
+        $pos = strpos($sort, 'tv.');
+        // if false use regular sort
+        if ($pos === false) {
+             $criteria->sortby($sort,$dir);
+        } else {
+             $this->_sortbyTV( 'firstname', $criteria, $dir);
+        }
 
         $rows = $this->modx->getCollection('modResource',$criteria);
         
@@ -188,7 +193,6 @@ class PageController extends BaseController {
 
         return $this->fetchTemplate('main/children.php');
     }
-
 
     private function _addtvValues($tvs,$id) {
         $tv_vals = array();
