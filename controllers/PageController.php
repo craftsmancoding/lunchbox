@@ -36,43 +36,6 @@ class PageController extends BaseController {
 
     }
 
-    /**
-     * _setChildrenColumns
-     *
-     */
-    private function _setChildrenColumns() {
-        if ($cols = $this->modx->getOption('lunchbox.children_columns')) {
-            $cols = json_decode($cols,true);
-        }
-        if (empty($cols) || !is_array($cols)) {
-            $cols = array('pagetitle'=>'Pagetitle','id'=>'ID','published'=>'Published');
-        }
-        return $cols; 
-    }
-
-    /**
-     * _get_tvs : find tvs on the specified cols setting
-     * @param array $cols
-     * @return array
-     */
-    private function _get_tvs($cols) {
-        $where_clause = '';
-        foreach ($cols as $c => $v) {
-            $where_clause .= " name ='{$c}' OR";
-        }
-        $where_clause = substr($where_clause, 0, -3);
-
-        $sql = "SELECT id,name FROM modx_site_tmplvars where 1=1 AND {$where_clause};";
-        
-        $result = $this->modx->query($sql);
-        $tvs = $result->fetchAll(\PDO::FETCH_ASSOC);
-        if(count($tvs) == 0) {
-            return array();
-        }
-
-        return $tvs;
-
-    }
     
     //------------------------------------------------------------------------------
     //! Index
@@ -194,6 +157,12 @@ class PageController extends BaseController {
         return $this->fetchTemplate('main/children.php');
     }
 
+    /**
+     * _addtvValues
+     * @param array $tvs
+     * @param int $id
+     * @return array $tv_vals
+     */
     private function _addtvValues($tvs,$id) {
         $tv_vals = array();
        foreach ($tvs as $tv) {
@@ -211,6 +180,44 @@ class PageController extends BaseController {
            
        }
        return $tv_vals;
+    }
+
+    /**
+     * _setChildrenColumns
+     *
+     */
+    private function _setChildrenColumns() {
+        if ($cols = $this->modx->getOption('lunchbox.children_columns')) {
+            $cols = json_decode($cols,true);
+        }
+        if (empty($cols) || !is_array($cols)) {
+            $cols = array('pagetitle'=>'Pagetitle','id'=>'ID','published'=>'Published');
+        }
+        return $cols; 
+    }
+
+    /**
+     * _get_tvs : find tvs on the specified cols setting
+     * @param array $cols
+     * @return array
+     */
+    private function _get_tvs($cols) {
+        $where_clause = '';
+        foreach ($cols as $c => $v) {
+            $where_clause .= " name ='{$c}' OR";
+        }
+        $where_clause = substr($where_clause, 0, -3);
+
+        $sql = "SELECT id,name FROM modx_site_tmplvars where 1=1 AND {$where_clause};";
+        
+        $result = $this->modx->query($sql);
+        $tvs = $result->fetchAll(\PDO::FETCH_ASSOC);
+        if(count($tvs) == 0) {
+            return array();
+        }
+
+        return $tvs;
+
     }
 
     /**
