@@ -13,5 +13,9 @@ switch ($modx->event->name) {
     case 'OnManagerPageInit':
         $assets_url = $modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
         $modx->regClientCSS($assets_url.'css/lunchbox.css');
-        break;       
+        break;  
+
+    // Documents
+    case 'OnDocFormSave':
+    break;      
 }
