@@ -38,18 +38,6 @@ $this->addHtml('
                 });
             </script>');
 
-
-/*
-    	$this->addHtml('
-			<script type="text/javascript">
-                var hierarchy = [];
-                var connector_url = '.json_encode($lunchbox_connector_url).';
-                var site_url = "'.MODX_SITE_URL.'";
-				Ext.onReady(function(){
-					setBreadcrumbs('.$page_id.');
-					renderLunchbox(MODx.config);
-				});
-			</script>');*/
     }
         
     public function getLanguageTopics() {
