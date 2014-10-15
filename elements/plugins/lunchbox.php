@@ -4,6 +4,8 @@
  * @description Loads CSS and other eye-candy for the manager
  * @PluginEvents OnManagerPageInit,OnDocFormSave
  */
+$core_path = $modx->getOption('lunchbox.core_path', null, MODX_CORE_PATH.'components/lunchbox/');
+include_once $core_path .'vendor/autoload.php';
 
 switch ($modx->event->name) {
     //------------------------------------------------------------------------------
@@ -18,11 +20,24 @@ switch ($modx->event->name) {
 
     // Documents
     case 'OnDocFormSave':
+        if ($resource->get('class_key') != 'Lunchbox' && $resource->get('lunchbox')) {
+            $c = $modx->newQuery('modResource');
+            $c->where(array('parent'=>$resource->get('id')));        
+            $Children = $modx->getCollection('modResource', $c);
+            foreach ($Children as $child) {
+                $Child = $modx->getObject('modResource', array('id' => $child->get('id'),'show_in_tree' => 0));
+                if($Child) {
+                    $Child->set('show_in_tree', 1);
+                    $Child->save();
+                } 
+            }
+        }
+
         if ('Lunchbox' == $resource->get('class_key')) {
-                 // product_option_meta
-        $c = $modx->newQuery('modResource');
-        $c->where(array('parent'=>$resource->get('id')));        
-        $Children = $modx->getCollection('modResource', $c);
+
+            $c = $modx->newQuery('modResource');
+            $c->where(array('parent'=>$resource->get('id')));        
+            $Children = $modx->getCollection('modResource', $c);
             foreach ($Children as $child) {
                 $Child = $modx->getObject('modResource', array('id' => $child->get('id'),'show_in_tree' => 1));
                 if($Child) {

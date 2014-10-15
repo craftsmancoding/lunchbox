@@ -7,6 +7,7 @@
 
 <div class="children-wrapper">
 <?php if ($data['results']): ?>
+<input type="hidden" name="lunchbox" value="1">
 <table class="classy">
     <thead>
         <tr>
