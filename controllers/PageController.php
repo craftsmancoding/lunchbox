@@ -29,10 +29,15 @@ class PageController extends BaseController {
         $this->config['controller_url'] = self::url();
         $this->config['core_path'] = $this->modx->getOption('lunchbox.core_path', null, MODX_CORE_PATH.'components/lunchbox/');
         $this->config['assets_url'] = $this->modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
-                
+        
+        $this->modx->regClientCSS('http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');
         $this->modx->regClientCSS($this->config['assets_url'] . 'css/mgr.css'); 
-        $this->modx->regClientCSS($this->config['assets_url'] . 'css/lunchbox.css'); 
+        $this->modx->regClientCSS($this->config['assets_url'] . 'css/lunchbox.css');
+
+        $this->modx->regClientStartupScript('http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js');
+
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/lunchbox.js');
+
 
     }
 

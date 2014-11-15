@@ -48,6 +48,7 @@
         <td>
              <a href="/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
              <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
+             <!-- <button type="button" class="btn btn-mini btn-primary" data-toggle="modal" data-target="#parent-modal">Set Parent</button> -->
          </td>
     </tr>
 <?php endforeach; ?>
@@ -85,6 +86,24 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     );
 ?>
 
+<!-- Modal -->
+<!-- <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Parent</h4>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div> -->
 
 </div>
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>

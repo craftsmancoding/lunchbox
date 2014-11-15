@@ -27,6 +27,13 @@ return array(
 		'xtype'=>     'textfield',
 		'namespace' => 'lunchbox',
 		'area' => 'lunchbox:default'
+    ),
+    array(
+        'key'  =>     'mgr_tree_icon_lunchbox',
+        'value'=>     'icon-lunchbox',
+        'xtype'=>     'textfield',
+        'namespace' => 'lunchbox',
+        'area' => 'lunchbox:default'
     )
 );
 /*EOF*/

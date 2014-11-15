@@ -49,3 +49,12 @@
 .x-grid3-row-table td {
     vertical-align: middle;
 }
+
+
+.x-tree-node-collapsed .icon-lunchbox:before {
+content: "\f0b1" !important;
+}
+
+.x-tree-node .icon-lunchbox:before {
+content: "\f0b1" !important;
+}
