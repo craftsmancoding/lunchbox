@@ -12,10 +12,20 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
 
         $Lunchbox = new Lunchbox($this->modx);
+
+
         $this->addJavascript($assets_url . 'js/jquery.min.js');
+
+
+
         $this->addJavascript($assets_url . 'js/lunchbox.js');
         $this->addCss($assets_url . 'css/mgr.css'); 
         $this->addCss($assets_url . 'css/lunchbox.css'); 
+
+        $this->addJavascript($assets_url . 'js/bootstrap.js');
+        $this->addCss($assets_url . 'css/bootstrap.css'); 
+
+
     	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
 
