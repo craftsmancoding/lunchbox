@@ -46,7 +46,7 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-             <a href="/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
+             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
              <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
              <button type="button" class="btn btn-mini btn-primary" data-toggle="modal" data-target="#parent-modal">Set Parent</button>
          </td>
