@@ -153,9 +153,71 @@ class PageController extends BaseController {
         $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
         $this->setPlaceholder('columns', $cols);
-
+        $this->setPlaceholder('controller_url', $this->config['controller_url']);
+       
 
         return $this->fetchTemplate('main/children.php');
+    }
+
+    /**
+     * getParents
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getParents(array $scriptProperties = array()) {
+       $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+
+        
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+        $cols = $this->_setChildrenColumns(); 
+    
+        $criteria = $this->modx->newQuery('modResource');
+        if ($parent) {
+            $criteria->where(array('parent'=>$parent));
+        }
+    
+        $total_pages = $this->modx->getCount('modResource',$criteria);
+        
+        $criteria->limit($limit, $offset); 
+ 
+        $criteria->sortby($sort,$dir);
+        $rows = $this->modx->getCollection('modResource',$criteria);
+        
+        // Init our array
+        $data = array(
+            'results'=>array(),
+            'total' => $total_pages,
+        );
+        
+        if ($rows===false) {
+            header('HTTP/1.0 401 Unauthorized');
+            print 'Operation not allowed.';
+            exit;
+        }
+
+        foreach ($rows as $r) {
+            $page = $r->toArray('',false,true);
+            $data['results'][] =$page;
+        }
+
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$parent)));
+        $this->setPlaceholder('columns', $cols);
+        $this->setPlaceholder('controller_url', $this->config['controller_url']);
+
+        return $this->fetchTemplate('main/modal.setparent.php');
     }
 
     /**

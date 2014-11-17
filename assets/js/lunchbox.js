@@ -55,3 +55,15 @@ function get_children(parent,offset,sort,dir) {
 function show_all_child(parent){
    return get_children(parent);
 }
+
+function launch_modal_parent(obj) {      
+    $.ajax({ 
+        type: "GET", 
+        url: $(obj).attr('href'), 
+        success: function(response) { 
+            $('#parent-modal').modal('show');
+            $('#parent-modal').html(response);
+        }   
+    }); 
+    event.preventDefault();
+}
