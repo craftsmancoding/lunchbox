@@ -39,9 +39,14 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-          <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
-            <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-             <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents'; ?>">Select Parent</a>
+            <?php if($data['in_modal']) :?>
+                 <a href="#" class="button btn btn-mini btn-info">Set as Parent</a>
+            <?php else : ?>
+                 <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
+                <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
+                <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents'; ?>">Select Parent</a>
+            <?php endif; ?>
+           
          </td>
     </tr>
 <?php endforeach; ?>
@@ -60,12 +65,12 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
         array(
-            'first' => '<span data-target="child_pages_modal" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span data-target="child_pages_modal" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span data-target="child_pages_modal" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span data-target="child_pages_modal" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'first' => '<span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span data-target="child_pages_modal" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }

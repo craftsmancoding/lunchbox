@@ -7,9 +7,14 @@
         <h4 class="modal-title" id="myModalLabel">Select Parent</h4>
       </div>
       <div class="modal-body">
+      <form action="<?php print $data['controller_url'] .'&method=records'; ?>" id="search-parent" data-target="child_pages_modal">
+        <label for="search_term">Search Parent: </label>
+        <input type="text" name="search_term" id="search_term">
+        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
+      </form>
       <div id="child_pages_modal">
-      <?php print $data['records_layout']; ?>
-</div><!--e#child-pages-->
+       <?php print $data['records_layout']; ?>
+      </div><!--e#child-pages-->
       </div>
 
     </div>

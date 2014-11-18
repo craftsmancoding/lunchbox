@@ -97,8 +97,9 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-
-       $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
+        $scriptProperties['target'] = 'child_pages';
+        $scriptProperties['in_modal'] = false;
+        $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
        
 
         return $this->fetchTemplate('main/children.php');
@@ -116,9 +117,9 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-
+        $scriptProperties['target'] = 'child_pages_modal';
+        $scriptProperties['in_modal'] = true;
         $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
-
        
         return $this->fetchTemplate('main/modal.setparent.php');
     }
@@ -131,18 +132,26 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $search = $this->modx->getOption('search_term',$scriptProperties);
 
-         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
-    
+        
         $criteria = $this->modx->newQuery('modResource');
+
+
         if ($parent) {
             $criteria->where(array('parent'=>$parent));
         }
-    
+
+        if($search != '' || !empty($search)) {
+            $criteria->where(array('pagetitle:LIKE'=>"%$search%"));
+        }
+
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
@@ -188,6 +197,8 @@ class PageController extends BaseController {
         $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
         $this->setPlaceholder('columns', $cols);
         $this->setPlaceholder('controller_url', $this->config['controller_url']);
+        $this->setPlaceholder('target', $scriptProperties['target']);
+        $this->setPlaceholder('in_modal', $scriptProperties['in_modal']);
 
         return $this->fetchTemplate('main/table.children.php');
     }

@@ -92,3 +92,22 @@ function launch_modal_parent(obj) {
     }); 
     event.preventDefault();
 }
+
+function search_parent() {
+    console.log('Searching [Lunchbox]');
+    var form = $('#search-parent');
+    var target = form.data('target');
+    console.log(target);
+    var values = form.serialize();
+    var url = form.attr('action');    
+        $.ajax({
+            url: url,  
+            data: values,  
+            success: function( response )  
+            {
+                 $("#"+target).html(response);               
+            }
+       });
+    
+    event.preventDefault();
+}
