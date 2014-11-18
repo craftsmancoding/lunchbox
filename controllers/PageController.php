@@ -98,7 +98,7 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
         $scriptProperties['target'] = 'child_pages';
-        $scriptProperties['in_modal'] = false;
+        $search = $this->modx->getOption('in_modal',$scriptProperties,false);
         $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
        
 
@@ -118,7 +118,7 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
         $scriptProperties['target'] = 'child_pages_modal';
-        $scriptProperties['in_modal'] = true;
+        $search = $this->modx->getOption('in_modal',$scriptProperties,true);
         $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
        
         return $this->fetchTemplate('main/modal.setparent.php');
@@ -137,10 +137,12 @@ class PageController extends BaseController {
         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
 
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
-        
+        $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
 
@@ -198,9 +200,18 @@ class PageController extends BaseController {
         $this->setPlaceholder('columns', $cols);
         $this->setPlaceholder('controller_url', $this->config['controller_url']);
         $this->setPlaceholder('target', $scriptProperties['target']);
-        $this->setPlaceholder('in_modal', $scriptProperties['in_modal']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        $this->setPlaceholder('selected', $selected);
 
         return $this->fetchTemplate('main/table.children.php');
+    }
+
+
+    public function postSetParent(array $scriptProperties = array()) {
+        $page = $this->modx->getObject('modResource', array('id' => $scriptProperties['id']));
+        $page->set('parent', $scriptProperties['parent']);
+        $page->set('show_in_tree', 1);
+        $page->save();
     }
 
     /**

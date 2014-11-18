@@ -40,11 +40,15 @@
         <?php endforeach; ?>
         <td>
             <?php if($data['in_modal']) :?>
-                 <a href="#" class="button btn btn-mini btn-info">Set as Parent</a>
+                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
+                    <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
+                    <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent">
+                </form>
             <?php else : ?>
                  <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
                 <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-                <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents'; ?>">Select Parent</a>
+                <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&in_modal=1&selected=' . $r[id]; ?>">Select Parent</a>
             <?php endif; ?>
            
          </td>

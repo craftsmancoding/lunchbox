@@ -58,14 +58,13 @@ function get_children(parent,offset,sort,dir) {
  * @param string dir ASC|DESC 
  */
 function get_children2(obj,parent,offset,sort,dir) {
+    console.log("[Lunchbox get_children()2] requesting URL TEST");
     var target = $(obj).data('target');
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : sort_col;
     dir = typeof dir !== "undefined" ? dir : "ASC";
     var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
-
-    console.log("[Lunchbox get_children()2] requesting URL TEST");
 
     jQuery.ajax({ 
         type: "GET", 
