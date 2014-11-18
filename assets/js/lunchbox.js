@@ -49,8 +49,33 @@ function get_children(parent,offset,sort,dir) {
             $("#child_pages").html(response);
         }   
     }); 
-
 }
+
+
+/**
+ * @param integer offset
+ * @param string sort column name
+ * @param string dir ASC|DESC 
+ */
+function get_children2(obj,parent,offset,sort,dir) {
+    var target = $(obj).data('target');
+    parent = typeof parent !== "undefined" ? parent : 0;
+    offset = typeof offset !== "undefined" ? offset : 0;
+    sort = typeof sort !== "undefined" ? sort : sort_col;
+    dir = typeof dir !== "undefined" ? dir : "ASC";
+    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+
+    console.log("[Lunchbox get_children()2] requesting URL TEST");
+
+    jQuery.ajax({ 
+        type: "GET", 
+        url: url,
+        success: function(response) {
+            $("#"+target).html(response);
+        }   
+    }); 
+}
+
 
 function show_all_child(parent){
    return get_children(parent);

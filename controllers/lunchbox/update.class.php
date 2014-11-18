@@ -10,7 +10,6 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $assets_url = $this->modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
 
         $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
-
         $Lunchbox = new Lunchbox($this->modx);
 
 
