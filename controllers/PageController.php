@@ -97,7 +97,7 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-        $scriptProperties['target'] = 'child_pages';
+        $scriptProperties['target'] = 'child_pages_inner';
         $search = $this->modx->getOption('in_modal',$scriptProperties,false);
         $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
        

@@ -69,12 +69,12 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
         array(
-            'first' => '<span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'first' => '<span data-in_modal="'.$data['in_modal'].'" data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span data-in_modal="'.$data['in_modal'].'" data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span data-in_modal="'.$data['in_modal'].'" data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span data-in_modal="'.$data['in_modal'].'" data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span data-in_modal="'.$data['in_modal'].'" data-target="'.$data['target'].'" onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }
