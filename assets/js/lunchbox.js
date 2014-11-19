@@ -28,6 +28,25 @@ function setBreadcrumbs(page_id) {
 
 
 /**
+ * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
+ * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
+ */
+function setBreadcrumbsModal(page_id) {
+    jQuery.ajax({ 
+            type: "GET", 
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
+            success: function(response) {
+                if($('#lunchbox_breadcrumbs_modal').length == 0) {
+                    $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
+                }
+                
+                $('#lunchbox_breadcrumbs_modal').html(response);
+            }   
+        }); 
+}
+
+
+/**
  * @param integer offset
  * @param string sort column name
  * @param string dir ASC|DESC 
@@ -75,6 +94,7 @@ function get_children2(obj,parent,offset,sort,dir) {
             $("#"+target).html(response);
         }   
     }); 
+  /*  setBreadcrumbsModal(id);*/
     setBreadcrumbs(id);
 }
 
