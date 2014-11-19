@@ -43,7 +43,7 @@
                 <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
                     <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
                     <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
-                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
                 </form>
             <?php else : ?>
                  <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>

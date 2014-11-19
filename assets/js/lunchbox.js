@@ -110,3 +110,33 @@ function search_parent() {
     
     event.preventDefault();
 }
+
+
+function set_parent(obj) {
+    console.log('setting parent [Lunchbox]');
+    var form = $(obj).parent();
+    var values = form.serialize();
+    var url = form.attr('action');   
+        $.ajax({
+            type: "POST",
+            url: url,  
+            data: values,  
+            success: function( response )  
+            {
+                $('#parent-modal').modal('hide');
+                data = $.parseJSON(response);
+
+                if(data.success == true) {
+                    $('.lu-msg').html('<div class="success">'+data.msg+'</div>')
+                    .delay(2000).fadeOut(function() {
+                       location.reload();
+                    });
+
+                } else{
+                    $('.lu-msg').html('<div class="danger">'+data.msg+'</div>')
+                    .delay(2000).fadeOut();
+                }          
+            }
+       });
+    event.preventDefault();
+}
