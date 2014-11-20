@@ -64,6 +64,7 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
 
        $page_id = $this->modx->getOption('page_id',$scriptProperties);
+       $in_modal = $this->modx->getOption('in_modal',$scriptProperties);
         $items = array();
         while ($page = $this->modx->getObject('modResource', $page_id)) {
             array_unshift($items, array(
@@ -76,12 +77,10 @@ class PageController extends BaseController {
 
         $last = array_pop($items);
 
-        foreach ($items as $i) {
-            $out .= '<span onclick="javascript:drillDown('.$i['id'].');" class="lunchbox_breadcrumb">'.$i['pagetitle'].'</span> &raquo; ';
-        }
-        $out .= '<span>'.$last['pagetitle'].'</span>';
-
-        return  $out;
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        return $this->fetchTemplate('main/breadcrumbs.php');
     }
 
      /**

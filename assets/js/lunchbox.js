@@ -2,10 +2,15 @@
  * Drill down into a folder
  *
  */
-function drillDown(id) {
+function drillDown(id,in_modal) {
     get_children(id,0);
     // update the breadcrumbs
-    setBreadcrumbs(id);
+    if(in_modal == 1) {
+        setBreadcrumbsModal(id);
+    } else {
+        setBreadcrumbs(id);
+    }
+    
 }
 
 /**
@@ -15,7 +20,7 @@ function drillDown(id) {
 function setBreadcrumbs(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=0',
             success: function(response) {
                 if($('#lunchbox_breadcrumbs').length == 0) {
                     $('#child_pages').after('<div id="lunchbox_breadcrumbs">Testing</div>');
@@ -34,7 +39,7 @@ function setBreadcrumbs(page_id) {
 function setBreadcrumbsModal(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=1',
             success: function(response) {
                 if($('#lunchbox_breadcrumbs_modal').length == 0) {
                     $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
@@ -94,8 +99,11 @@ function get_children2(obj,parent,offset,sort,dir) {
             $("#"+target).html(response);
         }   
     }); 
-  /*  setBreadcrumbsModal(id);*/
-    setBreadcrumbs(id);
+    if(in_modal == 1) {
+       setBreadcrumbsModal(id); 
+    } else {
+       setBreadcrumbs(id); 
+    }
 }
 
 

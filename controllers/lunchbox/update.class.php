@@ -43,7 +43,7 @@ $this->addHtml('
                     });
                     show_all_child('.$page_id.');
                     Ext.getCmp("modx-resource-tabs").setActiveTab("children-tab");
-                    setBreadcrumbs('.$page_id.',"child_pages");
+                    setBreadcrumbs('.$page_id.');
                 });
             </script>');
 
