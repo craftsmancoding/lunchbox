@@ -9,13 +9,10 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         parent::loadCustomCssJs();
         $assets_url = $this->modx->getOption('lunchbox.assets_url', null, MODX_ASSETS_URL.'components/lunchbox/');
 
-        $page_id = (isset($_GET['id'])) ? $_GET['id'] : null;
+        $page_id = (int) (isset($_GET['id'])) ? $_GET['id'] : null;
         $Lunchbox = new Lunchbox($this->modx);
 
-
         $this->addJavascript($assets_url . 'js/jquery.min.js');
-
-
 
         $this->addJavascript($assets_url . 'js/lunchbox.js');
         $this->addCss($assets_url . 'css/mgr.css'); 
@@ -31,7 +28,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
 $this->addHtml('
             <script type="text/javascript">
                var hierarchy = [];
-                var connector_url = '.json_encode($lunchbox_connector_url).';
+                var connector_url = '.json_encode(utf8_encode($lunchbox_connector_url)).';
                 var sort_col = "'.$sort.'";
                 var site_url = "'.MODX_SITE_URL.'";
                 Ext.onReady(function(){
