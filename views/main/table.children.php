@@ -46,9 +46,10 @@
                     <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
                 </form>
             <?php else : ?>
-                 <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
                 <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
+                <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
                 <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&in_modal=1&selected=' . $r[id]; ?>">Select Parent</a>
+                <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="button btn btn-mini" target="_blank">Add Page</a>
             <?php endif; ?>
            
          </td>

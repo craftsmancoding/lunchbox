@@ -118,11 +118,17 @@ h2.lunchbox_cmp_heading {
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   padding: 7px 15px;
-  color: #6a6a6a !important;
+  color: #6a6a6a;
   font-weight: normal;
   font-size: 14px;
   text-shadow: none !important;
   cursor: pointer !important;
+}
+
+.btn-info {
+  background: #556c88;
+  color: #fff !important;
+   border: 1px solid #556c88;
 }
 
 .btn-primary {
@@ -131,10 +137,13 @@ h2.lunchbox_cmp_heading {
   border: 1px solid #2aa798;
 }
 
-.btn-info {
-  background: #556c88;
+
+
+
+.btn-default {
+  background: #3390C3 !important;
   color: #fff !important;
-   border: 1px solid #556c88;
+   border: 1px solid #3390C3 !important;
 }
 
 .btn-primary:hover {
