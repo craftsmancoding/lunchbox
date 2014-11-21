@@ -96,12 +96,15 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-        $scriptProperties['target'] = 'child_pages_inner';
-        $search = $this->modx->getOption('in_modal',$scriptProperties,false);
-        $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
-       
+        $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+           console.log("[lunchbox] '.__FUNCTION__.'");
+            // Document read stuff has to be in here
+            jQuery(document).ready(function() {
+                lunchbox_init();
+            });
+            </script>');
 
-        return $this->fetchTemplate('main/children.php');
+        return $this->fetchTemplate('main/lunchbox.php');
     }
 
     /**
@@ -190,19 +193,7 @@ class PageController extends BaseController {
             $data['results'][] =$page;
         }
 
-        $this->setPlaceholder('results', $data['results']);
-        $this->setPlaceholder('count', $data['total']);
-        $this->setPlaceholder('offset', $offset);
-        $this->setPlaceholder('parent', $parent);
-        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
-        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
-        $this->setPlaceholder('columns', $cols);
-        $this->setPlaceholder('controller_url', $this->config['controller_url']);
-        $this->setPlaceholder('target', $scriptProperties['target']);
-        $this->setPlaceholder('in_modal', $in_modal);
-        $this->setPlaceholder('selected', $selected);
-
-        return $this->fetchTemplate('main/table.children.php');
+        return json_encode($data);
     }
 
 

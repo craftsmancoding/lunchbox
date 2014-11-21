@@ -16,7 +16,7 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $this->addJavascript($assets_url . 'js/jquery.min.js');
 
 
-
+        $this->addJavascript($assets_url.'js/handlebars-v2.0.0.js');
         $this->addJavascript($assets_url . 'js/lunchbox.js');
         $this->addCss($assets_url . 'css/mgr.css'); 
         $this->addCss($assets_url . 'css/lunchbox.css'); 
