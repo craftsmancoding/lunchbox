@@ -192,7 +192,7 @@ class PageController extends BaseController {
             $page = array_merge($page,$tv_vals);
             $data['results'][] =$page;
         }
-
+        $data['cols'] = $cols;    
         return json_encode($data);
     }
 

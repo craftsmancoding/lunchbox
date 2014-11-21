@@ -28,7 +28,14 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
     	$lunchbox_connector_url = $Lunchbox->getControllerUrl();
         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
 
-$this->addHtml('
+        $lb_data['sort_col'] = $sort;
+        $lb_data['parent'] = $page_id;
+        $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
+                var Lunchbox = '.json_encode($lb_data).';
+            </script>');
+
+
+        $this->addHtml('
             <script type="text/javascript">
                var hierarchy = [];
                 var connector_url = '.json_encode($lunchbox_connector_url).';
@@ -41,7 +48,7 @@ $this->addHtml('
                         width: "95%",
                         html: "<div id=\"child_pages\"></div>"
                     });
-                    show_all_child('.$page_id.');
+                    display_lunchbox();
                     Ext.getCmp("modx-resource-tabs").setActiveTab("children-tab");
                     setBreadcrumbs('.$page_id.');
                 });

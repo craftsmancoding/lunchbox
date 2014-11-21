@@ -52,17 +52,11 @@ function setBreadcrumbsModal(page_id) {
 
 
 /**
- * @param integer offset
- * @param string sort column name
- * @param string dir ASC|DESC 
+ * display main lunchbox layout
  */
-function get_children(parent,offset,sort,dir) {
-    console.log(sort_col);
-    parent = typeof parent !== "undefined" ? parent : 0;
-    offset = typeof offset !== "undefined" ? offset : 0;
-    sort = typeof sort !== "undefined" ? sort : sort_col;
-    dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=children&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+function display_lunchbox() {
+   
+    var url = connector_url+"&class=page&method=children&_nolayout=1";
 
     console.log("[Lunchbox get_children()] requesting URL",url);
 
@@ -104,11 +98,6 @@ function get_children2(obj,parent,offset,sort,dir) {
     } else {
        setBreadcrumbs(id); 
     }
-}
-
-
-function show_all_child(parent){
-   return get_children(parent);
 }
 
 function launch_modal_parent(obj) {      

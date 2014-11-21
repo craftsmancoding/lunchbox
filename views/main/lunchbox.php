@@ -1,31 +1,105 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
-<script id="template" type="text/x-handlebars-template">
-	{{#each this}}
-		<li>
-			<h2>{{author}}</h2>
-			<p>{{tweet}}</p>
-		</li>
-	{{/each}}
+<script id="children-tpl" type="text/x-handlebars-template">
+	<div class="children-wrapper">
+	<input type="hidden" name="lunchbox" value="1">
+	<table class="classy">
+	    <thead>
+	        <tr>
+	            <th>&nbsp;</th>
+	            {{#each cols}}
+	            	<th>{{this}}</th>
+	            {{/each}}
+	            <th>Action</th>
+	        </tr>
+	    </thead>
+	    <tbody>
+		{{#each results}}
+		    <tr>
+		    <td>
+			    {{#ifCond isfolder '==' 1}}
+				  <div class="lunchbox_folder">&nbsp;</div>
+				{{else}}
+				  <div class="lunchbox_page"></div>
+				{{/ifCond}}
+		      
+		    </td>
+		    	
+		    	<td>{{pagetitle}}</td>
+		    	<td>{{id}}</td>
+		    	<td>{{published}}</td>
+		    
+		        <td>
+		            <a href="#" class="btn btn-mini" target="_blank">Preview</a>
+		            <a href="#" class="button btn btn-mini btn-info">Edit</a>
+
+		         </td>
+		    </tr>
+		{{/each}}
+
+	    </tbody>
+	</table>
+	</div>
+
 </script>
 
+
 <script>
-	
+
+	// Initialized Lunchbox
 	function lunchbox_init() {
 		console.log('[Lunchbox Init]');	
-		var data = [
-	        {
-	            author: 'Daniel Doe',
-	            tweet : 'Test Handle Bar'
-	        },
-	        {
-	            author: 'jane Doe',
-	            tweet : 'Test Handle Bar 2.0'
-	        }
-	    ];
+		get_children(Lunchbox.parent);
+	}
 
-	    var template = Handlebars.compile( $('#template').html() );
-	    console.log(template);
-	    $('ul.tweets').append( template(data) );
+	/**
+	 * get child pages
+	 * @param integer parent		
+	 * @param integer offset
+	 * @param string sort column name
+	 * @param string dir ASC|DESC 
+	 */
+	function get_children(parent,offset,sort,dir) {
+	    console.log("[Lunchbox get_children()] requesting URL TEST");
+	    parent = typeof parent !== "undefined" ? parent : 0;
+	    offset = typeof offset !== "undefined" ? offset : 0;
+	    sort = typeof sort !== "undefined" ? sort : sort_col;
+	    dir = typeof dir !== "undefined" ? dir : "ASC";
+	    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+	    jQuery.ajax({ 
+	        type: "GET", 
+	        url: url,
+	        success: function(response) {
+	        	data = $.parseJSON(response);
+	        	var children_tpl = Handlebars.compile( $('#children-tpl').html() );
+	        	ifCond();
+	    		$('#child-pages-container').append( children_tpl(data) );
+	        }   
+	    }); 
+	}
+
+	function ifCond() {
+		Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
+	    switch (operator) {
+	        case '==':
+	            return (v1 == v2) ? options.fn(this) : options.inverse(this);
+	        case '===':
+	            return (v1 === v2) ? options.fn(this) : options.inverse(this);
+	        case '<':
+	            return (v1 < v2) ? options.fn(this) : options.inverse(this);
+	        case '<=':
+	            return (v1 <= v2) ? options.fn(this) : options.inverse(this);
+	        case '>':
+	            return (v1 > v2) ? options.fn(this) : options.inverse(this);
+	        case '>=':
+	            return (v1 >= v2) ? options.fn(this) : options.inverse(this);
+	        case '&&':
+	            return (v1 && v2) ? options.fn(this) : options.inverse(this);
+	        case '||':
+	            return (v1 || v2) ? options.fn(this) : options.inverse(this);
+	        default:
+	            return options.inverse(this);
+	    }
+	});
 	}
 
 	jQuery(document).ready(function() {
@@ -46,9 +120,7 @@
       </form>
 
 </div>
-<div id="child_pages_inner">
-	<ul class="tweets"></ul>
-</div>
+<div id="child-pages-container"></div>
 <!-- Modal -->
 <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
