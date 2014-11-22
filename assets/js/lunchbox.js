@@ -100,16 +100,19 @@ function get_children2(obj,parent,offset,sort,dir) {
     }
 }
 
-function launch_modal_parent(obj) {      
-    $.ajax({ 
+function launch_modal_parent(obj) {    
+    var url = Lunchbox.connector_url+"&class=page&method=children&_nolayout=1";
+   $.ajax({ 
         type: "GET", 
-        url: $(obj).attr('href'), 
+        url: url, 
         success: function(response) { 
             $('#parent-modal').modal('show');
-            $('#parent-modal').html(response);
+            $('#child_pages_modal').html(response);
         }   
     }); 
+
     event.preventDefault();
+
 }
 
 function search_parent() {

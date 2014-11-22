@@ -31,7 +31,7 @@
 		        <td>
 		            <a href="#" class="btn btn-mini" target="_blank">Preview</a>
 		            <a href="#" class="button btn btn-mini btn-info">Edit</a>
-		            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="{{Lunchbox.controller_url}}&method=parents&&selected={{id}}">Select Parent</a>
+		            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="{{Lunchbox.controller_url}}&method=parents&selected={{id}}">Select Parent</a>
                 	<a href="{{Lunchbox.site_url}}{{id}}" class="button btn btn-mini" target="_blank">Add Page</a>
 
 		         </td>
@@ -125,7 +125,21 @@
 </div>
 <div id="child-pages-container"></div>
 <!-- Modal -->
-<div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
+<div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Parent for Test Title (100)</h4>
+      </div>
+      <div class="modal-body">
+      <div id="child_pages_modal"></div><!--e#child-pages-->
+      </div>
+
+    </div>
+  </div>
+</div>
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
 
 
