@@ -20,7 +20,7 @@ function drillDown(id,in_modal) {
 function setBreadcrumbs(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=0',
+            url: Lunchbox.connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=0',
             success: function(response) {
                 if($('#lunchbox_breadcrumbs').length == 0) {
                     $('#child_pages').after('<div id="lunchbox_breadcrumbs">Testing</div>');
@@ -39,7 +39,7 @@ function setBreadcrumbs(page_id) {
 function setBreadcrumbsModal(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=1',
+            url: Lunchbox.connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=1',
             success: function(response) {
                 if($('#lunchbox_breadcrumbs_modal').length == 0) {
                     $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
@@ -56,7 +56,7 @@ function setBreadcrumbsModal(page_id) {
  */
 function display_lunchbox() {
    
-    var url = connector_url+"&class=page&method=children&_nolayout=1";
+    var url = Lunchbox.connector_url+"&class=page&method=children&_nolayout=1";
 
     console.log("[Lunchbox get_children()] requesting URL",url);
 
@@ -84,7 +84,7 @@ function get_children2(obj,parent,offset,sort,dir) {
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : sort_col;
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&target="+target+"&in_modal="+in_modal;
+    var url = Lunchbox.connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&target="+target+"&in_modal="+in_modal;
     jQuery.ajax({ 
         type: "GET", 
         url: url,

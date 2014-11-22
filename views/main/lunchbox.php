@@ -17,7 +17,7 @@
 		    <tr>
 		    <td>
 			    {{#ifCond isfolder '==' 1}}
-				  <div class="lunchbox_folder">&nbsp;</div>
+				  <div class="lunchbox_folder" onclick="javascript:get_children({{id}});">&nbsp;</div>
 				{{else}}
 				  <div class="lunchbox_page"></div>
 				{{/ifCond}}
@@ -31,6 +31,8 @@
 		        <td>
 		            <a href="#" class="btn btn-mini" target="_blank">Preview</a>
 		            <a href="#" class="button btn btn-mini btn-info">Edit</a>
+		            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="{{Lunchbox.controller_url}}&method=parents&&selected={{id}}">Select Parent</a>
+                	<a href="{{Lunchbox.site_url}}{{id}}" class="button btn btn-mini" target="_blank">Add Page</a>
 
 		         </td>
 		    </tr>
@@ -62,9 +64,10 @@
 	    console.log("[Lunchbox get_children()] requesting URL TEST");
 	    parent = typeof parent !== "undefined" ? parent : 0;
 	    offset = typeof offset !== "undefined" ? offset : 0;
-	    sort = typeof sort !== "undefined" ? sort : sort_col;
+	    sort = typeof sort !== "undefined" ? sort : Lunchbox.sort_col;
 	    dir = typeof dir !== "undefined" ? dir : "ASC";
-	    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+	    var url = Lunchbox.connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+
 	    jQuery.ajax({ 
 	        type: "GET", 
 	        url: url,
@@ -72,7 +75,7 @@
 	        	data = $.parseJSON(response);
 	        	var children_tpl = Handlebars.compile( $('#children-tpl').html() );
 	        	ifCond();
-	    		$('#child-pages-container').append( children_tpl(data) );
+	    		$('#child-pages-container').html( children_tpl(data) );
 	        }   
 	    }); 
 	}

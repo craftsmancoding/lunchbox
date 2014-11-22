@@ -30,6 +30,8 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
 
         $lb_data['sort_col'] = $sort;
         $lb_data['parent'] = $page_id;
+        $lb_data['connector_url'] = $lunchbox_connector_url;
+        $lb_data['site_url'] = MODX_SITE_URL;
         $this->modx->regClientStartupHTMLBlock('<script type="text/javascript">
                 var Lunchbox = '.json_encode($lb_data).';
             </script>');
@@ -37,10 +39,6 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
 
         $this->addHtml('
             <script type="text/javascript">
-               var hierarchy = [];
-                var connector_url = '.json_encode($lunchbox_connector_url).';
-                var sort_col = "'.$sort.'";
-                var site_url = "'.MODX_SITE_URL.'";
                 Ext.onReady(function(){
                     Ext.getCmp("modx-resource-tabs").insert(0, {
                         title: "Children",
