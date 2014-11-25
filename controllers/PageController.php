@@ -96,15 +96,30 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $search = $this->modx->getOption('search_term',$scriptProperties);
+
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
         $data = $this->getRecords($scriptProperties);
         $data = json_decode($data,true);
 
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
         $this->setPlaceholder('results', $data['results']);
         $this->setPlaceholder('count', $data['total']);
-        $this->setPlaceholder('columns', $data['cols']);
-        $scriptProperties['target'] = 'child_pages_inner';
-        $search = $this->modx->getOption('in_modal',$scriptProperties,false);
-        
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+              
         return $this->fetchTemplate('main/children.php');
     }
 
@@ -120,11 +135,31 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-        $scriptProperties['target'] = 'child_pages_modal';
-        $search = $this->modx->getOption('in_modal',$scriptProperties,true);
-        $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
-       
-        return $this->fetchTemplate('main/modal.setparent.php');
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $search = $this->modx->getOption('search_term',$scriptProperties);
+
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
+        $data = $this->getRecords($scriptProperties);
+        $data = json_decode($data,true);
+
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+
+        return $this->fetchTemplate('main/modal.children.php');        
     }
 
 
@@ -195,19 +230,6 @@ class PageController extends BaseController {
         }
         $data['cols'] = $cols;
         return json_encode($data);
-        //$this->setPlaceholder('results', $data['results']);
-  /*      $this->setPlaceholder('count', $data['total']);
-        $this->setPlaceholder('offset', $offset);
-        $this->setPlaceholder('parent', $parent);
-        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
-        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
-        $this->setPlaceholder('columns', $cols);
-        $this->setPlaceholder('controller_url', $this->config['controller_url']);
-        $this->setPlaceholder('target', $scriptProperties['target']);
-        $this->setPlaceholder('in_modal', $in_modal);
-        $this->setPlaceholder('selected', $selected);*/
-
-        //return $this->fetchTemplate('main/table.children.php');
     }
 
 

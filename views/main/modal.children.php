@@ -1,12 +1,20 @@
-<?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 
-<div class="lu-msg"></div>
+<!-- Modal -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Select Parent</h4>
+      </div>
+      <div class="modal-body">
+      <form action="<?php print $data['controller_url'] .'&method=records'; ?>" id="search-parent">
+        <label for="search_term">Search Parent: </label>
+        <input type="text" name="search_term" id="search_term">
+        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
+      </form>
+      <div id="child_pages_modal">
+      <div class="children-wrapper">
 
-<div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
-	<a class="btn btn-primary pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
-</div>
-<div id="child_pages_inner">
-    <div class="children-wrapper">
 <?php if ($data['results']): ?>
 <input type="hidden" name="lunchbox" value="1">
 <table class="classy">
@@ -36,7 +44,7 @@
         <?php //endforeach; ?>
     <td>
     <?php if($r['isfolder'] == 1 && $r['parent'] > 0) : ?>
-      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" data-target="<?php  print $data['target']; ?>" onclick="javascript:get_children2(this,'<?php print  $r['id'] ?>',0);">&nbsp;</div>
+      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children2(this,'<?php print  $r['id'] ?>',0);">&nbsp;</div>
     <?php else : ?>
       <div class="lunchbox_page"></div>
     <?php endif; ?>
@@ -47,9 +55,12 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-            <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
-            <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id]; ?>">Select Parent</a>           
+                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
+                    <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
+                    <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
+                </form>
+           
          </td>
     </tr>
 <?php endforeach; ?>
@@ -88,9 +99,9 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 ?>
 
 </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"></div>
-<?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
 
+      </div><!--e#child-pages-->
+      </div>
 
+    </div>
+  </div>
