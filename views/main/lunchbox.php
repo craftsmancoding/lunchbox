@@ -1,48 +1,35 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 <script id="children-tpl" type="text/x-handlebars-template">
-	<div class="children-wrapper">
-	<input type="hidden" name="lunchbox" value="1">
-	<table class="classy">
-	    <thead>
-	        <tr>
-	            <th>&nbsp;</th>
-	            {{#each cols}}
-	            	<th>{{this}}</th>
-	            {{/each}}
-	            <th>Action</th>
-	        </tr>
-	    </thead>
-	    <tbody>
-		{{#each results}}
-		    <tr>
-		    <td>
-			    {{#ifCond isfolder '==' 1}}
-				  <div class="lunchbox_folder" onclick="javascript:get_children({{id}});">&nbsp;</div>
-				{{else}}
-				  <div class="lunchbox_page"></div>
-				{{/ifCond}}
-		      
-		    </td>
-		    	
-		    	<td>{{pagetitle}}</td>
-		    	<td>{{id}}</td>
-		    	<td>{{published}}</td>
-		    
-		        <td>
-		            <a href="#" class="btn btn-mini" target="_blank">Preview</a>
-		            <a href="#" class="button btn btn-mini btn-info">Edit</a>
-		            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="{{Lunchbox.controller_url}}&method=parents&selected={{id}}">Select Parent</a>
-                	<a href="{{Lunchbox.site_url}}{{id}}" class="button btn btn-mini" target="_blank">Add Page</a>
+ <tr>
+    <td>
+	    {{#ifCond isfolder '==' 1}}
+		  <div class="lunchbox_folder" onclick="javascript:get_children({{id}});">&nbsp;</div>
+		{{else}}
+		  <div class="lunchbox_page"></div>
+		{{/ifCond}}
+      
+    </td>
+    	
+    	<td>{{id}}</td>
+    	<td>{{pagetitle}}</td>
+    
+        <td>
+            <a href="#" class="btn btn-mini" target="_blank">Preview</a>
+            <a href="#" class="button btn btn-mini btn-info">Edit</a>
+            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="{{Lunchbox.controller_url}}&method=parents&selected={{id}}">Select Parent</a>
+        	<a href="{{Lunchbox.site_url}}{{id}}" class="button btn btn-mini" target="_blank">Add Page</a>
 
-		         </td>
-		    </tr>
-		{{/each}}
-
-	    </tbody>
-	</table>
-	</div>
-
+         </td>
+    </tr>
 </script>
+
+<script id="children-header-tpl" type="text/x-handlebars-template">
+	{{#each}}
+	<th>{{this}}</th>
+	{{/each}}
+	}
+</script>
+
 
 
 <script>
@@ -50,6 +37,7 @@
 	// Initialized Lunchbox
 	function lunchbox_init() {
 		console.log('[Lunchbox Init]');	
+		ifCond();
 		get_children(Lunchbox.parent);
 	}
 
@@ -74,11 +62,38 @@
 	        success: function(response) {
 	        	data = $.parseJSON(response);
 	        	var children_tpl = Handlebars.compile( $('#children-tpl').html() );
-	        	ifCond();
-	    		$('#child-pages-container').html( children_tpl(data) );
+	        	var children_header_tpl = Handlebars.compile( $('#children-header-tpl').html() );
+	        	var arrayLength = data.results.length;
+	        	console.log(data.results);
+			    for (var i = 0; i < arrayLength; i++) {
+			        var Page = data.results[i];
+			        $('#child-target').append( children_tpl(Page) );
+			    }
+		
+			    $('#children-header').append( children_header_tpl(data.cols) );
+			    
 	        }   
 	    }); 
 	}
+
+	function launch_modal_parent() {    
+	    console.log("[Lunchbox get_children()] requesting URL TEST");
+	    var url = Lunchbox.connector_url+"&class=page&method=records&parent=0&_nolayout=1";
+
+	    jQuery.ajax({ 
+	        type: "GET", 
+	        url: url,
+	        success: function(response) {
+	        	data = $.parseJSON(response);
+	        	var children_tpl = Handlebars.compile( $('#children-tpl').html() );
+	        	$('#parent-modal').modal('show');
+	    		$('#child_pages_modal').html( children_tpl(data) );
+	        }   
+	    }); 
+	    event.preventDefault();
+
+	}
+
 
 	function ifCond() {
 		Handlebars.registerHelper('ifCond', function (v1, operator, v2, options) {
@@ -123,7 +138,20 @@
       </form>
 
 </div>
-<div id="child-pages-container"></div>
+
+	<div class="children-wrapper">
+	<input type="hidden" name="lunchbox" value="1">
+	<table class="classy">
+	    <thead>
+	        <tr id="children-header">
+	        </tr>
+	    </thead>
+	    <tbody id="child-target">
+
+	    </tbody>
+	</table>
+	</div>
+
 <!-- Modal -->
 <div class="modal fade" id="parent-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<!-- Modal -->

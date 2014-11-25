@@ -70,51 +70,6 @@ function display_lunchbox() {
 }
 
 
-/**
- * @param integer offset
- * @param string sort column name
- * @param string dir ASC|DESC 
- */
-function get_children2(obj,parent,offset,sort,dir) {
-    console.log("[Lunchbox get_children()2] requesting URL TEST");
-    var target = $(obj).data('target');
-    var id = $(obj).data('id');
-    var in_modal = $(obj).data('in_modal');
-    parent = typeof parent !== "undefined" ? parent : 0;
-    offset = typeof offset !== "undefined" ? offset : 0;
-    sort = typeof sort !== "undefined" ? sort : sort_col;
-    dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = Lunchbox.connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&target="+target+"&in_modal="+in_modal;
-    jQuery.ajax({ 
-        type: "GET", 
-        url: url,
-        success: function(response) {
-
-            $("#"+target).html(response);
-        }   
-    }); 
-    if(in_modal == 1) {
-       setBreadcrumbsModal(id); 
-    } else {
-       setBreadcrumbs(id); 
-    }
-}
-
-function launch_modal_parent(obj) {    
-    var url = Lunchbox.connector_url+"&class=page&method=children&_nolayout=1";
-   $.ajax({ 
-        type: "GET", 
-        url: url, 
-        success: function(response) { 
-            $('#parent-modal').modal('show');
-            $('#child_pages_modal').html(response);
-        }   
-    }); 
-
-    event.preventDefault();
-
-}
-
 function search_parent() {
     console.log('Searching [Lunchbox]');
     var form = $('#search-parent');

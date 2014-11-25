@@ -192,7 +192,12 @@ class PageController extends BaseController {
             $page = array_merge($page,$tv_vals);
             $data['results'][] =$page;
         }
-        $data['cols'] = $cols;    
+        $data['cols'] = $cols;  
+        $data['offset'] = $offset;  
+        $data['results_per_page'] = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));  
+
+        $this->setPlaceholder('total', $data['total']);
+
         return json_encode($data);
     }
 
