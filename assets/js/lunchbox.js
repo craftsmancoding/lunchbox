@@ -57,7 +57,6 @@ function setBreadcrumbsModal(page_id) {
  * @param string dir ASC|DESC 
  */
 function get_children(parent,offset,sort,dir) {
-    console.log(sort_col);
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : sort_col;
@@ -81,31 +80,23 @@ function get_children(parent,offset,sort,dir) {
  * @param string sort column name
  * @param string dir ASC|DESC 
  */
-function get_children2(obj,parent,offset,sort,dir) {
-    console.log("[Lunchbox get_children()2] requesting URL TEST");
-    var target = $(obj).data('target');
-    var id = $(obj).data('id');
-    var in_modal = $(obj).data('in_modal');
+function get_children_modal(parent,offset,sort,dir) {
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : sort_col;
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&target="+target+"&in_modal="+in_modal;
+    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+
+    console.log("[Lunchbox get_children()] requesting URL",url);
+
     jQuery.ajax({ 
         type: "GET", 
         url: url,
         success: function(response) {
-
-            $("#"+target).html(response);
+            $("#child_pages_modal").html(response);
         }   
     }); 
-    if(in_modal == 1) {
-       setBreadcrumbsModal(id); 
-    } else {
-       setBreadcrumbs(id); 
-    }
 }
-
 
 function show_all_child(parent){
    return get_children(parent);
@@ -117,7 +108,7 @@ function launch_modal_parent(obj) {
         url: $(obj).attr('href'), 
         success: function(response) { 
             $('#parent-modal').modal('show');
-            $('#parent-modal').html(response);
+            $('#child_pages_modal').html(response);
         }   
     }); 
     event.preventDefault();

@@ -1,18 +1,6 @@
 
-<!-- Modal -->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Select Parent</h4>
-      </div>
-      <div class="modal-body">
-      <form action="<?php print $data['controller_url'] .'&method=records'; ?>" id="search-parent">
-        <label for="search_term">Search Parent: </label>
-        <input type="text" name="search_term" id="search_term">
-        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
-      </form>
-      <div id="child_pages_modal">
+
+      
       <div class="children-wrapper">
 
 <?php if ($data['results']): ?>
@@ -44,7 +32,7 @@
         <?php //endforeach; ?>
     <td>
     <?php if($r['isfolder'] == 1 && $r['parent'] > 0) : ?>
-      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children2(this,'<?php print  $r['id'] ?>',0);">&nbsp;</div>
+      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
     <?php else : ?>
       <div class="lunchbox_page"></div>
     <?php endif; ?>
@@ -79,12 +67,12 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
         array(
-            'first' => '<span onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'first' => '<span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span onclick="javascript:get_children2(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }
@@ -99,9 +87,3 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 ?>
 
 </div>
-
-      </div><!--e#child-pages-->
-      </div>
-
-    </div>
-  </div>
