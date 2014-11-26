@@ -63,6 +63,45 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
 
+        $items = $this->getBcRecords($scriptProperties);
+         $items = json_decode($items,true);
+        $last = array_pop($items);
+
+
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        return $this->fetchTemplate('main/breadcrumbs.php');
+    }
+
+
+    /**
+     * getBreadcrumbs
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getBreadcrumbsmodal(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+
+        $items = $this->getBcRecords($scriptProperties);
+         $items = json_decode($items,true);
+        $last = array_pop($items);
+
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        return $this->fetchTemplate('main/modal.breadcrumbs.php');
+    }
+
+    public function getBcRecords(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+
        $page_id = $this->modx->getOption('page_id',$scriptProperties);
        $in_modal = $this->modx->getOption('in_modal',$scriptProperties);
         $items = array();
@@ -74,15 +113,8 @@ class PageController extends BaseController {
             );
             $page_id = $page->get('parent');
         }
-
-        $last = array_pop($items);
-
-        $this->setPlaceholder('links', $items);
-        $this->setPlaceholder('last', $last['pagetitle']);
-        $this->setPlaceholder('in_modal', $in_modal);
-        return $this->fetchTemplate('main/breadcrumbs.php');
+        return json_encode($items);
     }
-
      /**
      * getChildren
      * @param array $scriptProperties

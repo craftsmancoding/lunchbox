@@ -2,15 +2,14 @@
  * Drill down into a folder
  *
  */
-function drillDown(id,in_modal) {
+function drillDown(id) {
     get_children(id,0);
-    // update the breadcrumbs
-    if(in_modal == 1) {
-        setBreadcrumbsModal(id);
-    } else {
-        setBreadcrumbs(id);
-    }
-    
+    setBreadcrumbs(id);
+}
+
+function drillDownModal(id) {
+    get_children_modal(id,0);
+    setBreadcrumbsModal(id);
 }
 
 /**
@@ -20,10 +19,10 @@ function drillDown(id,in_modal) {
 function setBreadcrumbs(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=0',
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
             success: function(response) {
                 if($('#lunchbox_breadcrumbs').length == 0) {
-                    $('#child_pages').after('<div id="lunchbox_breadcrumbs">Testing</div>');
+                    $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
                 }
                 
                 $('#lunchbox_breadcrumbs').html(response);
@@ -39,7 +38,7 @@ function setBreadcrumbs(page_id) {
 function setBreadcrumbsModal(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=1',
+            url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
             success: function(response) {
                 if($('#lunchbox_breadcrumbs_modal').length == 0) {
                     $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
@@ -70,6 +69,7 @@ function get_children(parent,offset,sort,dir) {
         url: url,
         success: function(response) {
             $("#child_pages").html(response);
+            setBreadcrumbs(parent);
         }   
     }); 
 }
@@ -94,6 +94,7 @@ function get_children_modal(parent,offset,sort,dir) {
         url: url,
         success: function(response) {
             $("#child_pages_modal").html(response);
+            setBreadcrumbsModal(parent);
         }   
     }); 
 }
