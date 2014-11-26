@@ -3,7 +3,15 @@
 <div class="lu-msg"></div>
 
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
-	<a class="btn btn-primary pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
+	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
+	<form action="<?php print $data['controller_url'] .'&method=children&parent='.$data['parent']; ?>" id="search-parent">
+	  <div class="pull-right">
+	  	<label for="search_term">Search </label>
+	  	<input type="hidden" name="parent" id="parent" value="<?php print $data['parent']; ?>">
+	    <input type="text" name="search_term" id="search_term">
+	    <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
+	  </div>
+	</form>
 </div>
 <div id="child_pages_inner">
     <div class="children-wrapper">
@@ -49,7 +57,8 @@
         <td>
             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id]; ?>">Select Parent</a>           
+            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id]; ?>">Select Parent</a>    
+            <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
          </td>
     </tr>
 <?php endforeach; ?>
@@ -96,13 +105,16 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Select Parent</h4>
+        <h4 class="modal-title" id="myModalLabel">Select Parent for Some Page (123)</h4>
       </div>
       <div class="modal-body">
-      <form action="<?php print $data['controller_url'] .'&method=records'; ?>" id="search-parent">
-        <label for="search_term">Search Parent: </label>
-        <input type="text" name="search_term" id="search_term">
-        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
+      <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
+	      <div class="pull-right">
+	      	<label for="search_term_modal">Search </label>
+	        <input type="text" name="search_term" id="search_term_modal">
+	        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
+	      </div>
+	      <div class="clear">&nbsp;</div>
       </form>
       <div id="child_pages_modal">
             </div><!--e#child-pages-->

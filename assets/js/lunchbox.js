@@ -116,18 +116,28 @@ function launch_modal_parent(obj) {
 }
 
 function search_parent() {
-    console.log('Searching [Lunchbox]');
-    var form = $('#search-parent');
-    var target = form.data('target');
-    console.log(target);
-    var values = form.serialize();
-    var url = form.attr('action');    
+        var search = $('#search_term').val();
+         var parent = $('#parent').val();
+        var url = connector_url+"&class=page&method=children&parent="+parent+"&search_term="+search;
         $.ajax({
-            url: url,  
-            data: values,  
+            url: url,
             success: function( response )  
             {
-                 $("#"+target).html(response);               
+               $("#child_pages").html(response);               
+            }
+       });
+    
+    event.preventDefault();
+}
+
+function search_parent_modal() {
+        var search = $('#search_term_modal').val();
+        var url = connector_url+"&class=page&method=parents&search_term="+search;
+        $.ajax({
+            url: url,
+            success: function( response )  
+            {
+               $("#child_pages_modal").html(response);               
             }
        });
     
