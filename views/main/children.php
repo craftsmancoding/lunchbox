@@ -43,11 +43,17 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
-    <?php if($r['isfolder'] == 1) : ?>
-      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" data-target="<?php  print $data['target']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+ 	<?php if($r['isfolder'] == 1) : ?>
+       <div class="x-tree-node">
+        <div class="lu-icon icon tree-folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+      </div>
     <?php else : ?>
-      <div class="lunchbox_page"></div>
+      <div class="x-tree-node">
+        <div class="icon tree-resource"></div>
+      </div>
+      
     <?php endif; ?>
+
     </td>
     <?php 
         // Configurable columns

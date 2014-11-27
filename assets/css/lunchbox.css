@@ -1,4 +1,4 @@
-.lunchbox_folder{
+/* .lunchbox_folder{
     background-image:url('../images/folder.png');
     background-repeat:no-repeat;
     height:17px;
@@ -14,6 +14,9 @@
     background-repeat:no-repeat;
     height:24px;
     width:24px;
+} */
+.lu-icon {
+    cursor: pointer;
 }
 .lunchbox_breadcrumb {
     font-weight: bold;    

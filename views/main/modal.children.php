@@ -32,10 +32,12 @@
         <?php //endforeach; ?>
     <td>
     <?php if($r['isfolder'] == 1) : ?>
-      <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+       <div class="x-tree-node">
+        <div class="lu-icon icon tree-folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+      </div>
     <?php else : ?>
       <div class="x-tree-node">
-        <div class="icon icon-store"></div>
+        <div class="icon tree-resource"></div>
       </div>
       
     <?php endif; ?>
