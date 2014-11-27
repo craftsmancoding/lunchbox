@@ -103,17 +103,32 @@ function show_all_child(parent){
    return get_children(parent);
 }
 
-function launch_modal_parent(obj) {    
+function draw_modal_header(selected) {    
+    var url = connector_url+"&class=page&method=modalheader&selected="+selected;
+    $.ajax({ 
+        type: "GET", 
+        url: url, 
+        success: function(response) {
+            $('#selected-header').html(response);
+        }   
+    });
+}
+
+function launch_modal_parent(obj) { 
+    var sel_id = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
         success: function(response) { 
+            draw_modal_header(sel_id);
             $('#parent-modal').modal('show');
             $('#child_pages_modal').html(response);
         }   
     }); 
     event.preventDefault();
 }
+
+
 
 function search_parent() {
         var search = $('#search_term').val();

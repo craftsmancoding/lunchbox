@@ -63,7 +63,7 @@
         <td>
             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
+            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
             <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
          </td>
     </tr>
@@ -109,10 +109,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	<!-- Modal -->
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Select Parent for Some Page (123)</h4>
-      </div>
+      <div id="selected-header"></div>
       <div class="modal-body">
       <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
 	      <div class="pull-right">

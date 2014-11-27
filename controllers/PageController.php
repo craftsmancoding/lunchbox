@@ -266,6 +266,19 @@ class PageController extends BaseController {
     }
 
 
+    public function getModalHeader(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+         $sel_id = $this->modx->getOption('selected',$scriptProperties,0);
+        $selected = $this->modx->getObject('modResource',$sel_id);
+        $this->setPlaceholder('selected_id', $selected->get('id'));
+        $this->setPlaceholder('selected_title', $selected->get('pagetitle'));
+        return $this->fetchTemplate('main/modal.header.php'); 
+    }
+
+
     public function postSetParent(array $scriptProperties = array()) {
         $this->loadHeader = false;
         $this->loadFooter = false;
