@@ -83,12 +83,12 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
         array(
-            'first' => '<span onclick="javascript:get_children(this,'.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span onclick="javascript:get_children(this,'.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span onclick="javascript:get_children(this,'.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span onclick="javascript:get_children(this,'.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'first' => '<span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span onclick="javascript:get_children(this,'.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span onclick="javascript:get_children('.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }
