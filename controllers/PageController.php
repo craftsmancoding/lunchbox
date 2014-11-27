@@ -250,11 +250,12 @@ class PageController extends BaseController {
             print 'Operation not allowed.';
             exit;
         }
-
+ 
         $tvs = $this->_get_tvs($cols);
         foreach ($rows as $r) {
             $tv_vals = array();
             $page = $r->toArray('',false,true);
+            $page['mgr_tree_icon'] = $this->modx->getOption('mgr_tree_icon_'.strtolower($page['class_key']));
             if(!empty($tvs)) {
                $tv_vals = $this->_addtvValues($tvs,$page['id']);
             }

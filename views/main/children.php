@@ -45,11 +45,11 @@
     <td>
  	<?php if($r['isfolder'] == 1) : ?>
        <div class="x-tree-node">
-        <div class="lu-icon icon tree-folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+        <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>
     <?php else : ?>
       <div class="x-tree-node">
-        <div class="icon tree-resource"></div>
+        <div class="icon tree-resource <?php print $r['mgr_tree_icon']; ?>"></div>
       </div>
       
     <?php endif; ?>
