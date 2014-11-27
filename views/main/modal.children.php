@@ -31,10 +31,13 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
-    <?php if($r['isfolder'] == 1 && $r['parent'] > 0) : ?>
+    <?php if($r['isfolder'] == 1) : ?>
       <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
     <?php else : ?>
-      <div class="lunchbox_page"></div>
+      <div class="x-tree-node">
+        <div class="icon icon-store"></div>
+      </div>
+      
     <?php endif; ?>
     </td>
     <?php 

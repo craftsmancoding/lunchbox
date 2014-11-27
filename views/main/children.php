@@ -43,7 +43,7 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
-    <?php if($r['isfolder'] == 1 && $r['parent'] > 0) : ?>
+    <?php if($r['isfolder'] == 1) : ?>
       <div class="lunchbox_folder" data-id="<?php print  $r['id']; ?>" data-target="<?php  print $data['target']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
     <?php else : ?>
       <div class="lunchbox_page"></div>
@@ -57,7 +57,7 @@
         <td>
             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id]; ?>">Select Parent</a>    
+            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
             <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
          </td>
     </tr>

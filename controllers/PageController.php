@@ -193,6 +193,7 @@ class PageController extends BaseController {
 
 
     public function getRecords(array $scriptProperties = array()) {
+
         $this->loadHeader = false;
         $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
@@ -207,15 +208,16 @@ class PageController extends BaseController {
         $selected = $this->modx->getOption('selected',$scriptProperties,0);
     
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
         $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
 
-        if ($parent) {
-            $criteria->where(array('parent'=>$parent));
-        }
+
+        $criteria->where(array('parent'=>$parent));
+        
 
         if($search != '' || !empty($search)) {
             $criteria->where(array('pagetitle:LIKE'=>"%$search%"));
@@ -224,7 +226,9 @@ class PageController extends BaseController {
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
-
+     /*   $criteria->prepare();
+        print $criteria->toSQL();
+        die();*/
         $pos = strpos($sort, 'tv.');
         // if false use regular sort
         if ($pos === false) {

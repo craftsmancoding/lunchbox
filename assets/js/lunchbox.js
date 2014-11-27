@@ -103,7 +103,7 @@ function show_all_child(parent){
    return get_children(parent);
 }
 
-function launch_modal_parent(obj) {      
+function launch_modal_parent(obj) {    
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
