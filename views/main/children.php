@@ -120,7 +120,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	      </div>
 	      <div class="clear">&nbsp;</div>
       </form>
-      <div id="child_pages_modal">
+      <div class="modal-content-result set-parent-modal-content">
             </div><!--e#child-pages-->
       </div>
 
@@ -144,7 +144,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 		      <div class="clear">&nbsp;</div>
 	      </form>
 	      <div class="clearfix">
-	      	<div id="select_children"></div><!--e#select_children-->
+	      	<div class="modal-content-result"></div><!--e#select_children-->
       		<div id="queue-children">
       			<h4>Child Pages</h4>
       			<table class="classy classy2">

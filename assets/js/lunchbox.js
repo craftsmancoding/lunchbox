@@ -40,11 +40,11 @@ function setBreadcrumbsModal(page_id) {
             type: "GET", 
             url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
             success: function(response) {
-                if($('#lunchbox_breadcrumbs_modal').length == 0) {
-                    $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
+                if($('.lunchbox_breadcrumbs_modal').length == 0) {
+                    $('.modal-content-result').after('<div class="lunchbox_breadcrumbs_modal">Testing</div>');
                 }
                 
-                $('#lunchbox_breadcrumbs_modal').html(response);
+                $('.lunchbox_breadcrumbs_modal').html(response);
             }   
         }); 
 }
@@ -93,7 +93,7 @@ function get_children_modal(parent,offset,sort,dir) {
         type: "GET", 
         url: url,
         success: function(response) {
-            $("#child_pages_modal").html(response);
+            $(".modal-content-result").html(response);
             setBreadcrumbsModal(parent);
         }   
     }); 
@@ -115,6 +115,7 @@ function draw_modal_header(selected) {
 }
 
 function launch_modal_parent(obj) { 
+    $('.lunchbox_breadcrumbs_modal').remove();
     var sel_id = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
@@ -122,7 +123,7 @@ function launch_modal_parent(obj) {
         success: function(response) { 
             draw_modal_header(sel_id);
             $('#parent-modal').modal('show');
-            $('#child_pages_modal').html(response);
+            $('.modal-content-result').html(response);
         }   
     }); 
     event.preventDefault();
@@ -143,6 +144,7 @@ function remove_q(obj) {
 
 
 function launch_modal_children(obj) { 
+    $('.lunchbox_breadcrumbs_modal').remove();
     var sel_id = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
@@ -151,7 +153,7 @@ function launch_modal_children(obj) {
             console.log(response);
             draw_modal_header(sel_id);
             $('#children-modal').modal('show');
-            $('#select_children').html(response);
+            $('.modal-content-result').html(response);
         }   
     }); 
     event.preventDefault();
@@ -179,7 +181,7 @@ function search_parent_modal() {
             url: url,
             success: function( response )  
             {
-               $("#child_pages_modal").html(response);               
+               $(".modal-content-result").html(response);               
             }
        });
     
