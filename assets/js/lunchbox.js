@@ -2,15 +2,14 @@
  * Drill down into a folder
  *
  */
-function drillDown(id,in_modal) {
+function drillDown(id) {
     get_children(id,0);
-    // update the breadcrumbs
-    if(in_modal == 1) {
-        setBreadcrumbsModal(id);
-    } else {
-        setBreadcrumbs(id);
-    }
-    
+    setBreadcrumbs(id);
+}
+
+function drillDownModal(id) {
+    get_children_modal(id,0);
+    setBreadcrumbsModal(id);
 }
 
 /**
@@ -20,10 +19,10 @@ function drillDown(id,in_modal) {
 function setBreadcrumbs(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=0',
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
             success: function(response) {
                 if($('#lunchbox_breadcrumbs').length == 0) {
-                    $('#child_pages').after('<div id="lunchbox_breadcrumbs">Testing</div>');
+                    $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
                 }
                 
                 $('#lunchbox_breadcrumbs').html(response);
@@ -39,7 +38,7 @@ function setBreadcrumbs(page_id) {
 function setBreadcrumbsModal(page_id) {
     jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id+'&in_modal=1',
+            url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
             success: function(response) {
                 if($('#lunchbox_breadcrumbs_modal').length == 0) {
                     $('#child_pages_modal').after('<div id="lunchbox_breadcrumbs_modal">Testing</div>');
@@ -57,7 +56,6 @@ function setBreadcrumbsModal(page_id) {
  * @param string dir ASC|DESC 
  */
 function get_children(parent,offset,sort,dir) {
-    console.log(sort_col);
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : sort_col;
@@ -71,6 +69,7 @@ function get_children(parent,offset,sort,dir) {
         url: url,
         success: function(response) {
             $("#child_pages").html(response);
+            setBreadcrumbs(parent);
         }   
     }); 
 }
@@ -81,61 +80,79 @@ function get_children(parent,offset,sort,dir) {
  * @param string sort column name
  * @param string dir ASC|DESC 
  */
-function get_children2(obj,parent,offset,sort,dir) {
-    console.log("[Lunchbox get_children()2] requesting URL TEST");
-    var target = $(obj).data('target');
-    var id = $(obj).data('id');
-    var in_modal = $(obj).data('in_modal');
+function get_children_modal(parent,offset,sort,dir) {
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
-    sort = typeof sort !== "undefined" ? sort : sort_col;
+    sort = typeof sort !== "undefined" ? sort : 'menuindex';
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=records&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&target="+target+"&in_modal="+in_modal;
+    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+
+    console.log("[Lunchbox get_children()] requesting URL",url);
+
     jQuery.ajax({ 
         type: "GET", 
         url: url,
         success: function(response) {
-
-            $("#"+target).html(response);
+            $("#child_pages_modal").html(response);
+            setBreadcrumbsModal(parent);
         }   
     }); 
-    if(in_modal == 1) {
-       setBreadcrumbsModal(id); 
-    } else {
-       setBreadcrumbs(id); 
-    }
 }
-
 
 function show_all_child(parent){
    return get_children(parent);
 }
 
-function launch_modal_parent(obj) {      
+function draw_modal_header(selected) {    
+    var url = connector_url+"&class=page&method=modalheader&selected="+selected;
+    $.ajax({ 
+        type: "GET", 
+        url: url, 
+        success: function(response) {
+            $('#selected-header').html(response);
+        }   
+    });
+}
+
+function launch_modal_parent(obj) { 
+    var sel_id = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
         success: function(response) { 
+            draw_modal_header(sel_id);
             $('#parent-modal').modal('show');
-            $('#parent-modal').html(response);
+            $('#child_pages_modal').html(response);
         }   
     }); 
     event.preventDefault();
 }
 
+
+
 function search_parent() {
-    console.log('Searching [Lunchbox]');
-    var form = $('#search-parent');
-    var target = form.data('target');
-    console.log(target);
-    var values = form.serialize();
-    var url = form.attr('action');    
+        var search = $('#search_term').val();
+         var parent = $('#parent').val();
+        var url = connector_url+"&class=page&method=children&parent="+parent+"&search_term="+search;
         $.ajax({
-            url: url,  
-            data: values,  
+            url: url,
             success: function( response )  
             {
-                 $("#"+target).html(response);               
+               $("#child_pages").html(response);               
+            }
+       });
+    
+    event.preventDefault();
+}
+
+function search_parent_modal() {
+        var search = $('#search_term_modal').val();
+        var url = connector_url+"&class=page&method=parents&search_term="+search;
+        $.ajax({
+            url: url,
+            success: function( response )  
+            {
+               $("#child_pages_modal").html(response);               
             }
        });
     

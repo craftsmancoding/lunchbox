@@ -12,7 +12,9 @@ class LunchboxUpdateManagerController extends ResourceUpdateManagerController {
         $page_id = (int) (isset($_GET['id'])) ? $_GET['id'] : null;
         $Lunchbox = new Lunchbox($this->modx);
 
+
         $this->addJavascript($assets_url . 'js/jquery.min.js');
+
 
         $this->addJavascript($assets_url . 'js/lunchbox.js');
         $this->addCss($assets_url . 'css/mgr.css'); 

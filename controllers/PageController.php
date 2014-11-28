@@ -63,6 +63,45 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
 
+        $items = $this->getBcRecords($scriptProperties);
+         $items = json_decode($items,true);
+        $last = array_pop($items);
+
+
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        return $this->fetchTemplate('main/breadcrumbs.php');
+    }
+
+
+    /**
+     * getBreadcrumbs
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getBreadcrumbsmodal(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+
+        $items = $this->getBcRecords($scriptProperties);
+         $items = json_decode($items,true);
+        $last = array_pop($items);
+
+        $this->setPlaceholder('links', $items);
+        $this->setPlaceholder('last', $last['pagetitle']);
+        $this->setPlaceholder('in_modal', $in_modal);
+        return $this->fetchTemplate('main/modal.breadcrumbs.php');
+    }
+
+    public function getBcRecords(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+
        $page_id = $this->modx->getOption('page_id',$scriptProperties);
        $in_modal = $this->modx->getOption('in_modal',$scriptProperties);
         $items = array();
@@ -74,15 +113,8 @@ class PageController extends BaseController {
             );
             $page_id = $page->get('parent');
         }
-
-        $last = array_pop($items);
-
-        $this->setPlaceholder('links', $items);
-        $this->setPlaceholder('last', $last['pagetitle']);
-        $this->setPlaceholder('in_modal', $in_modal);
-        return $this->fetchTemplate('main/breadcrumbs.php');
+        return json_encode($items);
     }
-
      /**
      * getChildren
      * @param array $scriptProperties
@@ -96,11 +128,29 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-        $scriptProperties['target'] = 'child_pages_inner';
-        $search = $this->modx->getOption('in_modal',$scriptProperties,false);
-        $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
-       
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
 
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
+        $data = $this->getRecords($scriptProperties);
+        $data = json_decode($data,true);
+
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+              
         return $this->fetchTemplate('main/children.php');
     }
 
@@ -116,15 +166,34 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
-        $scriptProperties['target'] = 'child_pages_modal';
-        $search = $this->modx->getOption('in_modal',$scriptProperties,true);
-        $this->setPlaceholder('records_layout', $this->getRecords($scriptProperties));
-       
-        return $this->fetchTemplate('main/modal.setparent.php');
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
+        $data = $this->getRecords($scriptProperties);
+        $data = json_decode($data,true);
+
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+
+        return $this->fetchTemplate('main/modal.children.php');        
     }
 
 
     public function getRecords(array $scriptProperties = array()) {
+
         $this->loadHeader = false;
         $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
@@ -139,15 +208,16 @@ class PageController extends BaseController {
         $selected = $this->modx->getOption('selected',$scriptProperties,0);
     
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
         $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
 
-        if ($parent) {
-            $criteria->where(array('parent'=>$parent));
-        }
+
+        $criteria->where(array('parent'=>$parent));
+        
 
         if($search != '' || !empty($search)) {
             $criteria->where(array('pagetitle:LIKE'=>"%$search%"));
@@ -156,7 +226,9 @@ class PageController extends BaseController {
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
-
+     /*   $criteria->prepare();
+        print $criteria->toSQL();
+        die();*/
         $pos = strpos($sort, 'tv.');
         // if false use regular sort
         if ($pos === false) {
@@ -178,31 +250,33 @@ class PageController extends BaseController {
             print 'Operation not allowed.';
             exit;
         }
-
+ 
         $tvs = $this->_get_tvs($cols);
         foreach ($rows as $r) {
             $tv_vals = array();
             $page = $r->toArray('',false,true);
+            $page['mgr_tree_icon'] = $this->modx->getOption('mgr_tree_icon_'.strtolower($page['class_key']));
             if(!empty($tvs)) {
                $tv_vals = $this->_addtvValues($tvs,$page['id']);
             }
             $page = array_merge($page,$tv_vals);
             $data['results'][] =$page;
         }
+        $data['cols'] = $cols;
+        return json_encode($data);
+    }
 
-        $this->setPlaceholder('results', $data['results']);
-        $this->setPlaceholder('count', $data['total']);
-        $this->setPlaceholder('offset', $offset);
-        $this->setPlaceholder('parent', $parent);
-        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
-        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
-        $this->setPlaceholder('columns', $cols);
-        $this->setPlaceholder('controller_url', $this->config['controller_url']);
-        $this->setPlaceholder('target', $scriptProperties['target']);
-        $this->setPlaceholder('in_modal', $in_modal);
-        $this->setPlaceholder('selected', $selected);
 
-        return $this->fetchTemplate('main/table.children.php');
+    public function getModalHeader(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+         $sel_id = $this->modx->getOption('selected',$scriptProperties,0);
+        $selected = $this->modx->getObject('modResource',$sel_id);
+        $this->setPlaceholder('selected_id', $selected->get('id'));
+        $this->setPlaceholder('selected_title', $selected->get('pagetitle'));
+        return $this->fetchTemplate('main/modal.header.php'); 
     }
 
 
