@@ -159,17 +159,17 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
         <tr class="q-row">
           <td>1</td>
           <td>Mark</td>
-          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+          <td><a href="#" onclick="javascript:remove_q(this);" class="btn btn-mini btn-remove">x</a></td>
         </tr>
        <tr class="q-row">
           <td>1</td>
           <td>Mark</td>
-          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+          <td><a href="#" onclick="javascript:remove_q(this);" class="btn btn-mini btn-remove">x</a></td>
         </tr>
        <tr class="q-row">
           <td>1</td>
           <td>Mark</td>
-          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+          <td><a href="#" onclick="javascript:remove_q(this);" class="btn btn-mini btn-remove">x</a></td>
         </tr>
       </tbody>
     </table>

@@ -135,6 +135,13 @@ function add_to_queue(obj) {
     $(obj).parent('td').parent('tr').hide();
 }
 
+
+function remove_q(obj) {
+    $(obj).parent('td').parent('tr').remove();
+    event.preventDefault();
+}
+
+
 function launch_modal_children(obj) { 
     var sel_id = $(obj).data('selected');     
     $.ajax({ 
