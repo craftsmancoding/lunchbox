@@ -132,7 +132,7 @@ function launch_modal_parent(obj) {
 function add_to_queue(obj) {
     var page_id = $(obj).data('id');
     var pagetitle = $(obj).data('pagetitle');
-    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove">x</a></td></tr>');
+    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" onclick="javascript:remove_q(this);">x</a></td></tr>');
     $(obj).parent('td').parent('tr').hide();
 }
 
