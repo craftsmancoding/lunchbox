@@ -149,14 +149,34 @@ function launch_modal_children(obj) {
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
-        success: function(response) { 
-            console.log(response);
+        success: function(response) {
+            get_children_on_queue(sel_id);
             draw_modal_header(sel_id);
             $('#children-modal').modal('show');
             $('.modal-content-result').html(response);
         }   
     }); 
     event.preventDefault();
+}
+
+
+function get_children_on_queue(parent) {
+    console.log('getting children for queue section...');
+    var url = connector_url+"&class=page&method=records&parent="+parent;
+    $.ajax({
+        url: url,
+        success: function( response )  
+        {
+            var data = $.parseJSON(response);
+            if(data.total !== 0) {
+               for (var i = 0; i < data.total; i++) {
+                    $('#-body').append();
+                     $('#q-body').append('<tr><td>'+data.results[i].id+'</td><td>'+data.results[i].pagetitle+'</td><td>&nbsp;</td></tr>');
+                }
+            }
+            console.log(data);            
+        }
+   });
 }
 
 function search_parent() {
