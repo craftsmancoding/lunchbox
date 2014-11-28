@@ -128,6 +128,12 @@ function launch_modal_parent(obj) {
     event.preventDefault();
 }
 
+function add_to_queue(obj) {
+    var page_id = $(obj).data('id');
+    var pagetitle = $(obj).data('pagetitle');
+    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove">x</a></td></tr>');
+    $(obj).parent('td').parent('tr').hide();
+}
 
 function launch_modal_children(obj) { 
     var sel_id = $(obj).data('selected');     

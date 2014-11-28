@@ -44,7 +44,7 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-          <a class="btn btn-mini" href="#">Add to queue</a>           
+          <a class="btn btn-mini" onclick="javascript:add_to_queue(this)" data-id="<?php print $r['id']; ?>" data-pagetitle="<?php print $r['pagetitle']; ?>" href="#">Add to queue</a>           
          </td>
     </tr>
 <?php endforeach; ?>
