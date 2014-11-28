@@ -161,7 +161,9 @@ function launch_modal_children(obj) {
 
 
 function get_children_on_queue(parent) {
+
     console.log('getting children for queue section...');
+    $('#q-body').empty();
     var url = connector_url+"&class=page&method=records&parent="+parent;
     $.ajax({
         url: url,
