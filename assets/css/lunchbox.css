@@ -68,3 +68,47 @@ content: "\f0b1" !important;
 .x-tree-node .icon-lunchbox:before {
 content: "\f0b1" !important;
 }
+
+#children-modal .modal-dialog {
+    width: 70% !important;
+}
+
+#select_children {
+  width: 70%;
+  float: left;
+}
+
+#queue-children {
+    width: 29%;
+    float: right;
+    border: 1px solid #ddd;
+    padding: 1%;
+    margin-top: 35px;
+}
+
+#queue-children h4 {
+    color: #858185;
+    font-size: 12px !important;
+    margin-bottom: 5px;
+}
+table.classy2 thead tr {
+background: #2AA798 !important;
+color: #fff !important;
+}
+.classy2 {
+    font-size: 11px;
+}
+
+.classy2 tr:nth-child(even) {
+background: #D1F3EF;
+}
+
+table.classy2 thead tr th,
+table.classy2 td {
+    font-size: 11px !important;
+    padding: 5px !important;
+}
+
+table.classy2 thead tr th {
+    color: #fff !important;
+}

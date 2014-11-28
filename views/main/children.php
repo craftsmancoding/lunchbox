@@ -64,6 +64,7 @@
             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
             <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
+             <a class="btn btn-mini btn-orange" onclick="javascript:launch_modal_children(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=selectchildren&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Children</a>    
             <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
          </td>
     </tr>
@@ -109,7 +110,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	<!-- Modal -->
   <div class="modal-dialog">
     <div class="modal-content">
-      <div id="selected-header"></div>
+      <div class="selected-header"></div>
       <div class="modal-body">
       <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
 	      <div class="pull-right">
@@ -126,6 +127,66 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="children-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="selected-header"></div>
+      <div class="modal-body">
+	      <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
+		      <div class="pull-right">
+		      	<label for="search_term_modal">Search </label>
+		        <input type="text" name="search_term" id="search_term_modal">
+		        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
+		      </div>
+		      <div class="clear">&nbsp;</div>
+	      </form>
+	      <div class="clearfix">
+	      	<div id="select_children"></div><!--e#select_children-->
+      		<div id="queue-children">
+      			<h4>Child Pages</h4>
+      			<table class="classy classy2">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pagetitle</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+        </tr>
+       <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+        </tr>
+       <tr>
+          <td>1</td>
+          <td>Mark</td>
+          <td><a href="#" class="btn btn-mini btn-remove">x</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+      		</div>
+	      </div>
+      		
+      </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary">Update Children</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
 
 

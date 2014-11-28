@@ -188,6 +188,43 @@ class PageController extends BaseController {
         $this->setPlaceholder('controller_url', $this->config['controller_url']); 
         $this->setPlaceholder('selected', $selected);
 
+        return $this->fetchTemplate('main/modal.parent.php');        
+    }
+
+    /**
+     * getParents
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getSelectChildren(array $scriptProperties = array()) {
+       $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
+        $data = $this->getRecords($scriptProperties);
+        $data = json_decode($data,true);
+
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+
         return $this->fetchTemplate('main/modal.children.php');        
     }
 

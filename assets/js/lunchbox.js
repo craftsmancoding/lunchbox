@@ -109,7 +109,7 @@ function draw_modal_header(selected) {
         type: "GET", 
         url: url, 
         success: function(response) {
-            $('#selected-header').html(response);
+            $('.selected-header').html(response);
         }   
     });
 }
@@ -129,6 +129,20 @@ function launch_modal_parent(obj) {
 }
 
 
+function launch_modal_children(obj) { 
+    var sel_id = $(obj).data('selected');     
+    $.ajax({ 
+        type: "GET", 
+        url: $(obj).attr('href'), 
+        success: function(response) { 
+            console.log(response);
+            draw_modal_header(sel_id);
+            $('#children-modal').modal('show');
+            $('#select_children').html(response);
+        }   
+    }); 
+    event.preventDefault();
+}
 
 function search_parent() {
         var search = $('#search_term').val();
