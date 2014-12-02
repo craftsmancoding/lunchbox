@@ -1,3 +1,6 @@
+<script>
+    var queue = [];
+</script>
 <div class="children-wrapper">
 <?php if ($data['results']): ?>
 <input type="hidden" name="lunchbox" value="1">
@@ -18,9 +21,9 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="children-select-tbody">
 <?php foreach ($data['results'] as $r) : ?>
-    <tr>
+    <tr data-id="<?php print  $r['id'] ?>">
         <?php 
         // Configurable columns
         //foreach($data['columns'] as $k => $v): ?>

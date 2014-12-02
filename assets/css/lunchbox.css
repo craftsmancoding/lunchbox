@@ -116,3 +116,7 @@ table.classy2 td {
 table.classy2 thead tr th {
     color: #fff !important;
 }
+
+.hide-row {
+    display: none;
+}

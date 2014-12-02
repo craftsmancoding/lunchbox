@@ -250,7 +250,17 @@ class PageController extends BaseController {
         $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
+        $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
+        $excludes = json_decode($excludes,true);
 
+        $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
+        $excludes = json_decode($excludes,true);
+
+
+
+        if(!empty($excludes)) {
+            $criteria->where(array('width: NOT IN'=>$excludes));
+        };
 
         $criteria->where(array('parent'=>$parent));
         
@@ -332,6 +342,17 @@ class PageController extends BaseController {
             return json_encode($result);
         }
         return json_encode($result);  
+    }
+
+    public function postSetChildren(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+                echo '<pre>';
+                print_r($scriptProperties);
+                die();
     }
 
     /**

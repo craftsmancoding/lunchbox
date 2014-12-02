@@ -1,8 +1,9 @@
 function add_to_queue(obj) {
     var page_id = $(obj).data('id');
     var pagetitle = $(obj).data('pagetitle');
-    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" onclick="javascript:remove_q(this);">x</a></td></tr>');
-    $(obj).parent('td').parent('tr').hide();
+    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" data-id="'+page_id+'" onclick="javascript:remove_q(this);">x</a></td></tr>');
+    queue.push(page_id);
+    $(obj).parent('td').parent('tr').addClass('hide-row');
 }
 
 
@@ -96,7 +97,7 @@ function get_children_modal(parent,offset,sort,dir) {
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : 'menuindex';
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=selectchildren&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+    var url = connector_url+"&class=page&method=selectchildren&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&exclude="+JSON.stringify(queue);
 
     console.log("[Lunchbox get_children()] requesting URL",url);
 
@@ -172,7 +173,11 @@ function launch_modal_children(obj) {
 }
 
 function remove_q(obj) {
+    var page_id = $(obj).data('id');
     $(obj).parent('td').parent('tr').remove();
+    queue.splice( $.inArray(page_id,queue) ,1 );
+    $('#children-select-tbody tr').filter('[data-id="'+page_id+'"]').removeClass('hide-row');
+    console.log(queue);
     event.preventDefault();
 }
 
@@ -275,4 +280,15 @@ function setBreadcrumbsModal(page_id) {
 
 function show_all_child(parent){
    return get_children(parent);
+}
+
+
+function update_children() {
+     jQuery.ajax({ 
+            type: "GET", 
+            url: connector_url+"&class=page&method=setchildren&exclude="+JSON.stringify(queue),
+            success: function(response) {
+                console.log(response);
+            }   
+        }); 
 }

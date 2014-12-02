@@ -164,7 +164,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
       </div>
           <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary">Update Children</button>
+        <button type="button" class="btn btn-primary"  onclick="javascript:update_children();">Update Children</button>
       </div>
 
     </div>
