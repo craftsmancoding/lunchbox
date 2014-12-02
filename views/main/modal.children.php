@@ -23,7 +23,7 @@
     </thead>
     <tbody id="children-select-tbody">
 <?php foreach ($data['results'] as $r) : ?>
-    <tr data-id="<?php print  $r['id'] ?>">
+    <tr data-id="<?php print  $r['id'] ?>" class="<?php print $r['on_queue']; ?>">
         <?php 
         // Configurable columns
         //foreach($data['columns'] as $k => $v): ?>

@@ -253,14 +253,6 @@ class PageController extends BaseController {
         $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
         $excludes = json_decode($excludes,true);
 
-        $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
-        $excludes = json_decode($excludes,true);
-
-
-
-        if(!empty($excludes)) {
-            $criteria->where(array('width: NOT IN'=>$excludes));
-        };
 
         $criteria->where(array('parent'=>$parent));
         
@@ -302,6 +294,7 @@ class PageController extends BaseController {
             $tv_vals = array();
             $page = $r->toArray('',false,true);
             $page['mgr_tree_icon'] = $this->modx->getOption('mgr_tree_icon_'.strtolower($page['class_key']));
+            $page['on_queue'] = in_array($page['id'], $excludes) ? 'hide-row' : 'show-row';
             if(!empty($tvs)) {
                $tv_vals = $this->_addtvValues($tvs,$page['id']);
             }
