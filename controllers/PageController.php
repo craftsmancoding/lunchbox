@@ -140,7 +140,6 @@ class PageController extends BaseController {
 
         $data = $this->getRecords($scriptProperties);
         $data = json_decode($data,true);
-
         $this->setPlaceholder('offset', $offset);
         $this->setPlaceholder('parent', $parent);
         $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
@@ -151,7 +150,7 @@ class PageController extends BaseController {
         $this->setPlaceholder('controller_url', $this->config['controller_url']); 
         $this->setPlaceholder('selected', $selected);
               
-        return $this->fetchTemplate('main/children.php');
+        return $this->fetchTemplate('main/lunchbox.php');
     }
 
     /**

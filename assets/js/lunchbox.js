@@ -1,3 +1,24 @@
+function add_to_queue(obj) {
+    var page_id = $(obj).data('id');
+    var pagetitle = $(obj).data('pagetitle');
+    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" onclick="javascript:remove_q(this);">x</a></td></tr>');
+    $(obj).parent('td').parent('tr').hide();
+}
+
+
+
+function draw_modal_header(selected) {    
+    var url = connector_url+"&class=page&method=modalheader&selected="+selected;
+    $.ajax({ 
+        type: "GET", 
+        url: url, 
+        success: function(response) {
+            $('.selected-header').html(response);
+        }   
+    });
+}
+
+
 /**
  * Drill down into a folder
  *
@@ -8,45 +29,8 @@ function drillDown(id) {
 }
 
 function drillDownModal(id) {
-    get_children_modal(id,0);
+    get_parent_modal(id,0);
     setBreadcrumbsModal(id);
-}
-
-/**
- * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
- * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
- */
-function setBreadcrumbs(page_id) {
-    jQuery.ajax({ 
-            type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
-            success: function(response) {
-                if($('#lunchbox_breadcrumbs').length == 0) {
-                    $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
-                }
-                
-                $('#lunchbox_breadcrumbs').html(response);
-            }   
-        }); 
-}
-
-
-/**
- * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
- * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
- */
-function setBreadcrumbsModal(page_id) {
-    jQuery.ajax({ 
-            type: "GET", 
-            url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
-            success: function(response) {
-                if($('.lunchbox_breadcrumbs_modal').length == 0) {
-                    $('.modal-content-result').after('<div class="lunchbox_breadcrumbs_modal">Testing</div>');
-                }
-                
-                $('.lunchbox_breadcrumbs_modal').html(response);
-            }   
-        }); 
 }
 
 
@@ -76,11 +60,12 @@ function get_children(parent,offset,sort,dir) {
 
 
 /**
+ * display records for parent selection
  * @param integer offset
  * @param string sort column name
  * @param string dir ASC|DESC 
  */
-function get_children_modal(parent,offset,sort,dir) {
+function get_parent_modal(parent,offset,sort,dir) {
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : 'menuindex';
@@ -93,72 +78,11 @@ function get_children_modal(parent,offset,sort,dir) {
         type: "GET", 
         url: url,
         success: function(response) {
-            $(".modal-content-result").html(response);
+            $("#set-parent-modal-content").html(response);
             setBreadcrumbsModal(parent);
         }   
     }); 
 }
-
-function show_all_child(parent){
-   return get_children(parent);
-}
-
-function draw_modal_header(selected) {    
-    var url = connector_url+"&class=page&method=modalheader&selected="+selected;
-    $.ajax({ 
-        type: "GET", 
-        url: url, 
-        success: function(response) {
-            $('.selected-header').html(response);
-        }   
-    });
-}
-
-function launch_modal_parent(obj) { 
-    $('.lunchbox_breadcrumbs_modal').remove();
-    var sel_id = $(obj).data('selected');     
-    $.ajax({ 
-        type: "GET", 
-        url: $(obj).attr('href'), 
-        success: function(response) { 
-            draw_modal_header(sel_id);
-            $('#parent-modal').modal('show');
-            $('.modal-content-result').html(response);
-        }   
-    }); 
-    event.preventDefault();
-}
-
-function add_to_queue(obj) {
-    var page_id = $(obj).data('id');
-    var pagetitle = $(obj).data('pagetitle');
-    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" onclick="javascript:remove_q(this);">x</a></td></tr>');
-    $(obj).parent('td').parent('tr').hide();
-}
-
-
-function remove_q(obj) {
-    $(obj).parent('td').parent('tr').remove();
-    event.preventDefault();
-}
-
-
-function launch_modal_children(obj) { 
-    $('.lunchbox_breadcrumbs_modal').remove();
-    var sel_id = $(obj).data('selected');     
-    $.ajax({ 
-        type: "GET", 
-        url: $(obj).attr('href'), 
-        success: function(response) {
-            get_children_on_queue(sel_id);
-            draw_modal_header(sel_id);
-            $('#children-modal').modal('show');
-            $('.modal-content-result').html(response);
-        }   
-    }); 
-    event.preventDefault();
-}
-
 
 function get_children_on_queue(parent) {
 
@@ -181,6 +105,49 @@ function get_children_on_queue(parent) {
    });
 }
 
+
+/**
+ * launch Modal to select parent
+ * for the chosen page
+ */
+function launch_modal_parent(obj) { 
+    $('.lunchbox_breadcrumbs_modal').remove();
+    var sel_id = $(obj).data('selected');     
+    $.ajax({ 
+        type: "GET", 
+        url: $(obj).attr('href'), 
+        success: function(response) { 
+            draw_modal_header(sel_id);
+            $('#parent-modal').modal('show');
+            $('#set-parent-modal-content').html(response);
+        }   
+    }); 
+    event.preventDefault();
+}
+
+
+
+function launch_modal_children(obj) { 
+    $('.lunchbox_breadcrumbs_modal').remove();
+    var sel_id = $(obj).data('selected');     
+    $.ajax({ 
+        type: "GET", 
+        url: $(obj).attr('href'), 
+        success: function(response) {
+            get_children_on_queue(sel_id);
+            draw_modal_header(sel_id);
+            $('#children-modal').modal('show');
+            $('.modal-content-result').html(response);
+        }   
+    }); 
+    event.preventDefault();
+}
+
+function remove_q(obj) {
+    $(obj).parent('td').parent('tr').remove();
+    event.preventDefault();
+}
+
 function search_parent() {
         var search = $('#search_term').val();
          var parent = $('#parent').val();
@@ -196,6 +163,7 @@ function search_parent() {
     event.preventDefault();
 }
 
+
 function search_parent_modal() {
         var search = $('#search_term_modal').val();
         var url = connector_url+"&class=page&method=parents&search_term="+search;
@@ -203,7 +171,7 @@ function search_parent_modal() {
             url: url,
             success: function( response )  
             {
-               $(".modal-content-result").html(response);               
+               $("#set-parent-modal-content").html(response);               
             }
        });
     
@@ -238,4 +206,45 @@ function set_parent(obj) {
             }
        });
     event.preventDefault();
+}
+
+/**
+ * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
+ * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
+ */
+function setBreadcrumbs(page_id) {
+    jQuery.ajax({ 
+            type: "GET", 
+            url: connector_url+'&class=page&method=breadcrumbs&page_id='+page_id,
+            success: function(response) {
+                if($('#lunchbox_breadcrumbs').length == 0) {
+                    $('#child_pages').after('<div id="lunchbox_breadcrumbs"></div>');
+                }
+                
+                $('#lunchbox_breadcrumbs').html(response);
+            }   
+        }); 
+}
+
+
+/**
+ * See http://www.sencha.com/forum/showthread.php?21756-How-do-I-add-plain-text-to-a-Panel 
+ * And http://www.sencha.com/forum/showthread.php?38841-Using-Extjs-to-change-div-content
+ */
+function setBreadcrumbsModal(page_id) {
+    jQuery.ajax({ 
+            type: "GET", 
+            url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
+            success: function(response) {
+                if($('.lunchbox_breadcrumbs_modal').length == 0) {
+                    $('#set-parent-modal-content').after('<div class="lunchbox_breadcrumbs_modal">Testing</div>');
+                }
+                
+                $('.lunchbox_breadcrumbs_modal').html(response);
+            }   
+        }); 
+}
+
+function show_all_child(parent){
+   return get_children(parent);
 }
