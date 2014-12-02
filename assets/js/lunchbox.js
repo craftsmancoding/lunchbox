@@ -30,6 +30,7 @@ function drillDown(id) {
 
 function drillDownModal(id) {
     get_parent_modal(id,0);
+    get_children_modal(id,0);
     setBreadcrumbsModal(id);
 }
 
@@ -264,7 +265,7 @@ function setBreadcrumbsModal(page_id) {
             url: connector_url+'&class=page&method=breadcrumbsmodal&page_id='+page_id,
             success: function(response) {
                 if($('.lunchbox_breadcrumbs_modal').length == 0) {
-                    $('#set-parent-modal-content').after('<div class="lunchbox_breadcrumbs_modal">Testing</div>');
+                    $('#set-parent-modal-content,#set-children-modal-content').after('<div class="lunchbox_breadcrumbs_modal">Testing</div>');
                 }
                 
                 $('.lunchbox_breadcrumbs_modal').html(response);
