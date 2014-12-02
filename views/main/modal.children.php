@@ -1,6 +1,3 @@
-<script>
-    var queue = [];
-</script>
 <div class="children-wrapper">
 <?php if ($data['results']): ?>
 <input type="hidden" name="lunchbox" value="1">
