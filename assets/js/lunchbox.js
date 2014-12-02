@@ -84,6 +84,31 @@ function get_parent_modal(parent,offset,sort,dir) {
     }); 
 }
 
+/**
+ * display records for chidlren selection
+ * @param integer offset
+ * @param string sort column name
+ * @param string dir ASC|DESC 
+ */
+function get_children_modal(parent,offset,sort,dir) {
+    parent = typeof parent !== "undefined" ? parent : 0;
+    offset = typeof offset !== "undefined" ? offset : 0;
+    sort = typeof sort !== "undefined" ? sort : 'menuindex';
+    dir = typeof dir !== "undefined" ? dir : "ASC";
+    var url = connector_url+"&class=page&method=selectchildren&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+
+    console.log("[Lunchbox get_children()] requesting URL",url);
+
+    jQuery.ajax({ 
+        type: "GET", 
+        url: url,
+        success: function(response) {
+            $("#set-children-modal-content").html(response);
+            setBreadcrumbsModal(parent);
+        }   
+    }); 
+}
+
 function get_children_on_queue(parent) {
 
     console.log('getting children for queue section...');
@@ -126,7 +151,9 @@ function launch_modal_parent(obj) {
 }
 
 
-
+/**
+ * Launch modal to select children
+ */
 function launch_modal_children(obj) { 
     $('.lunchbox_breadcrumbs_modal').remove();
     var sel_id = $(obj).data('selected');     
@@ -137,7 +164,7 @@ function launch_modal_children(obj) {
             get_children_on_queue(sel_id);
             draw_modal_header(sel_id);
             $('#children-modal').modal('show');
-            $('.modal-content-result').html(response);
+            $('#set-children-modal-content').html(response);
         }   
     }); 
     event.preventDefault();

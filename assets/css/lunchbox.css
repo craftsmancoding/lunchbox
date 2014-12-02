@@ -73,12 +73,12 @@ content: "\f0b1" !important;
     width: 70% !important;
 }
 
-.modal-content-result {
+#set-children-modal-content {
   width: 70%;
   float: left;
 }
 
-.set-parent-modal-content {
+#set-parent-modal-content {
     width: 100% !important;
     float: none !important;
 }
