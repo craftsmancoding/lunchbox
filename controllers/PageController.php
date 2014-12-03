@@ -327,7 +327,6 @@ class PageController extends BaseController {
         $result = array('success'=>false,'msg'=>'Faled to Set Parent');
 
         $page = $this->modx->getObject('modResource', (int) $scriptProperties['id']);
-
         $page->set('parent', (int) $scriptProperties['parent']);
         $page->set('show_in_tree', 1);
            
@@ -345,9 +344,7 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
-                echo '<pre>';
-                print_r($scriptProperties);
-                die();
+    
     }
 
     /**
