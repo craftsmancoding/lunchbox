@@ -87,9 +87,15 @@ content: "\f0b1" !important;
     float: right;
     border: 1px solid #ddd;
     padding: 1%;
-    margin-top: 35px;
+/*     margin-top: 35px; */
+}
+.children-wrapper {
+    margin-top: 15px;
 }
 
+.children-wrapper-2 {
+    margin-top: 0px;
+}
 #queue-children h4 {
     color: #858185;
     font-size: 12px !important;
@@ -119,4 +125,8 @@ table.classy2 thead tr th {
 
 .hide-row {
     display: none;
+}
+
+#search-parent {
+    padding: 15px;
 }

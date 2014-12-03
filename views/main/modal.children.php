@@ -1,4 +1,4 @@
-<div class="children-wrapper">
+<div class="children-wrapper children-wrapper-2">
 <?php if ($data['results']): ?>
 <input type="hidden" name="lunchbox" value="1">
 <table class="classy">

@@ -2,7 +2,12 @@ var queue = [];
 function add_to_queue(obj) {
     var page_id = $(obj).data('id');
     var pagetitle = $(obj).data('pagetitle');
-    $('#q-body').append('<tr><td>'+page_id+'</td><td>'+pagetitle+'</td><td><a href="#" class="btn btn-mini btn-remove" data-id="'+page_id+'" onclick="javascript:remove_q(this);">x</a></td></tr>');
+    var content = '<tr>'+
+        '<td>'+page_id+'<input type="hidden" name="child[]" value="'+page_id+'"/></td>'+
+        '<td>'+pagetitle+'</td>'+
+        '<td><a href="#" class="btn btn-mini btn-remove" data-id="'+page_id+'" onclick="javascript:remove_q(this);">x</a></td>'+
+        '</tr>';
+    $('#q-body').append(content);
     queue.push(page_id);
     $(obj).parent('td').parent('tr').addClass('hide-row');
     console.log(queue);
@@ -123,10 +128,15 @@ function get_children_on_queue(parent) {
         success: function( response )  
         {
             var data = $.parseJSON(response);
+            var content = '';
             if(data.total !== 0) {
                for (var i = 0; i < data.total; i++) {
-                    $('#-body').append();
-                     $('#q-body').append('<tr><td>'+data.results[i].id+'</td><td>'+data.results[i].pagetitle+'</td><td>&nbsp;</td></tr>');
+                    content += '<tr>'+
+                        '<td>'+data.results[i].id+'<input type="hidden" name="child[]" value="'+data.results[i].id+'"/></td>'+
+                        '<td>'+data.results[i].pagetitle+'</td>'+
+                        '</tr>';
+
+                     $('#q-body').append(content);
                 }
             }
             console.log(data);            
@@ -225,10 +235,11 @@ function set_parent(obj) {
             data: values,  
             success: function( response )  
             {
-                $('#parent-modal').modal('hide');
+                 console.log(response);
+                //$('#parent-modal').modal('hide');
                 data = $.parseJSON(response);
-
-                if(data.success == true) {
+               // console.log(data);
+               /* if(data.success == true) {
                     $('.lu-msg').html('<div class="success">'+data.msg+'</div>')
                     .delay(2000).fadeOut(function() {
                        location.reload();
@@ -237,7 +248,7 @@ function set_parent(obj) {
                 } else{
                     $('.lu-msg').html('<div class="danger">'+data.msg+'</div>')
                     .delay(2000).fadeOut();
-                }          
+                }         */ 
             }
        });
     event.preventDefault();
@@ -285,12 +296,17 @@ function show_all_child(parent){
 }
 
 
-function update_children() {
+function update_children(obj) {
+     console.log('setting children [Lunchbox]');
+    var form = $('#set-children-form');
+    var values = form.serialize();
+    var url = form.attr('action');   
      jQuery.ajax({ 
             type: "GET", 
-            url: connector_url+"&class=page&method=setchildren&exclude="+JSON.stringify(queue),
+            url: url,
             success: function(response) {
                 console.log(response);
             }   
         }); 
+    event.preventDefault();
 }

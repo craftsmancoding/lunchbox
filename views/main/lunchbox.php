@@ -133,30 +133,34 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="selected-header"></div>
+              <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent" class="clearfix">
+          <div class="pull-right">
+            <label for="search_term_modal">Search </label>
+            <input type="text" name="search_term" id="search_term_modal">
+            <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
+          </div>
+          <div class="clear">&nbsp;</div>
+        </form>
+
+
       <div class="modal-body">
-	      <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
-		      <div class="pull-right">
-		      	<label for="search_term_modal">Search </label>
-		        <input type="text" name="search_term" id="search_term_modal">
-		        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
-		      </div>
-		      <div class="clear">&nbsp;</div>
-	      </form>
+
+  <form action="<?php print $data['controller_url'] .'&method=setchildren&class=page'; ?>" id="set-children-form"method="POST">
 	      <div class="clearfix">
 	      	<div id="set-children-modal-content"></div><!--e#set-children-modal-content-->
       		<div id="queue-children">
       			<h4>Child Pages</h4>
       			<table class="classy classy2">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Pagetitle</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="q-body">
-      </tbody>
-    </table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Pagetitle</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="q-body">
+              </tbody>
+            </table>
 
       		</div>
 	      </div>
@@ -166,6 +170,9 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary"  onclick="javascript:update_children();">Update Children</button>
       </div>
+      </div>
+
+      </form>
 
     </div>
   </div>
