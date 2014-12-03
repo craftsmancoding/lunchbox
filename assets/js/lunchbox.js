@@ -226,7 +226,7 @@ function search_parent_modal() {
 
 function set_parent(obj) {
     console.log('setting parent [Lunchbox]');
-    var form = $('#set-parent-form');
+    var form = $(obj).parent();
     var values = form.serialize();
     var url = form.attr('action');   
         $.ajax({
@@ -234,8 +234,9 @@ function set_parent(obj) {
             url: url,  
             data: values,  
             success: function( response )  
-            {
+            {  
                 data = $.parseJSON(response);
+               // console.log(data);
                 if(data.success == true) {
                     $('.lu-msg').html('<div class="success">'+data.msg+'</div>')
                     .delay(2000).fadeOut(function() {
@@ -245,7 +246,7 @@ function set_parent(obj) {
                 } else{
                     $('.lu-msg').html('<div class="danger">'+data.msg+'</div>')
                     .delay(2000).fadeOut();
-                }         
+                } 
             }
        });
     event.preventDefault();

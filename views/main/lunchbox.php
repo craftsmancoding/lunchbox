@@ -1,7 +1,4 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
-
-<div class="lu-msg"></div>
-
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
 	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
 	<form action="<?php print $data['controller_url'] .'&method=children&parent='.$data['parent']; ?>" id="search-parent">
@@ -120,6 +117,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	      </div>
 	      <div class="clear">&nbsp;</div>
       </form>
+      <div class="lu-msg"></div>
       <div id="set-parent-modal-content"></div><!--e#child-pages-->
       </div>
 

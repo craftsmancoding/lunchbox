@@ -1,6 +1,4 @@
 
-
-      
       <div class="children-wrapper">
 
 <?php if ($data['results']): ?>
@@ -48,10 +46,10 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" id="set-parent-form" method="POST">
+                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
                     <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
                     <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
-                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent();">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
                 </form>
            
          </td>
