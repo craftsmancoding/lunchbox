@@ -294,6 +294,7 @@ class PageController extends BaseController {
             $page = $r->toArray('',false,true);
             $page['mgr_tree_icon'] = $this->modx->getOption('mgr_tree_icon_'.strtolower($page['class_key']));
             $page['on_queue'] = in_array($page['id'], $excludes) ? 'hide-row' : '';
+            $page['has_children'] = $r->hasChildren() ? 1 : 0;
             if(!empty($tvs)) {
                $tv_vals = $this->_addtvValues($tvs,$page['id']);
             }

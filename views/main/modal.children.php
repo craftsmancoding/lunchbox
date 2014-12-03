@@ -27,7 +27,7 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
-    <?php if($r['isfolder'] == 1) : ?>
+    <?php if($r['has_children'] == 1) : ?>
        <div class="x-tree-node">
         <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>

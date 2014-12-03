@@ -31,7 +31,7 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
-    <?php if($r['isfolder'] == 1) : ?>
+    <?php if($r['has_children'] == 1) : ?>
        <div class="x-tree-node">
         <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_parent_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>
@@ -48,10 +48,10 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
+                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" id="set-parent-form" method="POST">
                     <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
                     <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
-                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent();">
                 </form>
            
          </td>
