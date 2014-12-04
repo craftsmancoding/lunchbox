@@ -120,3 +120,7 @@ table.classy2 thead tr th {
 .hide-row {
     display: none;
 }
+
+#children-modal .modal-body .clearfix .lunchbox_breadcrumbs_modal {
+    top: 10px !important;
+}
