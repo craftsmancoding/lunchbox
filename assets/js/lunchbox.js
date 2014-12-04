@@ -1,4 +1,5 @@
 var queue = [];
+var selected = 0;
 function add_to_queue(obj) {
     var page_id = $(obj).data('id');
     var pagetitle = $(obj).data('pagetitle');
@@ -79,7 +80,7 @@ function get_parent_modal(parent,offset,sort,dir) {
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : 'menuindex';
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1";
+    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&selected="+selected;
 
     console.log("[Lunchbox get_children()] requesting URL",url);
 
@@ -151,12 +152,12 @@ function get_children_on_queue(parent) {
  */
 function launch_modal_parent(obj) { 
     $('.lunchbox_breadcrumbs_modal').remove();
-    var sel_id = $(obj).data('selected');     
+    selected = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
         success: function(response) { 
-            draw_modal_header(sel_id);
+            draw_modal_header(selected);
             $('#parent-modal').modal('show');
             $('#set-parent-modal-content').html(response);
         }   
@@ -170,13 +171,13 @@ function launch_modal_parent(obj) {
  */
 function launch_modal_children(obj) { 
     $('.lunchbox_breadcrumbs_modal').remove();
-    var sel_id = $(obj).data('selected');     
+    selected = $(obj).data('selected');     
     $.ajax({ 
         type: "GET", 
         url: $(obj).attr('href'), 
         success: function(response) {
-            get_children_on_queue(sel_id);
-            draw_modal_header(sel_id);
+            get_children_on_queue(selected);
+            draw_modal_header(selected);
             $('#children-modal').modal('show');
             $('#set-children-modal-content').html(response);
         }   
