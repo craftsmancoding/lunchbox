@@ -326,7 +326,7 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $result = array('success'=>false,'msg'=>'Faled to Set Parent');
-        
+
         $page = $this->modx->getObject('modResource', $scriptProperties['id']);
         $page->set('parent', $scriptProperties['parent']);
         $page->set('show_in_tree', 1);
@@ -345,8 +345,37 @@ class PageController extends BaseController {
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
-    
+
+        $result = array('success'=>false,'msg'=>'Faled to Set Children');
+
+        $parent = $this->modx->getObject('modResource', $scriptProperties['parent']);
+        $children = !empty($scriptProperties['child']) ? $scriptProperties['child'] : array();
+
+        if($parent) {
+            if(!empty($children)) {
+                foreach ($children as $c) {
+                    $page = $this->modx->getObject('modResource', $c);
+                    $page->set('parent', $scriptProperties['parent']);
+
+                    if($parent->get('class_key') == 'Lunchbox') {
+                        $page->set('show_in_tree', 0);
+                    } else {
+                        $page->set('show_in_tree', 1);
+                    }
+                    $page->save();
+                }
+                $result['success'] = true;
+                $result['msg'] = 'Successfully set Children';
+                return json_encode($result);
+            }
+           
+            
+        }
+
+
+        return json_encode($result);  
     }
+
 
     /**
      * _addtvValues

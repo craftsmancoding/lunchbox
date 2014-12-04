@@ -297,14 +297,29 @@ function show_all_child(parent){
 
 function update_children(obj) {
      console.log('setting children [Lunchbox]');
+    $('#children_parent').val(selected);
     var form = $('#set-children-form');
     var values = form.serialize();
-    var url = form.attr('action');   
+    var url = form.attr('action'); 
+    console.log(values);
+    console.log(url);  
      jQuery.ajax({ 
-            type: "GET", 
+             type: "POST",
             url: url,
+            data: values,
             success: function(response) {
-                console.log(response);
+                data = $.parseJSON(response);
+               // console.log(data);
+                if(data.success == true) {
+                    $('.lu-msg').html('<div class="success">'+data.msg+'</div>')
+                    .delay(2000).fadeOut(function() {
+                       location.reload();
+                    });
+
+                } else{
+                    $('.lu-msg').html('<div class="danger">'+data.msg+'</div>')
+                    .delay(2000).fadeOut();
+                } 
             }   
         }); 
     event.preventDefault();

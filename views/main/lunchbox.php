@@ -40,7 +40,7 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
- 	<?php if($r['isfolder'] == 1) : ?>
+ 	<?php if($r['has_children'] == 1) : ?>
        <div class="x-tree-node">
         <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>
@@ -131,16 +131,23 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="selected-header"></div>
+
+        <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
+
+          <div class="pull-right">
+            <label for="search_term_modal">Search </label>
+            <input type="text" name="search_term" id="search_term_modal">
+            <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
+          </div>
+          <div class="clear">&nbsp;</div>
+        </form>
+
+ <form action="<?php print $data['controller_url'] .'&method=setchildren&class=page'; ?>" id="set-children-form" method="POST">
+ <input type="hidden" id="children_parent" name="parent" value="">
       <div class="modal-body">
-	      <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
-		      <div class="pull-right">
-		      	<label for="search_term_modal">Search </label>
-		        <input type="text" name="search_term" id="search_term_modal">
-		        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
-		      </div>
-		      <div class="clear">&nbsp;</div>
-	      </form>
+
 	      <div class="clearfix">
+        <div class="lu-msg"></div>
 	      	<div id="set-children-modal-content"></div><!--e#set-children-modal-content-->
       		<div id="queue-children">
       			<h4>Child Pages</h4>
@@ -164,6 +171,8 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         <button type="button" class="btn btn-primary"  onclick="javascript:update_children();">Update Children</button>
       </div>
+
+      </form>
 
     </div>
   </div>
