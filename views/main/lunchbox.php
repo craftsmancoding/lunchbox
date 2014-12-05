@@ -2,7 +2,7 @@
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
 	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
 	<form action="<?php print $data['controller_url'] .'&method=children&parent='.$data['parent']; ?>" id="search-parent">
-	  <div class="pull-right">
+	  <div class="pull-right lu-search-form">
 	  	<label for="search_term">Search </label>
 	  	<input type="hidden" name="parent" id="parent" value="<?php print $data['parent']; ?>">
 	    <input type="text" name="search_term" id="search_term">
@@ -132,7 +132,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     <div class="modal-content">
       <div class="selected-header"></div>
 
-        <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
+        <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-children-form">
 
           <div class="pull-right">
             <label for="search_term_modal">Search </label>

@@ -87,7 +87,7 @@ content: "\f0b1" !important;
     float: right;
     border: 1px solid #ddd;
     padding: 1%;
-    margin-top: 35px;
+    margin-top: 15px;
 }
 
 #queue-children h4 {
@@ -122,5 +122,23 @@ table.classy2 thead tr th {
 }
 
 #children-modal .modal-body .clearfix .lunchbox_breadcrumbs_modal {
-    top: 10px !important;
+    top: -7px !important;
+}
+
+#search_term,
+#search_term_modal {
+    padding: 5px;
+    border: 1px solid #ddd;
+}
+
+.lu-search-form {
+    margin-right: 15px;
+}
+
+#search-children-form {
+    padding: 15px 15px 0px 15px;
+}
+
+.children-wrapper-2 {
+    margin-top: 15px;
 }
