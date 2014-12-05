@@ -327,9 +327,15 @@ class PageController extends BaseController {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $result = array('success'=>false,'msg'=>'Faled to Set Parent');
 
+        $parent = $this->modx->getObject('modResource', $scriptProperties['parent']);
+
         $page = $this->modx->getObject('modResource', $scriptProperties['id']);
         $page->set('parent', $scriptProperties['parent']);
-        $page->set('show_in_tree', 1);
+        if($parent->get('class_key') == 'Lunchbox') {
+            $page->set('show_in_tree', 0);
+        } else {
+            $page->set('show_in_tree', 1);
+        }
            
         if ($page->save()) {
             $result['success'] = true;

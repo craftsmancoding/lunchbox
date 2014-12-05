@@ -136,6 +136,7 @@ function get_children_on_queue(parent) {
                     content += '<tr>'+
                         '<td>'+data.results[i].id+'<input type="hidden" name="child[]" value="'+data.results[i].id+'"/></td>'+
                         '<td>'+data.results[i].pagetitle+'</td>'+
+                        '<td>&nbsp;</td>'+
                         '</tr>';
                 }
                 $('#q-body').append(content);
