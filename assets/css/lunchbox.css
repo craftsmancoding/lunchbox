@@ -126,7 +126,8 @@ table.classy2 thead tr th {
 }
 
 #search_term,
-#search_term_modal {
+#search_term_modal,
+#search_term_children_modal {
     padding: 5px;
     border: 1px solid #ddd;
 }

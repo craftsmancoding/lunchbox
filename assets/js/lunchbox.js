@@ -154,6 +154,7 @@ function get_children_on_queue(parent) {
  * for the chosen page
  */
 function launch_modal_parent(obj) { 
+    queue = [];
     $('.lunchbox_breadcrumbs_modal').remove();
     selected = $(obj).data('selected');     
     $.ajax({ 
@@ -173,6 +174,7 @@ function launch_modal_parent(obj) {
  * Launch modal to select children
  */
 function launch_modal_children(obj) { 
+    queue = [];
     $('.lunchbox_breadcrumbs_modal').remove();
     selected = $(obj).data('selected');     
     $.ajax({ 
@@ -216,16 +218,35 @@ function search_parent() {
 function search_parent_modal() {
         var search = $('#search_term_modal').val();
         var url = connector_url+"&class=page&method=parents&search_term="+search;
+        console.log(url);
         $.ajax({
             url: url,
             success: function( response )  
             {
+                console.log(response);
                $("#set-parent-modal-content").html(response);               
             }
        });
     
     event.preventDefault();
 }
+
+function search_children_modal() {
+        var search = $('#search_term_children_modal').val();
+        var url = connector_url+"&class=page&method=selectchildren&search_term="+search;
+        console.log(url);
+        $.ajax({
+            url: url,
+            success: function( response )  
+            {
+                console.log(response);
+               $("#set-children-modal-content").html(response);               
+            }
+       });
+    
+    event.preventDefault();
+}
+
 
 
 function set_parent(obj) {

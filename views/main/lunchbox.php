@@ -135,9 +135,9 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
         <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-children-form">
 
           <div class="pull-right">
-            <label for="search_term_modal">Search </label>
-            <input type="text" name="search_term" id="search_term_modal">
-            <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
+            <label for="search_term_children_modal">Search </label>
+            <input type="text" name="search_term" id="search_term_children_modal">
+            <input type="submit" class="btn btn-primary" onclick="javascript:search_children_modal();">
           </div>
           <div class="clear">&nbsp;</div>
         </form>
