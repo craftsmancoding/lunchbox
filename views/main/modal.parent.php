@@ -22,7 +22,7 @@
     </thead>
     <tbody>
 <?php foreach ($data['results'] as $r) : ?>
-    <tr>
+    <tr class="<?php print $r['on_queue']; ?>">
         <?php 
         // Configurable columns
         //foreach($data['columns'] as $k => $v): ?>

@@ -252,7 +252,7 @@ class PageController extends BaseController {
 
         $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
         $excludes = json_decode($excludes,true);
-
+    
         $criteria->where(array('parent'=>$parent));
         
 

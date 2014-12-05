@@ -76,11 +76,12 @@ function get_children(parent,offset,sort,dir) {
  * @param string dir ASC|DESC 
  */
 function get_parent_modal(parent,offset,sort,dir) {
+    queue.push(selected);
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : 'menuindex';
     dir = typeof dir !== "undefined" ? dir : "ASC";
-    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&selected="+selected;
+    var url = connector_url+"&class=page&method=parents&parent="+parent+"&offset="+offset+"&sort="+sort+"&dir="+dir+"&_nolayout=1&selected="+selected+"&exclude="+JSON.stringify(queue);
 
     console.log("[Lunchbox get_children()] requesting URL",url);
 
@@ -101,6 +102,7 @@ function get_parent_modal(parent,offset,sort,dir) {
  * @param string dir ASC|DESC 
  */
 function get_children_modal(parent,offset,sort,dir) {
+    queue.push(selected);
     parent = typeof parent !== "undefined" ? parent : 0;
     offset = typeof offset !== "undefined" ? offset : 0;
     sort = typeof sort !== "undefined" ? sort : 'menuindex';
