@@ -129,6 +129,7 @@ function get_children_on_queue(parent) {
         success: function( response )  
         {
             var data = $.parseJSON(response);
+            console.log(data);  
             var content = '';
             if(data.total !== 0) {
                for (var i = 0; i < data.total; i++) {
@@ -136,11 +137,10 @@ function get_children_on_queue(parent) {
                         '<td>'+data.results[i].id+'<input type="hidden" name="child[]" value="'+data.results[i].id+'"/></td>'+
                         '<td>'+data.results[i].pagetitle+'</td>'+
                         '</tr>';
-
-                     $('#q-body').append(content);
                 }
+                $('#q-body').append(content);
             }
-            console.log(data);            
+          
         }
    });
 }
