@@ -1,9 +1,9 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
-	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
+	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web"><?php print $this->modx->lexicon('lunchbox.action.addpage') ?></a>
 	<form action="<?php print $data['controller_url'] .'&method=children&parent='.$data['parent']; ?>" id="search-parent">
 	  <div class="pull-right lu-search-form">
-	  	<label for="search_term">Search </label>
+	  	<label for="search_term"><?php print $this->modx->lexicon('lunchbox.form.search') ?> </label>
 	  	<input type="hidden" name="parent" id="parent" value="<?php print $data['parent']; ?>">
 	    <input type="text" name="search_term" id="search_term">
 	    <input type="submit" class="btn btn-primary" onclick="javascript:search_parent();">
@@ -58,11 +58,11 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-            <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
-            <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
-            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
-             <a class="btn btn-mini btn-orange" onclick="javascript:launch_modal_children(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=selectchildren&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Children</a>    
-            <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
+            <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info"><?php print $this->modx->lexicon('lunchbox.action.edit') ?></a>
+            <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank"><?php print $this->modx->lexicon('lunchbox.action.preview') ?></a>
+            <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>"><?php print $this->modx->lexicon('lunchbox.action.selectparent') ?></a>    
+             <a class="btn btn-mini btn-orange" onclick="javascript:launch_modal_children(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=selectchildren&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>"><?php print $this->modx->lexicon('lunchbox.action.selectchildren') ?></a>    
+            <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web"><?php print $this->modx->lexicon('lunchbox.action.addpage') ?></a>       
          </td>
     </tr>
 <?php endforeach; ?>
@@ -71,7 +71,7 @@
 
 <?php else: ?>
 
-    <div class="danger">Sorry, no Child Pages found.</div>
+    <div class="danger"><?php print $this->modx->lexicon('lunchbox.layout.noresult') ?></div>
 
 <?php endif; ?>
 
@@ -111,7 +111,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
       <div class="modal-body">
       <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
 	      <div class="pull-right">
-	      	<label for="search_term_modal">Search </label>
+	      	<label for="search_term_modal"><?php print $this->modx->lexicon('lunchbox.form.search') ?> </label>
 	        <input type="text" name="search_term" id="search_term_modal">
 	        <input type="submit" class="btn btn-primary" onclick="javascript:search_parent_modal();">
 	      </div>
@@ -135,7 +135,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
         <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-children-form">
 
           <div class="pull-right">
-            <label for="search_term_children_modal">Search </label>
+            <label for="search_term_children_modal"><?php print $this->modx->lexicon('lunchbox.form.search') ?> </label>
             <input type="text" name="search_term" id="search_term_children_modal">
             <input type="submit" class="btn btn-primary" onclick="javascript:search_children_modal();">
           </div>
@@ -168,8 +168,8 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
       		
       </div>
           <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary"  onclick="javascript:update_children();">Update Children</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php print $this->modx->lexicon('lunchbox.action.cancel') ?></button>
+        <button type="button" class="btn btn-primary"  onclick="javascript:update_children();"><?php print $this->modx->lexicon('lunchbox.action.updatechildren') ?></button>
       </div>
 
       </form>

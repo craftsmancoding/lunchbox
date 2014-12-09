@@ -44,7 +44,7 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-          <a class="btn btn-mini" onclick="javascript:add_to_queue(this)" data-id="<?php print $r['id']; ?>" data-pagetitle="<?php print $r['pagetitle']; ?>" href="#">Add to queue</a>           
+          <a class="btn btn-mini" onclick="javascript:add_to_queue(this)" data-id="<?php print $r['id']; ?>" data-pagetitle="<?php print $r['pagetitle']; ?>" href="#"><?php print $this->modx->lexicon('lunchbox.action.addqueue') ?></a>           
          </td>
     </tr>
 <?php endforeach; ?>
@@ -53,7 +53,7 @@
 
 <?php else: ?>
 
-    <div class="danger">Sorry, no Child Pages found.</div>
+    <div class="danger"><?php print $this->modx->lexicon('lunchbox.layout.noresult') ?></div>
 
 <?php endif; ?>
 

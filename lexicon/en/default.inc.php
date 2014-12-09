@@ -24,6 +24,10 @@
 $_lang['lunchbox'] = 'Lunchbox'; 
 $_lang['lunchbox_desc'] = 'MODx Paginated Container';
 
+$_lang['lunchbox.layout.title'] = 'Welcome to Lunchbox...';
+$_lang['lunchbox.layout.subtitle'] = 'More Features coming soon...';
+$_lang['lunchbox.layout.noresult'] = 'Sorry No Page Found.';
+
 
 //---------------------------------------
 // CM Pages Menu
@@ -40,3 +44,15 @@ $_lang['lunchbox.menu.support'] = 'Get Paid Support';
 
 
 $_lang['lunchbox_create_here'] = 'Create Lunchbox Here';
+
+$_lang['lunchbox.form.search'] = 'Search';
+
+$_lang['lunchbox.action.edit'] = 'Edit';
+$_lang['lunchbox.action.preview'] = 'Preview';
+$_lang['lunchbox.action.selectparent'] = 'Select Parent';
+$_lang['lunchbox.action.selectchildren'] = 'Select Children';
+$_lang['lunchbox.action.addpage'] = 'Add Page';
+$_lang['lunchbox.action.cancel'] = 'Cancel';
+$_lang['lunchbox.action.updatechildren'] = 'Update Children';
+$_lang['lunchbox.action.addqueue'] = 'Add to queue';
+$_lang['lunchbox.action.close'] = 'Close';

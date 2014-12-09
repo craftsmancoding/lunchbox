@@ -60,7 +60,7 @@
 
 <?php else: ?>
 
-    <div class="danger">Sorry, no Child Pages found.</div>
+    <div class="danger"><?php print $this->modx->lexicon('lunchbox.layout.noresult') ?></div>
 
 <?php endif; ?>
 
