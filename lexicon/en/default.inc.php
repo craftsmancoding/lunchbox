@@ -37,3 +37,6 @@ $_lang['lunchbox.menu.donation'] = 'Make a Donation';
 $_lang['lunchbox.menu.bug'] = 'Report a Bug';
 $_lang['lunchbox.menu.wiki'] = 'Wiki';
 $_lang['lunchbox.menu.support'] = 'Get Paid Support';
+
+
+$_lang['lunchbox_create_here'] = 'Create Lunchbox Here';

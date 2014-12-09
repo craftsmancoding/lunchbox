@@ -1,11 +1,8 @@
 <?php include dirname(dirname(__FILE__)).'/includes/header.php';  ?>
-
-<div class="lu-msg"></div>
-
 <div class="lunchbox_canvas_inner clearfix" id="lunchbox_canvas_inner_head">
 	<a class="btn pull-right" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $data['parent']; ?>&context_key=web">Add Page</a>
 	<form action="<?php print $data['controller_url'] .'&method=children&parent='.$data['parent']; ?>" id="search-parent">
-	  <div class="pull-right">
+	  <div class="pull-right lu-search-form">
 	  	<label for="search_term">Search </label>
 	  	<input type="hidden" name="parent" id="parent" value="<?php print $data['parent']; ?>">
 	    <input type="text" name="search_term" id="search_term">
@@ -43,7 +40,7 @@
            <!--  <td><?php //print $r[$k]; ?></td> -->
         <?php //endforeach; ?>
     <td>
- 	<?php if($r['isfolder'] == 1) : ?>
+ 	<?php if($r['has_children'] == 1) : ?>
        <div class="x-tree-node">
         <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>
@@ -64,6 +61,7 @@
             <a href="<?php print $data['site_url']; ?>/manager/?a=resource/update&id=<?php print $r['id'] ?>" class="button btn btn-mini btn-info">Edit</a>
             <a href="<?php print $data['site_url'] . $r['uri']; ?>" class="btn btn-mini" target="_blank">Preview</a>
             <a class="btn btn-mini btn-primary" onclick="javascript:launch_modal_parent(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=parents&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Parent</a>    
+             <a class="btn btn-mini btn-orange" onclick="javascript:launch_modal_children(this);" data-selected="<?php print $r['id']; ?>"href="<?php print $data['controller_url'] .'&method=selectchildren&selected=' . $r[id].'&parent=0&sort=menuindex&dir=ASC'; ?>">Select Children</a>    
             <a class="btn btn-mini" href="<?php print $data['site_url']; ?>manager/?id=<?php print $data['parent']; ?>&a=resource/create&class_key=modDocument&parent=<?php print $r['id']; ?>&context_key=web">Add Page</a>       
          </td>
     </tr>
@@ -109,7 +107,7 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	<!-- Modal -->
   <div class="modal-dialog">
     <div class="modal-content">
-      <div id="selected-header"></div>
+      <div class="selected-header"></div>
       <div class="modal-body">
       <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-parent">
 	      <div class="pull-right">
@@ -119,13 +117,67 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
 	      </div>
 	      <div class="clear">&nbsp;</div>
       </form>
-      <div id="child_pages_modal">
-            </div><!--e#child-pages-->
+      <div class="lu-msg"></div>
+      <div id="set-parent-modal-content"></div><!--e#child-pages-->
       </div>
 
     </div>
   </div>
 </div>
+
+
+<div class="modal fade" id="children-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<!-- Modal -->
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="selected-header"></div>
+
+        <form action="<?php print $data['controller_url'] .'&method=parents'; ?>" id="search-children-form">
+
+          <div class="pull-right">
+            <label for="search_term_children_modal">Search </label>
+            <input type="text" name="search_term" id="search_term_children_modal">
+            <input type="submit" class="btn btn-primary" onclick="javascript:search_children_modal();">
+          </div>
+          <div class="clear">&nbsp;</div>
+        </form>
+
+ <form action="<?php print $data['controller_url'] .'&method=setchildren&class=page'; ?>" id="set-children-form" method="POST">
+ <input type="hidden" id="children_parent" name="parent" value="">
+      <div class="modal-body">
+
+	      <div class="clearfix">
+        <div class="lu-msg"></div>
+	      	<div id="set-children-modal-content"></div><!--e#set-children-modal-content-->
+      		<div id="queue-children">
+      			<h4>Child Pages</h4>
+      			<table class="classy classy2">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Pagetitle</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="q-body">
+      </tbody>
+    </table>
+
+      		</div>
+	      </div>
+      		
+      </div>
+          <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary"  onclick="javascript:update_children();">Update Children</button>
+      </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
 <?php include dirname(dirname(__FILE__)).'/includes/footer.php';  ?>
 
 

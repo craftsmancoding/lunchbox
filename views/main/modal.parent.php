@@ -1,4 +1,6 @@
-<div class="children-wrapper children-wrapper-2">
+
+      <div class="children-wrapper">
+
 <?php if ($data['results']): ?>
 <input type="hidden" name="lunchbox" value="1">
 <table class="classy">
@@ -18,9 +20,9 @@
             <th>Action</th>
         </tr>
     </thead>
-    <tbody id="children-select-tbody">
+    <tbody>
 <?php foreach ($data['results'] as $r) : ?>
-    <tr data-id="<?php print  $r['id'] ?>" class="<?php print $r['on_queue']; ?>">
+    <tr class="<?php print $r['on_queue']; ?>">
         <?php 
         // Configurable columns
         //foreach($data['columns'] as $k => $v): ?>
@@ -29,7 +31,7 @@
     <td>
     <?php if($r['has_children'] == 1) : ?>
        <div class="x-tree-node">
-        <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_children_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
+        <div class="lu-icon icon tree-folder <?php print $r['mgr_tree_icon']; ?>" data-id="<?php print  $r['id']; ?>" onclick="javascript:get_parent_modal('<?php print  $r['id'] ?>',0);">&nbsp;</div>
       </div>
     <?php else : ?>
       <div class="x-tree-node">
@@ -44,7 +46,12 @@
             <td><?php print $r[$k]; ?></td>
         <?php endforeach; ?>
         <td>
-          <a class="btn btn-mini" onclick="javascript:add_to_queue(this)" data-id="<?php print $r['id']; ?>" data-pagetitle="<?php print $r['pagetitle']; ?>" href="#">Add to queue</a>           
+                <form action="<?php print $data['controller_url'] .'&method=setparent&class=page'; ?>" method="POST">
+                    <input type="hidden" id="page_id" name="id" value="<?php print $data['selected']; ?>">
+                    <input type="hidden" id="parent_id" name="parent" value="<?php print $r['id'] ?>">
+                    <input type="submit" class="btn btn-mini btn-info" value="Set as Parent" onclick="javascript:set_parent(this);">
+                </form>
+           
          </td>
     </tr>
 <?php endforeach; ?>
@@ -63,12 +70,12 @@ print \Pagination\Pager::links($data['count'], $data['offset'], $results_per_pag
     ->setBaseUrl($data['baseurl'])
     ->setTpls(
         array(
-            'first' => '<span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
-            'last' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
-            'prev' => '<span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
-            'next' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
+            'first' => '<span onclick="javascript:get_parent_modal('.$data['parent'].',[+offset+]);" class="linklike">&laquo; First</span>  ',
+            'last' => ' <span onclick="javascript:get_parent_modal('.$data['parent'].',[+offset+]);" class="linklike">Last &raquo;</span>',
+            'prev' => '<span onclick="javascript:get_parent_modal('.$data['parent'].',[+offset+]);" class="linklike">&lsaquo; Prev.</span> ',
+            'next' => ' <span onclick="javascript:get_parent_modal('.$data['parent'].',[+offset+]);" class="linklike">Next &rsaquo;</span>',
             'current' => ' <span>[+page_number+]</span> ',
-            'page' => ' <span onclick="javascript:get_children_modal('.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
+            'page' => ' <span onclick="javascript:get_parent_modal('.$data['parent'].',[+offset+]);" class="linklike">[+page_number+]</span> ',
             'outer' => '
                 <style>
                     span.linklike { cursor: pointer; }

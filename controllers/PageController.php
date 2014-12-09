@@ -140,7 +140,6 @@ class PageController extends BaseController {
 
         $data = $this->getRecords($scriptProperties);
         $data = json_decode($data,true);
-
         $this->setPlaceholder('offset', $offset);
         $this->setPlaceholder('parent', $parent);
         $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
@@ -151,7 +150,7 @@ class PageController extends BaseController {
         $this->setPlaceholder('controller_url', $this->config['controller_url']); 
         $this->setPlaceholder('selected', $selected);
               
-        return $this->fetchTemplate('main/children.php');
+        return $this->fetchTemplate('main/lunchbox.php');
     }
 
     /**
@@ -160,6 +159,43 @@ class PageController extends BaseController {
      * @return html markup
      */
     public function getParents(array $scriptProperties = array()) {
+       $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+
+        $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
+        $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
+        $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
+
+        $selected = $this->modx->getOption('selected',$scriptProperties,0);
+    
+        $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
+        $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
+
+        $data = $this->getRecords($scriptProperties);
+        $data = json_decode($data,true);
+
+        $this->setPlaceholder('offset', $offset);
+        $this->setPlaceholder('parent', $parent);
+        $this->setPlaceholder('site_url', $this->modx->getOption('site_url'));
+        $this->setPlaceholder('baseurl', $this->page('children',array('parent'=>$data['parent'])));
+        $this->setPlaceholder('results', $data['results']);
+        $this->setPlaceholder('count', $data['total']);
+        $this->setPlaceholder('columns', $data['cols']);  
+        $this->setPlaceholder('controller_url', $this->config['controller_url']); 
+        $this->setPlaceholder('selected', $selected);
+
+        return $this->fetchTemplate('main/modal.parent.php');        
+    }
+
+    /**
+     * getParents
+     * @param array $scriptProperties
+     * @return html markup
+     */
+    public function getSelectChildren(array $scriptProperties = array()) {
        $this->loadHeader = false;
         $this->loadFooter = false;
         // GFD... this can't be set at runtime. See improvised addStandardLayout() function
@@ -214,8 +250,9 @@ class PageController extends BaseController {
         $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
-
-
+        $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
+        $excludes = json_decode($excludes,true);
+    
         $criteria->where(array('parent'=>$parent));
         
 
@@ -256,6 +293,8 @@ class PageController extends BaseController {
             $tv_vals = array();
             $page = $r->toArray('',false,true);
             $page['mgr_tree_icon'] = $this->modx->getOption('mgr_tree_icon_'.strtolower($page['class_key']));
+            $page['on_queue'] = in_array($page['id'], $excludes) ? 'hide-row' : '';
+            $page['has_children'] = $r->hasChildren() ? 1 : 0;
             if(!empty($tvs)) {
                $tv_vals = $this->_addtvValues($tvs,$page['id']);
             }
@@ -287,9 +326,17 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $result = array('success'=>false,'msg'=>'Faled to Set Parent');
-        $page = $this->modx->getObject('modResource', array('id' => $scriptProperties['id']));
+
+        $parent = $this->modx->getObject('modResource', $scriptProperties['parent']);
+
+        $page = $this->modx->getObject('modResource', $scriptProperties['id']);
         $page->set('parent', $scriptProperties['parent']);
-        $page->set('show_in_tree', 1);
+        if($parent->get('class_key') == 'Lunchbox') {
+            $page->set('show_in_tree', 0);
+        } else {
+            $page->set('show_in_tree', 1);
+        }
+           
         if ($page->save()) {
             $result['success'] = true;
             $result['msg'] = 'Successfully set Parent';
@@ -297,6 +344,44 @@ class PageController extends BaseController {
         }
         return json_encode($result);  
     }
+
+    public function postSetChildren(array $scriptProperties = array()) {
+        $this->loadHeader = false;
+        $this->loadFooter = false;
+        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+        $this->loadBaseJavascript = false; 
+        $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
+
+        $result = array('success'=>false,'msg'=>'Faled to Set Children');
+
+        $parent = $this->modx->getObject('modResource', $scriptProperties['parent']);
+        $children = !empty($scriptProperties['child']) ? $scriptProperties['child'] : array();
+
+        if($parent) {
+            if(!empty($children)) {
+                foreach ($children as $c) {
+                    $page = $this->modx->getObject('modResource', $c);
+                    $page->set('parent', $scriptProperties['parent']);
+
+                    if($parent->get('class_key') == 'Lunchbox') {
+                        $page->set('show_in_tree', 0);
+                    } else {
+                        $page->set('show_in_tree', 1);
+                    }
+                    $page->save();
+                }
+                $result['success'] = true;
+                $result['msg'] = 'Successfully set Children';
+                return json_encode($result);
+            }
+           
+            
+        }
+
+
+        return json_encode($result);  
+    }
+
 
     /**
      * _addtvValues
