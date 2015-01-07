@@ -7,11 +7,13 @@ class Lunchbox extends modResource {
     public $showInContextMenu = true;
     public $hide_children_in_tree = true;
     public $allowChildrenResources = false;
-        
+
     /**
      *
-     * @return string
-     */ 
+     * @param xPDO $xpdo
+     *
+     * @return Lunchbox
+     */
     function __construct(xPDO & $xpdo) {
         parent :: __construct($xpdo);
         $this->set('class_key','Luchbox');
@@ -99,7 +101,6 @@ class LunchboxCreateProcessor extends modResourceCreateProcessor {
      * @return boolean
      */
     public function afterSave() {
-        //$this->modx->log(1, __FILE__ . print_r($this->object->toArray(), true));
         $this->object->set('class_key','Lunchbox');
         $this->object->set('cacheable',true);
         $this->object->set('isfolder',false);
@@ -133,7 +134,6 @@ class LunchboxUpdateProcessor extends modResourceUpdateProcessor {
      * @return boolean
      */
     public function afterSave() {
-        //$this->modx->log(1, __FILE__ . print_r($this->object->toArray(), true));
         $this->object->set('class_key','Lunchbox');
         $this->object->set('cacheable',true);
         $this->object->set('isfolder',true); // ensure we get a clean uri

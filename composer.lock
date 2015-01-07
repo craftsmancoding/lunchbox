@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/craftsmancoding/pagination.git",
-                "reference": "43f28d2fdb3a376bd6c0718d53ba039b5f4288e1"
+                "reference": "3253a367e8fd2ba626cf3c27041fd05451c33103"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/craftsmancoding/pagination/zipball/43f28d2fdb3a376bd6c0718d53ba039b5f4288e1",
-                "reference": "43f28d2fdb3a376bd6c0718d53ba039b5f4288e1",
+                "url": "https://api.github.com/repos/craftsmancoding/pagination/zipball/3253a367e8fd2ba626cf3c27041fd05451c33103",
+                "reference": "3253a367e8fd2ba626cf3c27041fd05451c33103",
                 "shasum": ""
             },
             "require": {
@@ -43,24 +43,19 @@
                 "source": "https://github.com/craftsmancoding/pagination/tree/master",
                 "issues": "https://github.com/craftsmancoding/pagination/issues"
             },
-            "time": "2014-05-08 16:45:57"
+            "time": "2014-10-27 16:07:28"
         }
     ],
-    "packages-dev": [
-
-    ],
-    "aliases": [
-
-    ],
+    "packages-dev": [],
+    "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
         "craftsmancoding/pagination": 20
     },
     "prefer-stable": false,
+    "prefer-lowest": false,
     "platform": {
         "php": ">=5.3"
     },
-    "platform-dev": [
-
-    ]
+    "platform-dev": []
 }

@@ -24,10 +24,37 @@
 $_lang['lunchbox'] = 'Lunchbox'; 
 $_lang['lunchbox_desc'] = 'MODx Paginated Container';
 
-$_lang['lunchbox.layout.title'] = 'Welcome to Lunchbox...';
-$_lang['lunchbox.layout.subtitle'] = 'More Features coming soon...';
+$_lang['lunchbox.layout.title'] = 'Welcome to Lunchbox';
+$_lang['lunchbox.layout.subtitle'] = 'Have your lunch and eat it too!  Navigate your deeply hierarchical content without the performance headaches of the resource tree.';
 $_lang['lunchbox.layout.noresult'] = 'Sorry No Page Found.';
 
+
+// License stuff
+$_lang['status'] = 'Status';
+$_lang['valid'] = 'Valid';
+$_lang['invalid'] = 'Invalid';
+$_lang['expired'] = 'Expired';
+
+// Warning Boxes
+$_lang['warning'] = 'Warning';
+$_lang['error'] = 'Error';
+$_lang['invalid_expired_msg'] = 'Your license for Lunchbox is invalid or expired. <strong>lunchbox.license_key</strong> System Setting.  <a href="https://craftsmancoding.com/products/lunchbox/">Renew License Key</a>';
+$_lang['activation_problem_msg'] = 'There was a problem activating your license.';
+$_lang['reqs_license_msg'] = 'The Lunchbox extra requires a license key. Paste it into your <strong>lunchbox.license_key</strong> System Setting.  <a href="https://craftsmancoding.com/products/lunchbox/">Get License Key</a>';
+
+
+//-------------------------------------
+// SETTINGS
+//-------------------------------------
+$_lang['setting_lunchbox.license_key'] = 'Lunchbox License Key';
+$_lang['setting_lunchbox.license_key_desc'] = 'Lunchbox requires a license key to run.  You can obtain a license at <a href="https://craftsmancoding.com/products/lunchbox/">https://craftsmancoding.com/products/lunchbox/</a>';
+
+$_lang['setting_lunchbox.results_per_page'] = 'Results per Page';
+$_lang['setting_lunchbox.results_per_page_desc'] = 'This affects pagination inside the Lunchbox windows. The value will default to the default_per_page System Setting';
+$_lang['setting_lunchbox.sort_col'] = 'Sort by Column';
+$_lang['setting_lunchbox.sort_col_desc'] = 'Which column do you want to sort results by?  You can sort by a TV if you prefix the name with "tv." Default: pagetitle';
+$_lang['setting_lunchbox.children_columns'] = 'Column Headings';
+$_lang['setting_lunchbox.children_columns_desc'] = 'When viewing paginated results, which columns do you want to see? Customize this as a JSON key/value hash: keys are column names, values are labels. E.g. {"pagetitle":"Page Title","id":"ID"}';
 
 //---------------------------------------
 // CM Pages Menu
@@ -50,7 +77,7 @@ $_lang['lunchbox.form.search'] = 'Search';
 $_lang['lunchbox.action.edit'] = 'Edit';
 $_lang['lunchbox.action.preview'] = 'Preview';
 $_lang['lunchbox.action.selectparent'] = 'Select Parent';
-$_lang['lunchbox.action.selectchildren'] = 'Select Children';
+$_lang['lunchbox.action.selectchildren'] = 'Manage Children';
 $_lang['lunchbox.action.addpage'] = 'Add Page';
 $_lang['lunchbox.action.cancel'] = 'Cancel';
 $_lang['lunchbox.action.updatechildren'] = 'Update Children';

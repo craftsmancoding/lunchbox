@@ -36,7 +36,6 @@ class PageController extends BaseController {
 
         $this->modx->regClientStartupScript($this->config['assets_url'].'js/lunchbox.js');
 
-
     }
 
     
@@ -45,6 +44,8 @@ class PageController extends BaseController {
     //------------------------------------------------------------------------------
     /**
      * @param array $scriptProperties
+     *
+     * @return rendered
      */
     public function getIndex(array $scriptProperties = array()) {
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
@@ -60,7 +61,7 @@ class PageController extends BaseController {
     public function getBreadcrumbs(array $scriptProperties = array()) {
         $this->loadHeader = false;
         $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
+
         $this->loadBaseJavascript = false; 
 
         $items = $this->getBcRecords($scriptProperties);
@@ -232,7 +233,6 @@ class PageController extends BaseController {
 
         $this->loadHeader = false;
         $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
         $this->loadBaseJavascript = false; 
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $limit = (int) $this->modx->getOption('lunchbox.results_per_page','',$this->modx->getOption('default_per_page'));
@@ -251,7 +251,10 @@ class PageController extends BaseController {
         $criteria = $this->modx->newQuery('modResource');
 
         $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
-        $excludes = json_decode($excludes,true);
+        if (!is_array($excludes))
+        {
+            $excludes = json_decode($excludes,true);
+        }
     
         $criteria->where(array('parent'=>$parent));
         
@@ -267,11 +270,11 @@ class PageController extends BaseController {
         print $criteria->toSQL();
         die();*/
         $pos = strpos($sort, 'tv.');
-        // if false use regular sort
+        // Use regular sort unless the sort column name is prefixed with "tv." (i.e. is a TV)
         if ($pos === false) {
              $criteria->sortby($sort,$dir);
         } else {
-             $this->_sortbyTV( 'firstname', $criteria, $dir);
+             $this->_sortbyTV($sort, $criteria, $dir);
         }
 
         $rows = $this->modx->getCollection('modResource',$criteria);
@@ -309,8 +312,7 @@ class PageController extends BaseController {
     public function getModalHeader(array $scriptProperties = array()) {
         $this->loadHeader = false;
         $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-        $this->loadBaseJavascript = false; 
+        $this->loadBaseJavascript = false;
          $sel_id = $this->modx->getOption('selected',$scriptProperties,0);
         $selected = $this->modx->getObject('modResource',$sel_id);
         $this->setPlaceholder('selected_id', $selected->get('id'));
@@ -322,8 +324,7 @@ class PageController extends BaseController {
     public function postSetParent(array $scriptProperties = array()) {
         $this->loadHeader = false;
         $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-        $this->loadBaseJavascript = false; 
+        $this->loadBaseJavascript = false;
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
         $result = array('success'=>false,'msg'=>'Faled to Set Parent');
 
@@ -348,8 +349,7 @@ class PageController extends BaseController {
     public function postSetChildren(array $scriptProperties = array()) {
         $this->loadHeader = false;
         $this->loadFooter = false;
-        // GFD... this can't be set at runtime. See improvised addStandardLayout() function
-        $this->loadBaseJavascript = false; 
+        $this->loadBaseJavascript = false;
         $this->modx->log(\modX::LOG_LEVEL_INFO, print_r($scriptProperties,true),'','Lunchbox PageController:'.__FUNCTION__);
 
         $result = array('success'=>false,'msg'=>'Faled to Set Children');

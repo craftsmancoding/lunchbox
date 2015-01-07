@@ -139,13 +139,13 @@ class BaseController extends \modExtraManagerController {
         // Load up our page [header] + content + [footer]
         ob_start();
         if (!isset($this->scriptProperties['_nolayout'])) {
-            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including header.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
-            include $path.'header.php';
+            //$this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including header.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
+            //include $path.'includes/header.php';
         }
         include $path.$file;
         if (!isset($this->scriptProperties['_nolayout'])) {
-            $this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including footer.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
-            include $path.'footer.php';
+            //$this->modx->log(\modX::LOG_LEVEL_DEBUG, 'Including footer.php', '','BaseController::'.__FUNCTION__,'Line:'.__LINE__);
+            //include $path.'includes/footer.php';
         }
 
         $content = ob_get_clean();

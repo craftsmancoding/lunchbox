@@ -34,6 +34,13 @@ return array(
         'xtype'=>     'textfield',
         'namespace' => 'lunchbox',
         'area' => 'lunchbox:default'
+    ),
+    array(
+        'key'  =>     'lunchbox.license_key',
+        'value'=>     '',
+        'xtype'=>     'textfield',
+        'namespace' => 'lunchbox',
+        'area' => 'lunchbox:default'
     )
 );
 /*EOF*/

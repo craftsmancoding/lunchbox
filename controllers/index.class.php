@@ -7,19 +7,21 @@
 require_once dirname(dirname(__FILE__)) .'/vendor/autoload.php';
 class IndexManagerController extends \Lunchbox\BaseController {
 
-     /**
+    /**
      * This acts as a class loader.  Beware the difficulties with testing with the "new" keyword!!!
      * See composer.json's autoload section: Controller classes should be found in the controllers/ directory
-     * We ignore the incoming $className here and instead fallback to our own mapping which follows the 
+     * We ignore the incoming $className here and instead fallback to our own mapping which follows the
      * pattern : \lunchbox\{$Controller_Class_Slug}Controller
      * We can't override the Base controller constructor because this loops back onto it.
      *
-     * @param object \modX instance
+     * @param modX $instance
      * @param string $className (ignored, instead we look to $_REQUEST['class'])
-     * @param array array config
+     * @param        array      array config
+     *
+     * @throws Exception
      * @return instance of a controller object
      */
-    public static function getInstanceDeprecated(\modX &$modx, $className, array $config = array()) {
+    public static function getInstanceDeprecated(modX &$modx, $className, array $config = array()) {
 
         $config['method'] = (isset($_REQUEST['method'])) ? $_REQUEST['method'] : 'index';
         $class = (isset($_REQUEST['class'])) ? $_REQUEST['class'] : 'Page'; // Default Controller
