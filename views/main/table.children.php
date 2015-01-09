@@ -59,7 +59,7 @@
 
 <?php else: ?>
 
-    <div class="danger">Sorry, no Child Pages found.</div>
+    <div class="lu-danger">Sorry, no Child Pages found.</div>
 
 <?php endif; ?>
 

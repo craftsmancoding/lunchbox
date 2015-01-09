@@ -70,7 +70,6 @@ class PageController extends BaseController {
 
         $this->setPlaceholder('links', $items);
         $this->setPlaceholder('last', $last['pagetitle']);
-        $this->setPlaceholder('in_modal', $in_modal);
         return $this->fetchTemplate('main/breadcrumbs.php');
     }
 
@@ -92,7 +91,6 @@ class PageController extends BaseController {
 
         $this->setPlaceholder('links', $items);
         $this->setPlaceholder('last', $last['pagetitle']);
-        $this->setPlaceholder('in_modal', $in_modal);
         return $this->fetchTemplate('main/modal.breadcrumbs.php');
     }
 
@@ -103,7 +101,6 @@ class PageController extends BaseController {
         $this->loadBaseJavascript = false; 
 
        $page_id = $this->modx->getOption('page_id',$scriptProperties);
-       $in_modal = $this->modx->getOption('in_modal',$scriptProperties);
         $items = array();
         while ($page = $this->modx->getObject('modResource', $page_id)) {
             array_unshift($items, array(
@@ -241,13 +238,11 @@ class PageController extends BaseController {
         $sort = $this->modx->getOption('sort',$scriptProperties,$this->modx->getOption('lunchbox.sort_col','','pagetitle'));
         $dir = $this->modx->getOption('dir',$scriptProperties,'ASC');
 
-        $selected = $this->modx->getOption('selected',$scriptProperties,0);
     
         $parent = (int) $this->modx->getOption('parent',$scriptProperties,0);
 
         $offset = (int) $this->modx->getOption('offset',$scriptProperties,0);
         $cols = $this->_setChildrenColumns(); 
-        $in_modal = (int) $this->modx->getOption('in_modal',$scriptProperties,false);
         $criteria = $this->modx->newQuery('modResource');
 
         $excludes = $this->modx->getOption('exclude',$scriptProperties,array());
@@ -263,9 +258,7 @@ class PageController extends BaseController {
         $total_pages = $this->modx->getCount('modResource',$criteria);
         
         $criteria->limit($limit, $offset); 
-     /*   $criteria->prepare();
-        print $criteria->toSQL();
-        die();*/
+
         $pos = strpos($sort, 'tv.');
         // if false use regular sort
         if ($pos === false) {
@@ -390,11 +383,12 @@ class PageController extends BaseController {
      * @return array $tv_vals
      */
     private function _addtvValues($tvs,$id) {
+        $tbl_prefix = $this->modx->config[\modX::OPT_TABLE_PREFIX];
         $tv_vals = array();
        foreach ($tvs as $tv) {
             $sql = "SELECT {$tv['name']}.value {$tv['name']}
-                FROM modx_site_content doc
-                LEFT JOIN modx_site_tmplvar_contentvalues {$tv['name']} ON doc.id = {$tv['name']}.contentid
+                FROM {$tbl_prefix}site_content doc
+                LEFT JOIN {$tbl_prefix}site_tmplvar_contentvalues {$tv['name']} ON doc.id = {$tv['name']}.contentid
                 WHERE doc.id ={$id}
                 AND {$tv['name']}.tmplvarid ={$tv['id']};";
     
@@ -428,20 +422,19 @@ class PageController extends BaseController {
      * @return array
      */
     private function _get_tvs($cols) {
+        $tbl_prefix = $this->modx->config[\modX::OPT_TABLE_PREFIX];
         $where_clause = '';
         foreach ($cols as $c => $v) {
             $where_clause .= " name ='{$c}' OR";
         }
         $where_clause = substr($where_clause, 0, -3);
 
-        $sql = "SELECT id,name FROM modx_site_tmplvars where 1=1 AND {$where_clause};";
-        
+        $sql = "SELECT id,name FROM {$tbl_prefix}site_tmplvars where 1=1 AND {$where_clause};";
         $result = $this->modx->query($sql);
         $tvs = $result->fetchAll(\PDO::FETCH_ASSOC);
         if(count($tvs) == 0) {
             return array();
         }
-
         return $tvs;
 
     }

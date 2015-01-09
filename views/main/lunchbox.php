@@ -71,7 +71,7 @@
 
 <?php else: ?>
 
-    <div class="danger"><?php print $this->modx->lexicon('lunchbox.layout.noresult') ?></div>
+    <div class="lu-danger"><?php print $this->modx->lexicon('lunchbox.layout.noresult') ?></div>
 
 <?php endif; ?>
 

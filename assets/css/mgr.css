@@ -167,7 +167,7 @@ a.btn-remove {
 
 
 /**** Alerts*****/
-.danger {
+.lu-danger {
     margin: 10px;
     padding: 5px;
     background: #ffddde;
@@ -178,7 +178,7 @@ a.btn-remove {
     -moz-border-radius: 3px;
 }
 
-.success {
+.lu-success {
     margin: 10px;
     padding: 5px;
     background: #dae8bf;
