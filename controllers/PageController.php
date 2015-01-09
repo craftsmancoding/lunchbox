@@ -422,19 +422,22 @@ class PageController extends BaseController {
      * @return array
      */
     private function _get_tvs($cols) {
-        $tbl_prefix = $this->modx->config[\modX::OPT_TABLE_PREFIX];
-        $where_clause = '';
-        foreach ($cols as $c => $v) {
-            $where_clause .= " name ='{$c}' OR";
-        }
-        $where_clause = substr($where_clause, 0, -3);
+        $cols = array('pagetitle'=>'Pagetitle','id'=>'ID','published'=>'Published');
 
-        $sql = "SELECT id,name FROM {$tbl_prefix}site_tmplvars where 1=1 AND {$where_clause};";
-        $result = $this->modx->query($sql);
-        $tvs = $result->fetchAll(\PDO::FETCH_ASSOC);
-        if(count($tvs) == 0) {
-            return array();
+        $tvs = array();
+        $query = $this->modx->newQuery('modTemplateVar');
+        $query->select('id,name');
+        foreach ($cols as $c => $v) {
+             $query->where(array('name' => "{$c}"),\xPDOQuery::SQL_OR); // you can use orCondition here as well
         }
+        
+        $tvs_raw = $this->modx->getCollection('modTemplateVar',$query);
+        
+        if(count($tvs_raw) !== 0) {
+            foreach ($tvs_raw as $tv) {
+                $tvs[] = $tv->toArray('',false,true);       
+            }
+        }       
         return $tvs;
 
     }
