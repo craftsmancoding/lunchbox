@@ -189,26 +189,26 @@ a.btn-remove {
     -moz-border-radius: 3px;
 }
 
-table.classy {
+table.classy-custom {
     width: 100%;
 }
 
-table.classy thead tr {
+table.classy-custom thead tr {
     background: #e4e9ee !important; 
 }
 
-table.classy thead tr th {
+table.classy-custom thead tr th {
   padding: 12px 5px;
   color: #696969;
   font-weight: bold;
   font-size: 12px;
 }
 
-table.classy thead a {
+table.classy-custom thead a {
     color: #fff;
 }
 
-table.classy td {
+table.classy-custom td {
   padding: 10px 15px !important;
 }
 table thead a:hover {
